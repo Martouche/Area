@@ -1,6 +1,27 @@
 version: "3"
 services:
   server:
-    build: ./gradle-simplest
+    build: ./server
     ports:
       - "8080:8080"
+    links:
+      - db
+    environment:
+      - POSTGRES_USER=john
+      - POSTGRES_PASSWORD=pwd0123456789
+      - POSTGRES_DB=mydb
+      - IS_LOGGED=false
+  db:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=john
+      - POSTGRES_PASSWORD=pwd0123456789
+      - POSTGRES_DB=mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+    driver: local

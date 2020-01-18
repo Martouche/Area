@@ -1,4 +1,4 @@
-package com.example.area
+package com.server.Area
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

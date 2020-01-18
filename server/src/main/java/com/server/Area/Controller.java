@@ -1,10 +1,10 @@
-package com.example.restservice;
+package com.server.Area;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.sql.*;
 import java.io.*;
 import java.lang.*;
-import com.example.restservice.User;
+import com.server.Area.User;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GreetingController {Connection c = null;
+public class Controller {
+	Connection c = null;
 	PreparedStatement stmt = null;
 	boolean isLogged = false;
 
-	public GreetingController() {
+	public Controller() {
 		try {
 			Class.forName("org.postgresql.Driver");
 			c = DriverManager
@@ -35,7 +36,12 @@ public class GreetingController {Connection c = null;
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
-		return RegisterController.register(name, pwd, c, stmt);
+	public RegisterController registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
+		return new RegisterController(name, pwd, c, stmt);
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public LoginController loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
+		return new LoginController(name, pwd, c, stmt);
 	}
 }

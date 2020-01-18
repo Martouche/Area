@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.server.Area;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -49,5 +49,21 @@ public class User {
             stmt.execute();
             System.out.println("Utilisateur: " + name + " vient de s'inscrire");
         } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
+    }
+
+    public static int logUser(String name, String password, Connection c, PreparedStatement stmt) {
+
+        String check_name = null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + name + "' AND password = '" + toHexString(hash) + "';");
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next())
+                return 0;
+            return 1;
+        } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
+        return 1;
     }
 }

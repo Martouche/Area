@@ -10,7 +10,7 @@ plugins {
 	id 'java'
 }
 
-group = 'com.example'
+group = 'com.server'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -19,12 +19,16 @@ repositories {
 	jcenter()
 }
 
+
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compile("org.springframework.boot:spring-boot-devtools")
 	implementation("org.springframework.boot:spring-boot-devtools")
 	implementation("postgresql:postgresql:9.1-901-1.jdbc4")
 	testCompile 'com.jayway.jsonpath:json-path'
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile "io.springfox:springfox-swagger-ui:2.9.2"
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -36,7 +40,7 @@ test {
 }
 
 bootJar {
-	mainClassName = 'com.example.restservice.RestServiceApplication'
+	mainClassName = 'com.server.Area.RestMain'
 }
 
 apply plugin: 'com.palantir.docker'

@@ -1,5 +1,4 @@
-import 'package:area/Page/Login/form.dart';
-import 'package:area/Page/home.dart';
+import 'package:mobile/Page/Login/form.dart';
 import 'package:flutter/material.dart';
 
 

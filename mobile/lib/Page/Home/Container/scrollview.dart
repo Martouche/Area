@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Page/Home/Container/notification.dart';
-import 'package:mobile/global.dart' as global;
 
 class ScrollContainer extends StatefulWidget {
   @override
@@ -29,23 +28,17 @@ class _ScrollContainerState extends State<ScrollContainer> {
           final item = items[index];
 
           return Dismissible(
-            // Each Dismissible must contain a Key. Keys allow Flutter to
-            // uniquely identify widgets.
             key: Key(item),
-            // Provide a function that tells the app
-            // what to do after an item has been swiped away.
+            background: NotificationLeft(),
+            secondaryBackground: NotificationRight(),
             onDismissed: (direction) {
               // Remove the item from the data source.
               setState(() {
                 items.removeAt(index);
               });
 
-              // Then show a snackbar.
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text("$item dismissed")));
             },
             // Show a red background as the item is swiped away.
-            background: Container(color: Colors.red),
             child: NotificationContainer(Icons.accessible_forward, item),
           );
         },

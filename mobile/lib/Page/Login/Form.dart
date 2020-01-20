@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
       style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
+          hintText: "Username",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
           ),
       ),

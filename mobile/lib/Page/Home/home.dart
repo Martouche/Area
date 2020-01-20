@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mobile/Page/Home/logout.dart';
-import 'package:mobile/Page/Home/name.dart';
+import 'package:mobile/Page/Home/fetch.dart';
+import 'package:mobile/Page/Home/Container/logout.dart';
+import 'package:mobile/Page/Home/Container/name.dart';
+import 'package:mobile/Page/Home/Container/scrollview.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,28 +11,53 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<Post> post;
+
+  @override
+  void initState() {
+    post = fetchPost();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: Colors.blue,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: LogOut(),
-            ),
-            Expanded(
-              flex: 1,
-              child: NameContainer(),
-            ),
-            Expanded(
-              flex: 8,
-              child: Container(),
-            )
-          ],
+        child: FutureBuilder<Post>(
+          future: post,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Timer.periodic(Duration(seconds: 5), (Timer t) =>
+                  setState(() {
+                    HomePage();
+                  })
+              );
+              initalize_value(snapshot.data);
+              return Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: LogOut(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: NameContainer(),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: ScrollContainer(),
+                  )
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return CircularProgressIndicator();
+          },
         ),
       ),
     );
   }
 }
+

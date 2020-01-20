@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/global.dart' as global;
 
 class NameContainer extends StatefulWidget {
   @override
@@ -6,7 +7,7 @@ class NameContainer extends StatefulWidget {
 }
 
 class _NameContainerState extends State<NameContainer> {
-  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.blue);
+  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.black);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class _NameContainerState extends State<NameContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Hello username", style: style),
+              Text("Hello " + global.name, style: style),
             ],
           )
       ),

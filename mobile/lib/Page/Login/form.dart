@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -172,7 +173,13 @@ class LoginScreen extends StatelessWidget {
                 .width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
-            child: _signInButton(context),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: Colors.white,
+              ),
+                child: _signInButton(context)
+            ),
           ),
           Container(
             width: MediaQuery
@@ -208,21 +215,23 @@ class LoginScreen extends StatelessWidget {
   Widget _signInButton(context) {
     return OutlineButton(
       splashColor: Colors.grey,
+      color: Color(0x9900cc66),
       onPressed: () {
         signInWithGoogle().whenComplete(() {
           Navigator.of(context).pushReplacementNamed('/home');
         });
       },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12)
+      ),
+      borderSide: BorderSide(color: Colors.white),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("assets/logo.png"), height: 35.0),
+            Image(image: AssetImage("assets/logo-google.png"), height: 35.0),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(

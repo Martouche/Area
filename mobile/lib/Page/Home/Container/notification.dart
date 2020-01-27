@@ -11,22 +11,25 @@ class NotificationContainer extends StatefulWidget {
 }
 
 class _NotificationContainerState extends State<NotificationContainer> {
-  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.black);
+  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        color: Colors.blue[200],
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(widget.logo),
-          Text(widget.msg, style: style),
-        ],
+    return Center(
+      child: Container(
+//        width: MediaQuery.of(context).size.width*0.4,
+        margin: EdgeInsets.only(left: 5.0, top: 5.0, bottom: 5.0, right: 5.0),
+        decoration: BoxDecoration(
+          color: Colors.blue[400],
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(widget.logo, color: Colors.black),
+            Text(widget.msg, style: style),
+          ],
+        ),
       ),
     );
   }
@@ -36,7 +39,7 @@ class NotificationRight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.lightBlue,
       child: Align(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,

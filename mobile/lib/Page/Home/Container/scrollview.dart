@@ -12,37 +12,30 @@ class _ScrollContainerState extends State<ScrollContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.white,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(12.0)
-      ),
-      child: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
 
-          return Dismissible(
-            key: Key(item),
-            background: NotificationLeft(),
-            secondaryBackground: NotificationRight(),
-            onDismissed: (direction) {
-              // Remove the item from the data source.
-              setState(() {
-                items.removeAt(index);
-              });
-
-            },
-            // Show a red background as the item is swiped away.
-            child: NotificationContainer(Icons.accessible_forward, item),
-          );
-        },
-      ),
+        return Dismissible(
+          key: Key(item),
+          background: NotificationLeft(),
+          secondaryBackground: NotificationRight(),
+          onDismissed: (direction) {
+            // Remove the item from the data source.
+            setState(() {
+              if(direction == DismissDirection.startToEnd){
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text(items[index] + " Delete")));
+              } else if(direction == DismissDirection.endToStart){
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text(items[index] + " Like")));
+              }
+              items.removeAt(index);
+            });
+          },
+          // Show a red background as the item is swiped away.
+          child: NotificationContainer(Icons.accessible_forward, item),
+        );
+      },
     );
   }
 }

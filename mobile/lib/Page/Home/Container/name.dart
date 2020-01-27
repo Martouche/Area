@@ -7,14 +7,14 @@ class NameContainer extends StatefulWidget {
 }
 
 class _NameContainerState extends State<NameContainer> {
-  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.black);
+  TextStyle style = TextStyle(fontSize: 20.0, color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey[300],
         border: Border.all(
           color: Colors.white,
           width: 1,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mobile/Page/Home/Container/dashboardview.dart';
 import 'package:mobile/Page/Home/fetch.dart';
 import 'package:mobile/Page/Home/Container/logout.dart';
 import 'package:mobile/Page/Home/Container/name.dart';
@@ -23,16 +24,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue,
+        color: Colors.white,
         child: FutureBuilder<Post>(
           future: post,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              Timer.periodic(Duration(seconds: 5), (Timer t) =>
+/*              Timer.periodic(Duration(seconds: 5), (Timer t) =>
                   setState(() {
                     HomePage();
                   })
-              );
+              );*/
               initalize_value(snapshot.data);
               return Column(
                 children: <Widget>[
@@ -46,7 +47,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Expanded(
                     flex: 8,
-                    child: ScrollContainer(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Expanded(
+                          child: ScrollContainer(),
+                          flex: 5,
+                        ),
+                        Expanded(
+                          child: DashboardContainer(),
+                          flex: 5,
+                        ),
+                      ],
+                    )
                   )
                 ],
               );

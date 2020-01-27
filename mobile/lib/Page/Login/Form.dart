@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
-  Color backgroundColor1 = Colors.blue;
-  final Color backgroundColor2 = Colors.white;
-  final Color highlightColor = Colors.black;
-  final Color foregroundColor = Colors.grey;
+  Color backgroundColor1 = Colors.black87;
+  final Color backgroundColor2 = Colors.grey;
+  final Color highlightColor = Color(0x9900cc66);
+  final Color foregroundColor = Colors.white;
   final AssetImage logo = AssetImage("assets/logo.png");
 
   @override
@@ -30,31 +32,14 @@ class LoginScreen extends StatelessWidget {
                   Container(
                     height: 128.0,
                     width: 128.0,
-                    child: new CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: this.foregroundColor,
-                      radius: 100.0,
-                      child: new Text(
-                        "S",
-                        style: TextStyle(
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.w100,
-                        ),
-                      ),
-                    ),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: this.foregroundColor,
-                        width: 1.0,
-                      ),
-                      shape: BoxShape.circle,
-                      //image: DecorationImage(image: this.logo)
+                      image: DecorationImage(image: this.logo)
                     ),
                   ),
                   new Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: new Text(
-                      "Samarth Agarwal",
+                      "AREA",
                       style: TextStyle(color: this.foregroundColor),
                     ),
                   )
@@ -92,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'samarthagarwal@live.com',
+                      hintText: 'Username',
                       hintStyle: TextStyle(color: this.foregroundColor),
                     ),
                   ),
@@ -131,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: '*********',
+                      hintText: 'Password',
                       hintStyle: TextStyle(color: this.foregroundColor),
                     ),
                   ),
@@ -147,10 +132,13 @@ class LoginScreen extends StatelessWidget {
               children: <Widget>[
                 new Expanded(
                   child: new FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0)
+                    ),
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => {},
+                    onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),

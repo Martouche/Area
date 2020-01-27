@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobile/Page/Login/sign_in.dart';
+
 
 class LoginScreen extends StatelessWidget {
   Color backgroundColor1 = Colors.black87;
@@ -16,12 +19,17 @@ class LoginScreen extends StatelessWidget {
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
           begin: Alignment.centerLeft,
-          end: new Alignment(1.0, 0.0), // 10% of the width, so there are ten blinds.
-          colors: [this.backgroundColor1, this.backgroundColor2], // whitish to gray
+          end: new Alignment(1.0, 0.0),
+          // 10% of the width, so there are ten blinds.
+          colors: [this.backgroundColor1, this.backgroundColor2],
+          // whitish to gray
           tileMode: TileMode.repeated, // repeats the gradient over the canvas
         ),
       ),
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
       child: Column(
         children: <Widget>[
           Container(
@@ -33,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                     height: 128.0,
                     width: 128.0,
                     decoration: BoxDecoration(
-                      image: DecorationImage(image: this.logo)
+                        image: DecorationImage(image: this.logo)
                     ),
                   ),
                   new Padding(
@@ -47,8 +55,11 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -85,8 +96,11 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -124,8 +138,11 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
             alignment: Alignment.center,
             child: new Row(
@@ -133,12 +150,12 @@ class LoginScreen extends StatelessWidget {
                 new Expanded(
                   child: new FlatButton(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)
+                        borderRadius: BorderRadius.circular(12.0)
                     ),
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+                    onPressed: () {},
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),
@@ -148,34 +165,22 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          new Container(
-            width: MediaQuery.of(context).size.width,
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
-            child: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
-                    onPressed: () => {},
-                    child: Text(
-                      "Forgot your password?",
-                      style: TextStyle(color: this.foregroundColor.withOpacity(0.5)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: _signInButton(context),
           ),
-
-          new Expanded(child: Divider(),),
-
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0, bottom: 20.0),
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            margin: const EdgeInsets.only(
+                left: 40.0, right: 40.0, top: 10.0, bottom: 20.0),
             alignment: Alignment.center,
             child: new Row(
               children: <Widget>[
@@ -187,7 +192,8 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () => {},
                     child: Text(
                       "Don't have an account? Create One",
-                      style: TextStyle(color: this.foregroundColor.withOpacity(0.5)),
+                      style: TextStyle(
+                          color: this.foregroundColor.withOpacity(0.5)),
                     ),
                   ),
                 ),
@@ -195,6 +201,40 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _signInButton(context) {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+        signInWithGoogle().whenComplete(() {
+          Navigator.of(context).pushReplacementNamed('/home');
+        });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

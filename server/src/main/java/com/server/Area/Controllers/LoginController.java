@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import io.swagger.annotations.ApiModelProperty;
 
 public class LoginController {
 
+    @ApiModelProperty(notes = "State of loging")
     private int log;
+    @ApiModelProperty(notes = "Name of the user")
     private String name;
 
     public LoginController(String name, String password, Connection c, PreparedStatement stmt) {

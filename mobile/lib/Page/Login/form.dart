@@ -156,7 +156,7 @@ class LoginScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/home/notification'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/home'),
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),

@@ -27,6 +27,7 @@ dependencies:
   awesome_dialog: ^0.1.1
   firebase_auth: ^0.15.4
   google_sign_in: ^4.1.1
+  morpheus: ^1.2.2+1
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:mobile/Page/Home/navigation_bar.dart';
 import 'package:mobile/Page/Login/login.dart';
 import 'package:mobile/Page/Home/home.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginPage(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => Home(),
         '/home/notification' : (context) => NotificationPage(),
       },
       home: LoginPage(),

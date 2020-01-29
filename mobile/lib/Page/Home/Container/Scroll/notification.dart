@@ -18,10 +18,10 @@ class _NotificationContainerState extends State<NotificationContainer> {
     return Center(
       child: Container(
 //        width: MediaQuery.of(context).size.width*0.4,
-        margin: EdgeInsets.only(left: 5.0, top: 5.0, bottom: 5.0, right: 5.0),
+        margin: EdgeInsets.only(left: 5.0, top: 15.0, bottom: 20.0, right: 5.0),
         decoration: BoxDecoration(
-          color: Colors.blue[400],
-          borderRadius: BorderRadius.circular(12.0),
+          color: Color(0x9900cc66),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

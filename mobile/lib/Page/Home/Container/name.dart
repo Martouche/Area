@@ -14,7 +14,7 @@ class _NameContainerState extends State<NameContainer> {
     return Container(
       margin: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Color(0x9900cc66),
         border: Border.all(
           color: Colors.white,
           width: 1,

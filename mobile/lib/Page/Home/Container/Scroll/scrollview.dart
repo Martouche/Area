@@ -7,7 +7,7 @@ class ScrollContainer extends StatefulWidget {
 }
 
 class _ScrollContainerState extends State<ScrollContainer> {
-  final items = List<String>.generate(20, (i) => "Notif n° ${i + 1}");
+  final items = List<String>.generate(10, (i) => "Notif n° ${i + 1}");
   TextStyle style = TextStyle(fontSize: 20.0, color: Colors.blue);
 
   @override

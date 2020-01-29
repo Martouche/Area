@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Page/Home/Container/Scroll/notification.dart';
+import 'package:mobile/Container/Scroll/notification.dart';
 
 class ScrollContainer extends StatefulWidget {
   @override
@@ -25,9 +25,9 @@ class _ScrollContainerState extends State<ScrollContainer> {
             // Remove the item from the data source.
             setState(() {
               if(direction == DismissDirection.startToEnd){
-                Scaffold.of(context).showSnackBar(SnackBar(content: Text(items[index] + " Delete")));
-              } else if(direction == DismissDirection.endToStart){
                 Scaffold.of(context).showSnackBar(SnackBar(content: Text(items[index] + " Like")));
+              } else if(direction == DismissDirection.endToStart){
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text(items[index] + " Delete")));
               }
               items.removeAt(index);
             });

@@ -17,16 +17,23 @@ class _NotificationContainerState extends State<NotificationContainer> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        color: Colors.black12,
 //        width: MediaQuery.of(context).size.width*0.4,
-        margin: EdgeInsets.only(left: 5.0, top: 15.0, bottom: 20.0, right: 5.0),
-        decoration: BoxDecoration(
-          color: Color(0x9900cc66),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
+        padding: EdgeInsets.only(left: 0, top: 20.0, bottom: 20.0, right: 0),
+        margin: EdgeInsets.only(left: 0, top: 5.0, bottom: 5.0, right: 0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(widget.logo, color: Colors.black),
+            SizedBox(
+              width: 10,
+            ),
+            CircleAvatar(
+              backgroundColor: Colors.black12,
+              radius: 20,
+              backgroundImage: AssetImage('assets/logo-google.png'),
+            ),
+            SizedBox(
+              width: 10,
+            ),
             Text(widget.msg, style: style),
           ],
         ),
@@ -35,15 +42,18 @@ class _NotificationContainerState extends State<NotificationContainer> {
   }
 }
 
-class NotificationRight extends StatelessWidget {
+class NotificationLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.lightBlue,
       child: Align(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(
+              width: 20,
+            ),
             Icon(
               Icons.check,
               color: Colors.white,
@@ -56,9 +66,6 @@ class NotificationRight extends StatelessWidget {
               ),
               textAlign: TextAlign.right,
             ),
-            SizedBox(
-              width: 20,
-            ),
           ],
         ),
         alignment: Alignment.centerLeft,
@@ -67,18 +74,15 @@ class NotificationRight extends StatelessWidget {
   }
 }
 
-class NotificationLeft extends StatelessWidget {
+class NotificationRight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.red,
       child: Align(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            SizedBox(
-              width: 20,
-            ),
             Icon(
               Icons.delete,
               color: Colors.white,
@@ -89,7 +93,10 @@ class NotificationLeft extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.right,
+            ),
+            SizedBox(
+              width: 20,
             ),
           ],
         ),

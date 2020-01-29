@@ -1,6 +1,7 @@
 import 'package:mobile/Page/Login/login.dart';
 import 'package:mobile/Page/Home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/Page/Notification/notification.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
         '/home': (context) => HomePage(),
+        '/home/notification' : (context) => NotificationPage(),
       },
       home: LoginPage(),
     );

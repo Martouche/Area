@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mobile/Container/Scroll/scrollview_social.dart';
+import 'package:mobile/Container/custom_name.dart';
 import 'package:mobile/Page/Home/fetch.dart';
-import 'package:mobile/Container/logout.dart';
-import 'package:mobile/Container/name.dart';
 import 'package:mobile/Container/Scroll/scrollview.dart';
 
-class HomePage extends StatefulWidget {
+class NotificationPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NotificationPageState extends State<NotificationPage> {
   Future<Post> post;
 
   @override
@@ -31,7 +29,7 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
 /*              Timer.periodic(Duration(seconds: 5), (Timer t) =>
                   setState(() {
-                    HomePage();
+                    NotificationPage();
                   })
               );*/
               initalize_value(snapshot.data);
@@ -39,28 +37,12 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: LogOut(),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: NameContainer(),
+                    child: CustomNameContainer("Notifications"),
                   ),
                   Expanded(
                     flex: 8,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          child: ScrollContainer(),
-                          flex: 5,
-                        ),
-                        Expanded(
-                          child: DashboardContainer(),
-                          flex: 5,
-                        ),
-                      ],
-                    )
-                  )
+                    child: ScrollContainer(),
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {

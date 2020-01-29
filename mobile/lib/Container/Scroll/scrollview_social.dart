@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Page/Home/Container/Scroll/notification.dart';
-import 'package:mobile/Page/Home/Container/Scroll/social.dart';
+import 'package:mobile/Container/Scroll/social.dart';
 
 class DashboardContainer extends StatefulWidget {
   @override

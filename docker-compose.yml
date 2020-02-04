@@ -21,6 +21,10 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+  website:
+    build: ./website
+    ports:
+        - "9090:9090"
 
 volumes:
   db-data:

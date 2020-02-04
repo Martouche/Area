@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public class User {
 
+    private String name;
+    private String email;
+    private String token_google;
+
     private static String toHexString(byte[] hash)
     {
         BigInteger number = new BigInteger(1, hash);

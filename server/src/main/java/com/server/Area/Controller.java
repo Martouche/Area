@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.sql.*;
 import java.io.*;
 import java.lang.*;
+import java.security.Principal;
 import com.server.Area.User;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
+
 
 @RestController
 @Api(value="Authentification", description="Routes for login & register")
@@ -28,7 +30,7 @@ public class Controller {
 			c = DriverManager
 					.getConnection("jdbc:postgresql://db:5432/" + System.getenv("POSTGRES_DB"),
 							System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL);");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, google_token VARCHAR(250));");
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,5 +47,9 @@ public class Controller {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public LoginController loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		return new LoginController(name, pwd, c, stmt);
+	}
+	@RequestMapping(value = "/oauth2/google")
+	public GoogleController getToken() {
+		return new GoogleController(name, token, c, stmt);
 	}
 }

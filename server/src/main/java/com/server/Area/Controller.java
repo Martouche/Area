@@ -48,8 +48,8 @@ public class Controller {
 	public LoginController loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		return new LoginController(name, pwd, c, stmt);
 	}
-	@RequestMapping(value = "/oauth2/google")
-	public GoogleController getToken() {
-		return new GoogleController(name, token, c, stmt);
+	@RequestMapping(value = "/oauth2/google", method = RequestMethod.GET)
+	public GoogleController getToken(@RequestParam(value = "code") String code) {
+		return new GoogleController(code, c, stmt);
 	}
 }

@@ -6,7 +6,7 @@ const app = express();
 
 const CLIENT_ID = "377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com";
 const CLIENT_SECRET = "dXw6n2fh3lNh6URBVW_0P6xO";
-const REDIRECT_URL = "http://localhost:9090/auth/google/callback";
+const REDIRECT_URL = "http://localhost:8080/oauth2/google";
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var authed = false;
@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
             access_type: 'offline',
             scope: 'https://www.googleapis.com/auth/gmail.readonly'
         });
-        console.log(url)
         res.redirect(url);
     } else {
         const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
@@ -38,7 +37,7 @@ app.get('/', (req, res) => {
         });
         res.send('Logged in')
     }
-})
+});
 
 app.get('/auth/google/callback', function (req, res) {
     const code = req.query.code;

@@ -18,20 +18,14 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class GoogleController {
 
-    @ApiModelProperty(notes = "Name of the user")
-    private String name;
     @ApiModelProperty(notes = "Google's Token")
-    private String token;
+    private String code;
 
-    public GoogleController(String name, String token, Connection c, PreparedStatement stmt) {
-        if (name != null && token != null) {
-            this.name = name;
-            this.token = token;
-        }
+    public GoogleController(String code, Connection c, PreparedStatement stmt) {
+        System.out.println("JE suis sur la bonne route _____________---------------");
+        System.out.println(code);
+
     }
 
-    public String getUserName() {
-        return name;
-    }
-    public String getToken() { return token; }
+    public String getCode() { return code; }
 }

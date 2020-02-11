@@ -61,9 +61,17 @@ public class User {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
                 }
             } else {
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
+                try {
+                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                    byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
 
+                    stmt = c.prepareStatement("UPDATE users SET password = '" + hash + "' WHERE name = '" + email + "';");
+                    stmt.execute();
+                    System.out.println("Utilisateur: " + email + " from  google vient de s'update");
+                } catch (Exception e) {
+                    System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
+
+                }
                 // change the acces token
             }
         }catch (Exception e) {
@@ -93,7 +101,7 @@ public class User {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
-            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + name + "' AND password = '" + toHexString(hash) + "';");
+            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + name + "' AND password = '" + toHexString(hash) + "' and type = 'basic';");
             ResultSet rs = stmt.executeQuery();
             if (!rs.next())
                 return 0;

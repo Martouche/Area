@@ -32,8 +32,8 @@ public class Controller {
 			c = DriverManager
 					.getConnection("jdbc:postgresql://db:5432/" + System.getenv("POSTGRES_DB"),
 							System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, type VARCHAR(250) NOT NULL);");
-			stmt.executeUpdate();
+			stmt = c.prepareStatement("DROP TABLE users;CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, type VARCHAR(250) NOT NULL);");
+			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName()+": "+e.getMessage());
@@ -50,6 +50,7 @@ public class Controller {
 	public LoginController loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		return new LoginController(name, pwd, c, stmt);
 	}
+
 	@RequestMapping(value = "/oauth2/google", method = RequestMethod.GET)
 	public RedirectView getToken(@RequestParam(value = "code") String code) {
 		GoogleController mine = new GoogleController(code, c, stmt);

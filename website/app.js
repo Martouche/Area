@@ -12,7 +12,7 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 app.get('/home', (req, res) => {
-    res.send("HOMEPAGE")
+    res.sendFile('home.html', { root: __dirname });
 });
 
 app.get('/login/google', (req, res) => {

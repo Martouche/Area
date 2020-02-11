@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.servlet.view.RedirectView;
 import io.swagger.annotations.Api;
 
 
@@ -30,7 +32,7 @@ public class Controller {
 			c = DriverManager
 					.getConnection("jdbc:postgresql://db:5432/" + System.getenv("POSTGRES_DB"),
 							System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, google_token VARCHAR(250));");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, type VARCHAR(250) NOT NULL);");
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,7 +51,11 @@ public class Controller {
 		return new LoginController(name, pwd, c, stmt);
 	}
 	@RequestMapping(value = "/oauth2/google", method = RequestMethod.GET)
-	public GoogleController getToken(@RequestParam(value = "code") String code) {
-		return new GoogleController(code, c, stmt);
+	public RedirectView getToken(@RequestParam(value = "code") String code) {
+		GoogleController mine = new GoogleController(code, c, stmt);
+		System.out.println("mon putain d'id = " + mine.getId());
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		return redirectView;
 	}
 }

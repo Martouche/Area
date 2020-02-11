@@ -11,12 +11,18 @@ const REDIRECT_URL = "http://localhost:8080/oauth2/google";
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var authed = false;
 
-app.get('/', (req, res) => {
+app.get('/home', (req, res) => {
+    res.send("HOMEPAGE")
+});
+
+app.get('/login/google', (req, res) => {
     if (!authed) {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
-            scope: 'https://www.googleapis.com/auth/gmail.readonly'
+            scope: 'https://www.googleapis.com/auth/gmail.readonly',
+            scope: 'https://www.googleapis.com/auth/userinfo.profile',
+            scope: 'https://www.googleapis.com/auth/userinfo.email'
         });
         res.redirect(url);
     } else {

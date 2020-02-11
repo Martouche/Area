@@ -42,14 +42,45 @@ public class User {
         return hexString.toString();
     }
 
+    public static void addUserGoogle(String email, String accesToken, Connection c,  PreparedStatement stmt) {
+        try {
+            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + email + "' AND type = 'google';");
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                try {
+                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                    byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
+
+                    stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
+                    stmt.setString(1, email);
+                    stmt.setString(2, toHexString(hash));
+                    stmt.setString(3, "google");
+                    stmt.execute();
+                    System.out.println("Utilisateur: " + email + " from  google vient de s'inscrire");
+                } catch (Exception e) {
+                    System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
+                }
+            } else {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
+
+                // change the acces token
+            }
+        }catch (Exception e) {
+            System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
+        }
+
+    }
+
     public static void addUser(String name, String password, Connection c, PreparedStatement stmt) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
-            stmt = c.prepareStatement("INSERT INTO users (name, password) VALUES (?, ?);");
+            stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
             stmt.setString(1, name);
             stmt.setString(2, toHexString(hash));
+            stmt.setString(3, "basic");
             stmt.execute();
             System.out.println("Utilisateur: " + name + " vient de s'inscrire");
         } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}

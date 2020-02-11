@@ -55,14 +55,47 @@ public class GoogleController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
+    private String id;
 
     public GoogleController(String code, Connection c, PreparedStatement stmt) {
         System.out.println("JE suis sur la bonne route _____________---------------");
         System.out.println(code);
         String clientId = "377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com";
         String clientSecret = "dXw6n2fh3lNh6URBVW_0P6xO";
-        //String url = "https://www.googleapis.com/oauth2/v4/token?code="+ code +"&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&client_secret=dXw6n2fh3lNh6URBVW_0P6xO&grant_type=authorization_code&redirect_uri=http://localhost";
 
+        String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
+
+        JSONObject datauser = getUserData(accessToken);
+
+        System.out.println(datauser);
+        User.addUserGoogle((String) datauser.get("email"), accessToken, c, stmt);
+
+        id = "|||mmabiteEEEEEE|||";
+        //101279739379928861775
+    }
+
+    public JSONObject getUserData(String accessToken)
+    {
+        String data = null;
+        JSONObject datauser = null;
+        try {
+            data = get(new StringBuilder("https://www.googleapis.com/oauth2/v1/userinfo?access_token=").append(accessToken).toString());
+
+            // get the json
+            try {
+                datauser = (JSONObject) new JSONParser().parse(data);
+            } catch (ParseException e) {
+                throw new RuntimeException("Unable to parse json " + data);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return datauser;
+    }
+
+    public String getAccesTokenAuth(String code, String clientId, String clientSecret)
+    {
+        String accessToken = null;
         try {
             String body = post("https://accounts.google.com/o/oauth2/token", ImmutableMap.<String, String>builder()
                     .put("code", code)
@@ -75,31 +108,16 @@ public class GoogleController {
 
             JSONObject jsonObject = null;
 
-            // get the access token from json and request info from Google
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + body);
             }
-
-            // google tokens expire after an hour, but since we requested offline access we can get a new token without user involvement via the refresh token
-            String accessToken = (String) jsonObject.get("access_token");
+            accessToken = (String) jsonObject.get("access_token");
         } catch (IOException e) {
             System.out.println(e);
         }
-
-
-        // you may want to store the access token in session
-        //c.getSession().setAttribute("access_token", accessToken);
-
-
-        // get some info about the user with the access token
-        //String json = get(new StringBuilder("https://www.googleapis.com/oauth2/v1/userinfo?access_token=").append(accessToken).toString());
-
-        // now we could store the email address in session
-
-        // return the json of the user's basic info
-        //System.out.println(json);
+        return accessToken;
     }
 
     // makes a GET request to url and returns body as a string
@@ -127,6 +145,8 @@ public class GoogleController {
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response = httpClient.execute(request);
 
+        System.out.println("MA REQUETE : " + request);
+
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
 
@@ -138,6 +158,5 @@ public class GoogleController {
     }
 
     public String getCode() { return code; }
-
-
+    public String getId() { return id; }
 }

@@ -7,6 +7,8 @@ import java.lang.*;
 import java.security.Principal;
 import com.server.Area.User;
 
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,14 +43,26 @@ public class Controller {
 		}
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public RegisterController registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
-		return new RegisterController(name, pwd, c, stmt);
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public RedirectView registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
+		RegisterController mine = new RegisterController(name, pwd, c, stmt);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		return redirectView;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public RedirectView loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		LoginController mine = new LoginController(name, pwd, c, stmt);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		return redirectView;
+	}
+
+	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
+	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
+		System.out.println("mon code spotify ----  " + code);
+		SpotifyController mine = new SpotifyController(code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=mabite");
 		return redirectView;

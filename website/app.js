@@ -34,13 +34,18 @@ app.get('/signup', (req, res) => {
         console.log(req.query);
         var username = req.query.username;
         var pwd = req.query.pass;
-        const url = "http://localhost:8080/login?name=" + username + "&pwd=" + pwd + "";
+        const url = "http://localhost:8080/register?name=" + username + "&pwd=" + pwd + "";
         res.redirect(url);
     }
 });
 
 app.get('/login/github', (req, res) => {
     const url = "https://github.com/login/oauth/authorize?scope=user:email,repo&client_id=1b8ddffb28f26996c08f";
+    res.redirect(url);
+});
+
+app.get('/login/spotify', (req, res) => {
+    const url = "https://accounts.spotify.com/authorize?client_id=b348a012872f4fe78567e7cea9e20c7c&response_type=code&redirect_uri=http://localhost:8080/oauth2/spotify&scope=user-read-private";
     res.redirect(url);
 });
 

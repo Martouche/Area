@@ -11,6 +11,8 @@ const REDIRECT_URL = "http://localhost:8080/oauth2/google";
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var authed = false;
 
+app.use(express.static('static'));
+
 app.get('/home', (req, res) => {
     res.sendFile('home.html', { root: __dirname });
 });

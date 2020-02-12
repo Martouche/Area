@@ -51,37 +51,60 @@ import org.json.simple.parser.ParseException;
 import com.google.common.collect.ImmutableMap;
 
 
-public class GoogleController {
+public class GitHubController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
     private String id;
 
-    public GoogleController(String code, Connection c, PreparedStatement stmt) {
-        String clientId = "377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com";
-        String clientSecret = "dXw6n2fh3lNh6URBVW_0P6xO";
+    public GitHubController(String code, Connection c, PreparedStatement stmt) {
+        String clientId = "1b8ddffb28f26996c08f";
+        String clientSecret = "6bd1a06369dc43d0a264847b8ab8ff4f11fb2a84";
 
         String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
+        System.out.println("mon acces token github : " + accessToken);
 
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        User.addUserService((String) datauser.get("email"), accessToken, "google", c, stmt);
+        User.addUserService((String) datauser.get("email"), accessToken, "github", c, stmt);
 
         id = "|||mmabiteEEEEEE|||";
+    }
+
+    public String getUserName(String accessToken)
+    {
+        String data = null;
+        JSONObject datauser = null;
+        String username = null;
+        try {
+            data = get(new StringBuilder("https://api.github.com/user?access_token=").append(accessToken).toString());
+            try {
+                datauser = (JSONObject) new JSONParser().parse(data);
+                String type = (String) datauser.get("type");
+                if (type.equals("User"))
+                    username = (String) datauser.get("login");
+            } catch (ParseException e) {
+                throw new RuntimeException("Unable to parse json " + data);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return username;
     }
 
     public JSONObject getUserData(String accessToken)
     {
         String data = null;
         JSONObject datauser = null;
+        String username = getUserName(accessToken);
         try {
-            data = get(new StringBuilder("https://www.googleapis.com/oauth2/v1/userinfo?access_token=").append(accessToken).toString());
-
+            data = get(new StringBuilder("https://api.github.com/user/public_emails?&access_token=").append(accessToken).toString());
+            String newstring = data.substring(data.indexOf("},{") + 2, data.length() - 1);
             // get the json
             try {
-                datauser = (JSONObject) new JSONParser().parse(data);
+                datauser = (JSONObject) new JSONParser().parse(newstring);
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + data);
             }
@@ -95,17 +118,13 @@ public class GoogleController {
     {
         String accessToken = null;
         try {
-            String body = post("https://accounts.google.com/o/oauth2/token", ImmutableMap.<String, String>builder()
-                    .put("code", code)
+            String body = post("https://github.com/login/oauth/access_token", ImmutableMap.<String, String>builder()
                     .put("client_id", clientId)
                     .put("client_secret", clientSecret)
-                    .put("redirect_uri", "http://localhost:8080/oauth2/google")
-                    .put("grant_type", "authorization_code").build());
-
-            System.out.println(body);
-
+                    .put("code", code)
+                    .put("Accept", "application/json")
+                    .put("redirect_uri", "http://localhost:8080/oauth2/github").build());
             JSONObject jsonObject = null;
-
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);
             } catch (ParseException e) {
@@ -126,6 +145,8 @@ public class GoogleController {
 
     public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
         HttpPost request = new HttpPost(url);
+        request.addHeader("Accept", "application/json");
+
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 

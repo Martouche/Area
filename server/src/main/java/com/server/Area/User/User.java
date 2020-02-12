@@ -42,9 +42,9 @@ public class User {
         return hexString.toString();
     }
 
-    public static void addUserGoogle(String email, String accesToken, Connection c,  PreparedStatement stmt) {
+    public static void addUserService(String email, String accesToken, String type, Connection c,  PreparedStatement stmt) {
         try {
-            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + email + "' AND type = 'google';");
+            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + email + "' AND type = '"+ type +"';");
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
                 try {
@@ -54,9 +54,9 @@ public class User {
                     stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
                     stmt.setString(1, email);
                     stmt.setString(2, toHexString(hash));
-                    stmt.setString(3, "google");
+                    stmt.setString(3, type);
                     stmt.execute();
-                    System.out.println("Utilisateur: " + email + " from  google vient de s'inscrire");
+                    System.out.println("Utilisateur: " + email + " from  " + type + "  vient de s'inscrire");
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
                 }
@@ -67,7 +67,7 @@ public class User {
 
                     stmt = c.prepareStatement("UPDATE users SET password = '" + hash + "' WHERE name = '" + email + "';");
                     stmt.execute();
-                    System.out.println("Utilisateur: " + email + " from  google vient de s'update");
+                    System.out.println("Utilisateur: " + email + " from  "+ type +" vient de s'update");
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
 

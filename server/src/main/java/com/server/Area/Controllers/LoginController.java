@@ -24,6 +24,7 @@ public class LoginController {
     private String name;
 
     public LoginController(String name, String password, Connection c, PreparedStatement stmt) {
+        System.out.println("Je me login ta mere --- " +name + " -- " + password);
         if (name != null && password != null) {
             this.log = User.logUser(name, password, c, stmt);
             if (this.log == 1)

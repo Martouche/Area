@@ -13,8 +13,17 @@ var authed = false;
 
 app.use(express.static('static'));
 
-app.get('/home', (req, res) => {
-    res.sendFile('home.html', { root: __dirname });
+app.get('/login', (req, res) => {
+    console.log(Object.keys(req.query).length);
+    if (Object.keys(req.query).length === 0)
+        res.sendFile('login.html', { root: __dirname });
+    else {
+        console.log(req.query);
+        var username = req.query.username;
+        var pwd = req.query.pass;
+        const url = "http://localhost:8080/login?name=" + username + "&pwd=" + pwd + "";
+        res.redirect(url);
+    }
 });
 
 app.get('/login/github', (req, res) => {
@@ -31,6 +40,7 @@ app.get('/login/google', (req, res) => {
             scope: 'https://www.googleapis.com/auth/userinfo.profile',
             scope: 'https://www.googleapis.com/auth/userinfo.email'
         });
+        console.log(url);
         res.redirect(url);
     } else {
         const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });

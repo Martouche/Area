@@ -46,9 +46,12 @@ public class Controller {
 		return new RegisterController(name, pwd, c, stmt);
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public LoginController loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
-		return new LoginController(name, pwd, c, stmt);
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public RedirectView loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
+		LoginController mine = new LoginController(name, pwd, c, stmt);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		return redirectView;
 	}
 
 	@RequestMapping(value = "/oauth2/github", method = RequestMethod.GET)

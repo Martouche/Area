@@ -15,6 +15,11 @@ app.get('/home', (req, res) => {
     res.sendFile('home.html', { root: __dirname });
 });
 
+app.get('/login/github', (req, res) => {
+    const url = "https://github.com/login/oauth/authorize?scope=user:email,repo&client_id=1b8ddffb28f26996c08f";
+    res.redirect(url);
+});
+
 app.get('/login/google', (req, res) => {
     if (!authed) {
         // Generate an OAuth URL and redirect there

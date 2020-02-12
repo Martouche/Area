@@ -19,8 +19,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import io.swagger.annotations.Api;
 
 
-String apikeyTrello = "c050bd57b4f0d1ddec3231d30de0c2b2";
-
 @RestController
 @Api(value="Authentification", description="Routes for login & register")
 public class Controller {
@@ -71,26 +69,34 @@ public class Controller {
 	}
 
 	@RequestMapping(value = "/getId", method = RequestMethod.GET)
-	public String GetName(@RequestParam(value = "email") String email) {
-		stmt = c.prepareStatement("SELECT id FROM users WHERE email = '" + email + "' ;");
-		ResultSet rs = stmt.executeQuery();
+	public String GetId(@RequestParam(value = "email") String email) {
 		String id = null;
-		while (rs.next()) {
-			id = rs.getString("text");
+		try {
+			stmt = c.prepareStatement("SELECT id FROM users WHERE email = '" + email + "' ;");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getString("text");
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		rs.close();
 		return id;
 	}
 
 	@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
-	public String GetName(@RequestParam(value = "id") String id) {
-		stmt = c.prepareStatement("SELECT email FROM users WHERE id = '" + id +"' ;");
-		ResultSet rs = stmt.executeQuery();
-		String name = null;
-		while (rs.next() ) {
-			name = rs.getString("text");
+	public String GetEmail(@RequestParam(value = "id") String id) {
+		String email = null;
+		try {
+			stmt = c.prepareStatement("SELECT email FROM users WHERE id = '" + id + "' ;");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				email = rs.getString("text");
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		rs.close();
-		return name;
+		return email;
 	}
 }

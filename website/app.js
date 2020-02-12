@@ -26,6 +26,19 @@ app.get('/login', (req, res) => {
     }
 });
 
+app.get('/signup', (req, res) => {
+    console.log(Object.keys(req.query).length);
+    if (Object.keys(req.query).length === 0)
+        res.sendFile('signup.html', { root: __dirname });
+    else {
+        console.log(req.query);
+        var username = req.query.username;
+        var pwd = req.query.pass;
+        const url = "http://localhost:8080/login?name=" + username + "&pwd=" + pwd + "";
+        res.redirect(url);
+    }
+});
+
 app.get('/login/github', (req, res) => {
     const url = "https://github.com/login/oauth/authorize?scope=user:email,repo&client_id=1b8ddffb28f26996c08f";
     res.redirect(url);

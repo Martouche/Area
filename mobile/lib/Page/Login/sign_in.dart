@@ -1,33 +1,66 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:verbal_expressions/verbal_expressions.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
-
-Future<String> signInWithGoogle() async {
-  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-  final GoogleSignInAuthentication googleSignInAuthentication =
-  await googleSignInAccount.authentication;
-
-  final AuthCredential credential = GoogleAuthProvider.getCredential(
-    accessToken: googleSignInAuthentication.accessToken,
-    idToken: googleSignInAuthentication.idToken,
-  );
-
-  final AuthResult authResult = await _auth.signInWithCredential(credential);
-  final FirebaseUser user = authResult.user;
-
-  assert(!user.isAnonymous);
-  assert(await user.getIdToken() != null);
-
-  final FirebaseUser currentUser = await _auth.currentUser();
-  assert(user.uid == currentUser.uid);
-
-  return 'signInWithGoogle succeeded: $user';
+class WebView extends StatefulWidget {
+  @override
+  WebViewState createState() {
+    return new WebViewState();
+  }
 }
 
-void signOutGoogle() async{
-  await googleSignIn.signOut();
+class WebViewState extends State<WebView> {
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  print("User Sign Out");
+  StreamSubscription<String> _onUrlChanged;
+
+  @override
+  void initState() {
+    super.initState();
+    int count = 0;
+
+    _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
+      count++;
+      if (mounted && count == 2) {
+        flutterWebviewPlugin.close();
+        Navigator.pushNamed(context, '/home');
+      }
+    });
+  }
+
+
+  String getAccessToken(String url) {
+    var expression = VerbalExpression()
+      ..startOfLine()
+      ..then("https://app.getpostman.com/oauth2/callback#access_token")
+      ..then('=')
+      ..beginCapture()
+      ..anythingBut('&')
+      ..endCapture()
+      ..anything()
+      ..endOfLine();
+
+    return expression.toRegExp().firstMatch(url).group(1);
+  }
+
+  @override
+  void dispose() {
+    _onUrlChanged.cancel();
+    flutterWebviewPlugin.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WebviewScaffold(
+      key: scaffoldKey,
+      url: 'https://api.imgur.com/oauth2/authorize?client_id=784880b5d8f3965&response_type=token',
+      hidden: true,
+      clearCache: true,
+      clearCookies: true,
+//      appBar: AppBar(title: Text("Current Url")),
+    );
+  }
 }

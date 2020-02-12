@@ -216,11 +216,12 @@ class LoginScreen extends StatelessWidget {
     return OutlineButton(
       splashColor: Colors.grey,
       color: Color(0x9900cc66),
-      onPressed: () {
+      onPressed: () => Navigator.of(context).pushReplacementNamed("/webview"),
+      /*onPressed: () {
         signInWithGoogle().whenComplete(() {
           Navigator.of(context).pushReplacementNamed('/home');
         });
-      },
+      },*/
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12)
       ),

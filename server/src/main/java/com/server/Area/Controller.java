@@ -61,7 +61,6 @@ public class Controller {
 
 	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
 	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
-		System.out.println("mon code spotify ----  " + code);
 		SpotifyController mine = new SpotifyController(code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=mabite");

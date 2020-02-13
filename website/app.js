@@ -13,6 +13,11 @@ var authed = false;
 
 app.use(express.static('static'));
 
+app.get('/home', (req, res) => {
+    console.log("home page");
+    res.sendFile('home.html', { root: __dirname});
+});
+
 app.get('/login', (req, res) => {
     console.log(Object.keys(req.query).length);
     if (Object.keys(req.query).length === 0)

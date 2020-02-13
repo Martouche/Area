@@ -68,7 +68,6 @@ public class SpotifyController {
 
         System.out.println("mon acces token spotify : " + accessToken);
 
-
         //User.addUserService((String) datauser.get("email"), accessToken, "github", c, stmt);
 
         id = "|||mmabiteEEEEEE|||";

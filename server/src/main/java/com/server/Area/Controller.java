@@ -7,6 +7,8 @@ import java.lang.*;
 import java.security.Principal;
 import com.server.Area.User;
 
+import java.util.Random;
+
 
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +36,34 @@ public class Controller {
 			c = DriverManager
 					.getConnection("jdbc:postgresql://db:5432/" + System.getenv("POSTGRES_DB"),
 							System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
-			stmt = c.prepareStatement("DROP TABLE users;CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NOT NULL, type VARCHAR(250) NOT NULL);");
-			stmt.execute();
+			CreateTableDataBase(c, stmt);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName()+": "+e.getMessage());
+			System.exit(0);
+		}
+	}
+
+	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
+		// Table users
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250), type VARCHAR(250) NOT NULL);");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		// Table Service
+		Random rand = new Random();
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services (id INT, name VARCHAR(250) NOT NULL);" +
+					"INSERT INTO services (id , name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Google');" +
+					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Spotify');" +
+					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Github');" +
+					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Linkdedin');");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.exit(0);
 		}
 	}
@@ -47,7 +72,10 @@ public class Controller {
 	public RedirectView registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		RegisterController mine = new RegisterController(name, pwd, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		if (mine.state == 1)
+			redirectView.setUrl("http://localhost:9090/signup?value=nameexistedeja");
+		else
+			redirectView.setUrl("http://localhost:9090/home?id=mabite");
 		return redirectView;
 	}
 

@@ -80,11 +80,15 @@ public class User {
 
     }
 
-    public static void addUser(String name, String password, Connection c, PreparedStatement stmt) {
+    public static int addUser(String name, String password, Connection c, PreparedStatement stmt) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
+            stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + name + "' AND type = 'basic';");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next())
+                return 1;
             stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
             stmt.setString(1, name);
             stmt.setString(2, toHexString(hash));
@@ -92,6 +96,7 @@ public class User {
             stmt.execute();
             System.out.println("Utilisateur: " + name + " vient de s'inscrire");
         } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
+        return 0;
     }
 
     public static int logUser(String name, String password, Connection c, PreparedStatement stmt) {

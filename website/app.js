@@ -33,9 +33,11 @@ app.get('/login', (req, res) => {
 
 app.get('/signup', (req, res) => {
     console.log(Object.keys(req.query).length);
-    if (Object.keys(req.query).length === 0)
+    if (Object.keys(req.query).length === 1)
+        res.sendFile('signup.html' /*+ res.query.value*/, { root: __dirname });
+    else if (Object.keys(req.query).length === 0)
         res.sendFile('signup.html', { root: __dirname });
-    else {
+      else {
         console.log(req.query);
         var username = req.query.username;
         var pwd = req.query.pass;

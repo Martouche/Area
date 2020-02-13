@@ -59,6 +59,15 @@ public class Controller {
 		return redirectView;
 	}
 
+	@RequestMapping(value = "/oauth2/linkedin", method = RequestMethod.GET)
+	public RedirectView getTokenLinkedin(@RequestParam(value = "code") String code) {
+		System.out.println("mon code linkedin = " + code);
+		LinkedinController mine = new LinkedinController(code, c, stmt);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		return redirectView;
+	}
+
 	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
 	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
 		SpotifyController mine = new SpotifyController(code, c, stmt);

@@ -44,6 +44,11 @@ app.get('/signup', (req, res) => {
     }
 });
 
+app.get('/login/linkedin', (req, res) => {
+    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/linkedin&scope=r_liteprofile%20r_emailaddress%20w_member_social";
+    res.redirect(url);
+});
+
 app.get('/login/github', (req, res) => {
     const url = "https://github.com/login/oauth/authorize?scope=user:email,repo&client_id=1b8ddffb28f26996c08f";
     res.redirect(url);

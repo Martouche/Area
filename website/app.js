@@ -33,15 +33,22 @@ app.get('/login', (req, res) => {
 
 app.get('/signup', (req, res) => {
     console.log(Object.keys(req.query).length);
-    if (Object.keys(req.query).length === 0)
+    if (Object.keys(req.query).length === 1)
+        res.sendFile('signup.html' /*+ res.query.value*/, { root: __dirname });
+    else if (Object.keys(req.query).length === 0)
         res.sendFile('signup.html', { root: __dirname });
-    else {
+      else {
         console.log(req.query);
         var username = req.query.username;
         var pwd = req.query.pass;
         const url = "http://localhost:8080/register?name=" + username + "&pwd=" + pwd + "";
         res.redirect(url);
     }
+});
+
+app.get('/login/linkedin', (req, res) => {
+    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/linkedin&scope=r_liteprofile%20r_emailaddress%20w_member_social";
+    res.redirect(url);
 });
 
 app.get('/login/github', (req, res) => {

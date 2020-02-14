@@ -20,11 +20,12 @@ public class RegisterController {
 
     @ApiModelProperty(notes = "Name of the user")
     private String name;
+    public int state = 0;
 
     public RegisterController(String name, String password, Connection c, PreparedStatement stmt) {
         if (name != null && password != null) {
             this.name = name;
-            User.addUser(name, password, c, stmt);
+            state = User.addUser(name, password, c, stmt);
         }
     }
 

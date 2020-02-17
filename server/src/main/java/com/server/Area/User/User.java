@@ -42,32 +42,44 @@ public class User {
         return hexString.toString();
     }
 
+    public static void addTokenToUser() {
+
+        return;
+    }
+
     public static void addUserService(String email, String accesToken, String type, Connection c,  PreparedStatement stmt) {
         try {
+            // check si il existe deja dans la table users
             stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + email + "' AND type = '"+ type +"';");
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
                 try {
-                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                    byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
-
+                    // cree dans la table users
                     stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
                     stmt.setString(1, email);
-                    stmt.setString(2, toHexString(hash));
+                    stmt.setString(2, "null");
                     stmt.setString(3, type);
                     stmt.execute();
                     System.out.println("Utilisateur: " + email + " from  " + type + "  vient de s'inscrire");
+
+                    // ajoute l'user dans la table des token et add le toekn correspondant
+                    int id = getUserIdByName(email, c, stmt);
+                    stmt = c.prepareStatement("INSERT INTO user_service_token (id_user, " + type + "_token) VALUES (?, ?);");
+                    stmt.setString(1, Integer.toString(id));
+                    stmt.setString(1, accesToken);
+                    stmt.execute();
+                    System.out.println("Utilisateur: " + email + " s'ajoute a la table des token");
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
                 }
             } else {
+                // met a jour le token si il existe deja
                 try {
-                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                    byte[] hash = digest.digest(accesToken.getBytes(StandardCharsets.UTF_8));
+                    int id = getUserIdByName(email, c, stmt);
 
-                    stmt = c.prepareStatement("UPDATE users SET password = '" + hash + "' WHERE name = '" + email + "';");
+                    stmt = c.prepareStatement("UPDATE user_service_token SET " + type + "_token = '" + accesToken + "' WHERE id_user = '" + id + "';");
                     stmt.execute();
-                    System.out.println("Utilisateur: " + email + " from  "+ type +" vient de s'update");
+                    System.out.println("Utilisateur: " + email + " from  "+ type +" vient de s'update dans la table des tokens");
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
 
@@ -80,21 +92,52 @@ public class User {
 
     }
 
+    public static String getUserNameById(int Id, Connection c, PreparedStatement stmt) {
+        String name = null;
+        try {
+            stmt = c.prepareStatement("SELECT name from users where id = '" + Id + "'");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                name = rs.getString(1);
+        } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
+        return name;
+    }
+
+    public static int getUserIdByName(String name, Connection c, PreparedStatement stmt) {
+        int id = 0;
+        try {
+            stmt = c.prepareStatement("SELECT id from users where name = '" + name + "'");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                id = rs.getInt(1);
+        } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
+        return id;
+    }
+
     public static int addUser(String name, String password, Connection c, PreparedStatement stmt) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
+            //check si l'utilisateur existe deja
             stmt = c.prepareStatement("SELECT name, name FROM users WHERE name = '" + name + "' AND type = 'basic';");
             ResultSet rs = stmt.executeQuery();
             if (rs.next())
                 return 1;
+            // l'ajoute en db si il n'existe pas
             stmt = c.prepareStatement("INSERT INTO users (name, password, type) VALUES (?, ?, ?);");
             stmt.setString(1, name);
             stmt.setString(2, toHexString(hash));
             stmt.setString(3, "basic");
             stmt.execute();
             System.out.println("Utilisateur: " + name + " vient de s'inscrire");
+
+            // add user to table token
+            int id = getUserIdByName(name, c, stmt);
+            stmt = c.prepareStatement("INSERT INTO  user_service_token (id_user) VALUES (?);");
+            stmt.setString(1, Integer.toString(id));
+            stmt.execute();
+            System.out.println("Utilisateur: " + name + " s'ajoute a la table des token");
         } catch (Exception e) {System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );}
         return 0;
     }

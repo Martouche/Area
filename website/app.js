@@ -10,12 +10,23 @@ const REDIRECT_URL = "http://localhost:8080/oauth2/google";
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 var authed = false;
+var my_id = null;
 
 app.use(express.static('static'));
 
 app.get('/home', (req, res) => {
     console.log("home page");
+    my_id = req.query.id;
     res.sendFile('home.html', { root: __dirname});
+});
+
+app.get('/logout', (req, res) => {
+    console.log("je suis logout");
+    my_id = null;
+});
+
+app.get('/getIdUser', (req, res) => {
+    return my_id;
 });
 
 app.get('/login', (req, res) => {
@@ -47,7 +58,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/login/linkedin', (req, res) => {
-    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/linkedin&scope=r_liteprofile%20r_emailaddress%20w_member_social";
+    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/linkedin?&scope=r_liteprofile%20r_emailaddress%20w_member_social";
     res.redirect(url);
 });
 

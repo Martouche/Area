@@ -47,7 +47,7 @@ public class Controller {
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
 		// Table users
 		try {
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250), type VARCHAR(250) NOT NULL);");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(250) NOT NULL, password VARCHAR(250) NULL, type VARCHAR(250) NOT NULL);");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,11 +56,19 @@ public class Controller {
 		// Table Service
 		Random rand = new Random();
 		try {
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services (id INT, name VARCHAR(250) NOT NULL);" +
-					"INSERT INTO services (id , name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Google');" +
-					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Spotify');" +
-					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Github');" +
-					"INSERT INTO services (id, name) VALUES (" + Integer.toString(rand.nextInt(1000)) + ",'Linkdedin');");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services (id INT NOT NULL, name VARCHAR(250) NOT NULL);" +
+					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Google' WHERE NOT EXISTS (SELECT * FROM services where name='Google');" +
+					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Spotify' WHERE NOT EXISTS (SELECT * FROM services where name='Spotify');" +
+					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Github' WHERE NOT EXISTS (SELECT * FROM services where name='Github');" +
+					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Linkdedin' WHERE NOT EXISTS (SELECT * FROM services where name='Linkdedin');");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		// Table User token Service
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_service_token (id_user VARCHAR(250), google_token VARCHAR(250), github_token VARCHAR(250), linkedin_token VARCHAR(250), spotify_token VARCHAR(250));");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,7 +105,8 @@ public class Controller {
 	}
 
 	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
-	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
+	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code, @RequestParam(value = "id") String id) {
+		System.out.println("mon id user quand je redirge =========== " + id);
 		SpotifyController mine = new SpotifyController(code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=mabite");

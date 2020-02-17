@@ -68,7 +68,7 @@ public class LinkedinController {
 
         System.out.println("mon acces token linkedin : " + accessToken);
 
-        //User.addUserService((String) datauser.get("email"), accessToken, "github", c, stmt);
+        //User.addUserService((String) datauser.get("email"), accessToken, "linkedin", c, stmt);
 
         id = "|||mmabiteEEEEEE|||";
     }

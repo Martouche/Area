@@ -58,25 +58,19 @@ public class SpotifyController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
-    private String id;
+    private int id = 0;
     public String clientId = "b348a012872f4fe78567e7cea9e20c7c";
     public String clientSecret = "d9b6729abb1047889404aa335869e36f";
 
-    public SpotifyController(String code, Connection c, PreparedStatement stmt) {
+    public SpotifyController(String code, int idUser, Connection c, PreparedStatement stmt) {
 
         String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
         System.out.println("mon acces token spotify : " + accessToken);
 
-        try {
-            id = get("http://localhost:9090/getIdUser");
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        System.out.println("mon id est ---------------------- " + id);
-        //User.addTokenToUser();
+        User.addTokenToUser(idUser, accessToken, "spotify", c, stmt);
 
-        id = "|||mmabiteEEEEEE|||";
+        id = idUser;
     }
 
     public String getAccesTokenAuth(String code, String clientId, String clientSecret)
@@ -142,5 +136,5 @@ public class SpotifyController {
     }
 
     public String getCode() { return code; }
-    public String getId() { return id; }
+    public int getId() { return id; }
 }

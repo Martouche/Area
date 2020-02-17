@@ -55,7 +55,7 @@ public class GitHubController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
-    private String id;
+    public int id = 0;
 
     public GitHubController(String code, Connection c, PreparedStatement stmt) {
         String clientId = "1b8ddffb28f26996c08f";
@@ -68,9 +68,10 @@ public class GitHubController {
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        User.addUserService((String) datauser.get("email"), accessToken, "github", c, stmt);
+        String emailUser = (String) datauser.get("email");
+        User.addUserService(emailUser, accessToken, "github", c, stmt);
 
-        id = "|||mmabiteEEEEEE|||";
+        this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
     public String getUserName(String accessToken)
@@ -177,5 +178,5 @@ public class GitHubController {
     }
 
     public String getCode() { return code; }
-    public String getId() { return id; }
+    public int getId() { return id; }
 }

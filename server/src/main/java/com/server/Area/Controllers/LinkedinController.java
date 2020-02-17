@@ -58,7 +58,7 @@ public class LinkedinController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
-    private String id;
+    public int id = 0;
     public String clientId = "86yu19zq37j60p";
     public String clientSecret = "gMX9J4ZTlsmtsDtG";
 
@@ -70,7 +70,6 @@ public class LinkedinController {
 
         //User.addUserService((String) datauser.get("email"), accessToken, "linkedin", c, stmt);
 
-        id = "|||mmabiteEEEEEE|||";
     }
 
     public String getAccesTokenAuth(String code, String clientId, String clientSecret)
@@ -138,5 +137,5 @@ public class LinkedinController {
     }
 
     public String getCode() { return code; }
-    public String getId() { return id; }
+    public int getId() { return id; }
 }

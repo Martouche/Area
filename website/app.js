@@ -17,16 +17,15 @@ app.use(express.static('static'));
 app.get('/home', (req, res) => {
     console.log("home page");
     my_id = req.query.id;
+    console.log("du coup mon id -> " + my_id);
     res.sendFile('home.html', { root: __dirname});
 });
 
 app.get('/logout', (req, res) => {
     console.log("je suis logout");
     my_id = null;
-});
-
-app.get('/getIdUser', (req, res) => {
-    return my_id;
+    const url = "https://localhost:8080/logout";
+    res.redirect(url);
 });
 
 app.get('/login', (req, res) => {

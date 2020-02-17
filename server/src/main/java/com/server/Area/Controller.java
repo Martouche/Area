@@ -29,6 +29,7 @@ public class Controller {
 	Connection c = null;
 	PreparedStatement stmt = null;
 	boolean isLogged = false;
+	int id = 0;
 
 	public Controller() {
 		try {
@@ -76,22 +77,39 @@ public class Controller {
 		}
 	}
 
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public RedirectView logoutUser() {
+		isLogged = false;
+		id = 0;
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/login");
+		return redirectView;
+	}
+
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public RedirectView registerPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		RegisterController mine = new RegisterController(name, pwd, c, stmt);
+		if (!isLogged) {
+			id = mine.id;
+			isLogged = true;
+		}
 		RedirectView redirectView = new RedirectView();
 		if (mine.state == 1)
-			redirectView.setUrl("http://localhost:9090/signup?value=nameexistedeja");
+			redirectView.setUrl("http://localhost:9090/signup?value=error1");
 		else
-			redirectView.setUrl("http://localhost:9090/home?id=mabite");
+			redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public RedirectView loginPost(@RequestParam(value = "name") String name, @RequestParam(value = "pwd") String pwd) {
 		LoginController mine = new LoginController(name, pwd, c, stmt);
+		if (!isLogged) {
+			id = mine.id;
+			isLogged = true;
+		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
@@ -99,34 +117,45 @@ public class Controller {
 	public RedirectView getTokenLinkedin(@RequestParam(value = "code") String code) {
 		System.out.println("mon code linkedin = " + code);
 		LinkedinController mine = new LinkedinController(code, c, stmt);
+		if (!isLogged) {
+			id = mine.id;
+			isLogged = true;
+		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
 	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
-	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code, @RequestParam(value = "id") String id) {
-		System.out.println("mon id user quand je redirge =========== " + id);
-		SpotifyController mine = new SpotifyController(code, c, stmt);
+	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
+		SpotifyController mine = new SpotifyController(code, id, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
 	@RequestMapping(value = "/oauth2/github", method = RequestMethod.GET)
 	public RedirectView getTokenGitHub(@RequestParam(value = "code") String code) {
 		GitHubController mine = new GitHubController(code, c, stmt);
+		if (!isLogged) {
+			id = mine.id;
+			isLogged = true;
+		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
 	@RequestMapping(value = "/oauth2/google", method = RequestMethod.GET)
 	public RedirectView getTokenGoogle(@RequestParam(value = "code") String code) {
 		GoogleController mine = new GoogleController(code, c, stmt);
+		if (!isLogged) {
+			id = mine.id;
+			isLogged = true;
+		}
 		System.out.println("mon putain d'id = " + mine.getId());
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=mabite");
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 

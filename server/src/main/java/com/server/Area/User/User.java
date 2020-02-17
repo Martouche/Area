@@ -42,9 +42,27 @@ public class User {
         return hexString.toString();
     }
 
-    public static void addTokenToUser() {
-
+    public static void addTokenToUser(int idUser, String accessToken, String type, Connection c,  PreparedStatement stmt) {
+        try {
+            stmt = c.prepareStatement("INSERT INTO user_service_token (id_user, " + type + "_token) VALUES (?, ?);");
+            stmt.setString(1, Integer.toString(idUser));
+            stmt.setString(2, accessToken);
+            stmt.execute();
+            System.out.println("Utilisateur: " + idUser + " s'ajoute a la table des token pour le type -> " + type + "");
+        } catch (Exception e) {
+            System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
+        }
         return;
+    }
+
+    public static void updateTokenUser(int idUser, String accessToken, String type, Connection c,  PreparedStatement stmt) {
+        try {
+            stmt = c.prepareStatement("UPDATE user_service_token SET " + type + "_token = '" + accessToken + "' WHERE id_user = '" + idUser + "';");
+            stmt.execute();
+            System.out.println("Utilisateur: " + idUser + " from  " + type + " vient de s'update dans la table des tokens");
+        } catch (Exception e) {
+            System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
+        }
     }
 
     public static void addUserService(String email, String accesToken, String type, Connection c,  PreparedStatement stmt) {
@@ -64,11 +82,7 @@ public class User {
 
                     // ajoute l'user dans la table des token et add le toekn correspondant
                     int id = getUserIdByName(email, c, stmt);
-                    stmt = c.prepareStatement("INSERT INTO user_service_token (id_user, " + type + "_token) VALUES (?, ?);");
-                    stmt.setString(1, Integer.toString(id));
-                    stmt.setString(1, accesToken);
-                    stmt.execute();
-                    System.out.println("Utilisateur: " + email + " s'ajoute a la table des token");
+                    addTokenToUser(id, accesToken, type, c, stmt);
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
                 }
@@ -77,16 +91,14 @@ public class User {
                 try {
                     int id = getUserIdByName(email, c, stmt);
 
-                    stmt = c.prepareStatement("UPDATE user_service_token SET " + type + "_token = '" + accesToken + "' WHERE id_user = '" + id + "';");
-                    stmt.execute();
-                    System.out.println("Utilisateur: " + email + " from  "+ type +" vient de s'update dans la table des tokens");
+                    updateTokenUser(id, accesToken, type, c, stmt);
+
                 } catch (Exception e) {
                     System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
 
                 }
-                // change the acces token
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getClass().getName()+": " + e.getLocalizedMessage() );
         }
 

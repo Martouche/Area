@@ -55,7 +55,7 @@ public class GoogleController {
 
     @ApiModelProperty(notes = "Google's Token")
     private String code;
-    private String id;
+    public int id = 0;
 
     public GoogleController(String code, Connection c, PreparedStatement stmt) {
         String clientId = "377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com";
@@ -67,9 +67,10 @@ public class GoogleController {
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        User.addUserService((String) datauser.get("email"), accessToken, "google", c, stmt);
+        String emailUser = (String) datauser.get("email");
+        User.addUserService(emailUser, accessToken, "google", c, stmt);
 
-        id = "|||mmabiteEEEEEE|||";
+        this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
     public JSONObject getUserData(String accessToken)
@@ -156,5 +157,5 @@ public class GoogleController {
     }
 
     public String getCode() { return code; }
-    public String getId() { return id; }
+    public int getId() { return id; }
 }

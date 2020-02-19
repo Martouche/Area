@@ -8348,3 +8348,8 @@
   
   .subscribe-form .form-control {
     background: rgba(255, 255, 255, 0.2); }
+
+  .place-switch {
+    margin-left: 30%;
+    margin-top: 7%;
+  }

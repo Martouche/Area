@@ -51,61 +51,57 @@ import org.json.simple.parser.ParseException;
 import com.google.common.collect.ImmutableMap;
 
 
-public class GitHubController {
+public class FacebookController {
 
-    @ApiModelProperty(notes = "Github's Token")
+    @ApiModelProperty(notes = "Facebook's Token")
     private String code;
     public int id = 0;
 
-    public GitHubController(String code, Connection c, PreparedStatement stmt) {
-        String clientId = "1b8ddffb28f26996c08f";
-        String clientSecret = "6bd1a06369dc43d0a264847b8ab8ff4f11fb2a84";
+    public FacebookController(String code, Connection c, PreparedStatement stmt) {
+        String clientId = "208135047001196";
+        String clientSecret = "791fa1e77bab913c09ca89b751c494a9";
 
         String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
-        System.out.println("mon acces token github : " + accessToken);
+        System.out.println("mon acces token facebook : " + accessToken);
 
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        String emailUser = (String) datauser.get("email");
-        User.addUserService(emailUser, accessToken, "github", c, stmt);
+        getgraphData((String) datauser.get("id"), accessToken);
+        //User.addUserService(emailUser, accessToken, "github", c, stmt);
 
-        this.id = User.getUserIdByName(emailUser, c, stmt);
+        //this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
-    public String getUserName(String accessToken)
-    {
+
+    public void getgraphData(String id_user, String accessToken) {
         String data = null;
         JSONObject datauser = null;
-        String username = null;
         try {
-            data = get(new StringBuilder("https://api.github.com/user?access_token=").append(accessToken).toString());
+            data = get(new StringBuilder("https://graph.facebook.com/v6.0/" + id_user + "?fields=email&access_token=").append(accessToken).toString());
+            // get the json
             try {
                 datauser = (JSONObject) new JSONParser().parse(data);
-                String type = (String) datauser.get("type");
-                if (type.equals("User"))
-                    username = (String) datauser.get("login");
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + data);
             }
         } catch (IOException e) {
             System.out.println(e);
         }
-        return username;
+        System.out.println(datauser);
+        return;
     }
 
     public JSONObject getUserData(String accessToken)
     {
         String data = null;
         JSONObject datauser = null;
-        String username = getUserName(accessToken);
         try {
-            data = get(new StringBuilder("https://api.github.com/user/public_emails?&access_token=").append(accessToken).toString());
-            String newstring = data.substring(data.indexOf("},{") + 2, data.length() - 1);
+            data = get(new StringBuilder("https://graph.facebook.com/me?access_token=").append(accessToken).toString());
             // get the json
             try {
-                datauser = (JSONObject) new JSONParser().parse(newstring);
+                datauser = (JSONObject) new JSONParser().parse(data);
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + data);
             }
@@ -119,12 +115,11 @@ public class GitHubController {
     {
         String accessToken = null;
         try {
-            String body = post("https://github.com/login/oauth/access_token", ImmutableMap.<String, String>builder()
+            String body = post("https://graph.facebook.com/v6.0/oauth/access_token?", ImmutableMap.<String, String>builder()
                     .put("client_id", clientId)
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/facebook")
                     .put("client_secret", clientSecret)
-                    .put("code", code)
-                    .put("Accept", "application/json")
-                    .put("redirect_uri", "http://localhost:8080/oauth2/github").build());
+                    .put("code", code).build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);

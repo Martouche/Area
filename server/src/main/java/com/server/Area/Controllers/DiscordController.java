@@ -19,7 +19,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-//import org.json.JSONObject;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -51,27 +50,27 @@ import org.json.simple.parser.ParseException;
 import com.google.common.collect.ImmutableMap;
 
 
-public class GitHubController {
+public class DiscordController {
 
-    @ApiModelProperty(notes = "Github's Token")
+    @ApiModelProperty(notes = "Discord's Token")
     private String code;
     public int id = 0;
 
-    public GitHubController(String code, Connection c, PreparedStatement stmt) {
-        String clientId = "1b8ddffb28f26996c08f";
-        String clientSecret = "6bd1a06369dc43d0a264847b8ab8ff4f11fb2a84";
+    public DiscordController(String code, Connection c, PreparedStatement stmt) {
+        String clientId = "679280369891147807";
+        String clientSecret = "R3WCY9Hg7Xmts1wCV3rADAMhCoUcymiW";
 
         String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
-        System.out.println("mon acces token github : " + accessToken);
+        System.out.println("mon acces token Discord : " + accessToken);
 
-        JSONObject datauser = getUserData(accessToken);
+        //JSONObject datauser = getUserData(accessToken);
 
-        System.out.println(datauser);
-        String emailUser = (String) datauser.get("email");
-        User.addUserService(emailUser, accessToken, "github", c, stmt);
+        //System.out.println(datauser);
+        //String emailUser = (String) datauser.get("email");
+        //User.addUserService(emailUser, accessToken, "github", c, stmt);
 
-        this.id = User.getUserIdByName(emailUser, c, stmt);
+        //this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
     public String getUserName(String accessToken)
@@ -119,12 +118,12 @@ public class GitHubController {
     {
         String accessToken = null;
         try {
-            String body = post("https://github.com/login/oauth/access_token", ImmutableMap.<String, String>builder()
+            String body = post("https://discordapp.com/api/v6/oauth2/token?", ImmutableMap.<String, String>builder()
                     .put("client_id", clientId)
                     .put("client_secret", clientSecret)
+                    .put("grant_type", "authorization_code")
                     .put("code", code)
-                    .put("Accept", "application/json")
-                    .put("redirect_uri", "http://localhost:8080/oauth2/github").build());
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/discord").build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);
@@ -146,7 +145,7 @@ public class GitHubController {
 
     public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
         HttpPost request = new HttpPost(url);
-        request.addHeader("Accept", "application/json");
+        request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();

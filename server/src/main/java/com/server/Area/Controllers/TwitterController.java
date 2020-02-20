@@ -32,9 +32,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.util.Base64Utils;
-
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -53,47 +50,30 @@ import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.ImmutableMap;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
-public class LinkedinController {
 
-    @ApiModelProperty(notes = "Linkedin's Token")
+public class TwitterController {
+
+    @ApiModelProperty(notes = "Facebook's Token")
     private String code;
     public int id = 0;
-    public String clientId = "86yu19zq37j60p";
-    public String clientSecret = "gMX9J4ZTlsmtsDtG";
+    public Twitter twitter = TwitterFactory.getSingleton();
 
-    public LinkedinController(String code, Connection c, PreparedStatement stmt) {
+    public TwitterController(String oauth_token, String oauth_verifier, Connection c, PreparedStatement stmt) {
 
-        String accessToken = getAccesTokenAuth(code);
+        //JSONObject datauser = getUserData(accessToken);
 
-        System.out.println("mon acces token linkedin : " + accessToken);
+        //System.out.println(datauser);
+        //String emailUser = (String) datauser.get("email");
+        //User.addUserService(emailUser, accessToken, "github", c, stmt);
 
-        //User.addUserService((String) datauser.get("email"), accessToken, "linkedin", c, stmt);
-
-    }
-
-    public String getAccesTokenAuth(String code)
-    {
-        String accessToken = null;
-        try {
-            String body = post("https://www.linkedin.com/oauth/v2/accessToken", ImmutableMap.<String, String>builder()
-                    .put("grant_type", "authorization_code")
-                    .put("code", code)
-                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/linkedin")
-                    .put("client_id", clientId)
-                    .put("client_secret", clientSecret).build());
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = (JSONObject) new JSONParser().parse(body);
-            } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse json " + body);
-            }
-            System.out.println(jsonObject);
-            accessToken = (String) jsonObject.get("access_token");
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return accessToken;
+        //this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
     // makes a GET request to url and returns body as a string
@@ -104,6 +84,8 @@ public class LinkedinController {
 
     public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
         HttpPost request = new HttpPost(url);
+        request.addHeader("Accept", "application/json");
+
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 

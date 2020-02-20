@@ -20,6 +20,9 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 //import org.json.JSONObject;
+
+import org.springframework.util.Base64Utils;
+
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -34,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -51,61 +55,42 @@ import org.json.simple.parser.ParseException;
 import com.google.common.collect.ImmutableMap;
 
 
-public class GitHubController {
+public class RedditController {
 
-    @ApiModelProperty(notes = "Github's Token")
+    @ApiModelProperty(notes = "Facebook's Token")
     private String code;
     public int id = 0;
+    public String clientId = "O8RWcER1WbCJpg";
+    public String clientSecret = "HGWbvhAPBRTAa2zdu-BekeQ72wY";
 
-    public GitHubController(String code, Connection c, PreparedStatement stmt) {
-        String clientId = "1b8ddffb28f26996c08f";
-        String clientSecret = "6bd1a06369dc43d0a264847b8ab8ff4f11fb2a84";
+    public RedditController(String code, Connection c, PreparedStatement stmt) {
 
-        String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
+        String accessToken = getAccesTokenAuth(code);
 
-        System.out.println("mon acces token github : " + accessToken);
+        System.out.println("mon acces token Reddit : " + accessToken);
 
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        String emailUser = (String) datauser.get("email");
-        User.addUserService(emailUser, accessToken, "github", c, stmt);
+        datauser = getUserData(accessToken);
 
-        this.id = User.getUserIdByName(emailUser, c, stmt);
+        System.out.println(datauser);
+        //String emailUser = (String) datauser.get("email");
+        //User.addUserService(emailUser, accessToken, "github", c, stmt);
+
+        //this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
-    public String getUserName(String accessToken)
-    {
-        String data = null;
-        JSONObject datauser = null;
-        String username = null;
-        try {
-            data = get(new StringBuilder("https://api.github.com/user?access_token=").append(accessToken).toString());
-            try {
-                datauser = (JSONObject) new JSONParser().parse(data);
-                String type = (String) datauser.get("type");
-                if (type.equals("User"))
-                    username = (String) datauser.get("login");
-            } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse json " + data);
-            }
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return username;
-    }
 
     public JSONObject getUserData(String accessToken)
     {
         String data = null;
         JSONObject datauser = null;
-        String username = getUserName(accessToken);
         try {
-            data = get(new StringBuilder("https://api.github.com/user/public_emails?&access_token=").append(accessToken).toString());
-            String newstring = data.substring(data.indexOf("},{") + 2, data.length() - 1);
+            data = get(new StringBuilder("https://www.oauth.reddit.com/api/v1/me").toString(), accessToken);
             // get the json
             try {
-                datauser = (JSONObject) new JSONParser().parse(newstring);
+                datauser = (JSONObject) new JSONParser().parse(data);
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + data);
             }
@@ -115,16 +100,14 @@ public class GitHubController {
         return datauser;
     }
 
-    public String getAccesTokenAuth(String code, String clientId, String clientSecret)
+    public String getAccesTokenAuth(String code)
     {
         String accessToken = null;
         try {
-            String body = post("https://github.com/login/oauth/access_token", ImmutableMap.<String, String>builder()
-                    .put("client_id", clientId)
-                    .put("client_secret", clientSecret)
+            String body = post("https://www.reddit.com/api/v1/access_token", ImmutableMap.<String, String>builder()
+                    .put("grant_type", "authorization_code")
                     .put("code", code)
-                    .put("Accept", "application/json")
-                    .put("redirect_uri", "http://localhost:8080/oauth2/github").build());
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/reddit").build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);
@@ -139,14 +122,21 @@ public class GitHubController {
     }
 
     // makes a GET request to url and returns body as a string
-    public String get(String url) throws ClientProtocolException, IOException {
-        return execute(new HttpGet(url));
+    public String get(String url, String accessToken) throws ClientProtocolException, IOException {
+        HttpGet newget = new HttpGet(url);
+        newget.addHeader("Authorization", "bearer " + accessToken);
+        newget.addHeader("User-Agent", "Mozilla/5.0MAGROSSEBITE");
+        return execute(newget);
     }
 
 
     public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
         HttpPost request = new HttpPost(url);
-        request.addHeader("Accept", "application/json");
+        String authString = "Basic " + Base64Utils.encodeToString(String.format("%s:%s", clientId,clientSecret).getBytes());
+        request.addHeader("Authorization", authString);
+        request.addHeader("User-Agent", "Mozilla/5.0");
+        request.addHeader("Content-type", "application/x-www-form-urlencoded");
+
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();

@@ -57,7 +57,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/login/linkedin', (req, res) => {
-    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/linkedin?&scope=r_liteprofile%20r_emailaddress%20w_member_social";
+    const url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/callback/linkedin?&scope=r_liteprofile%20r_emailaddress%20w_member_social";
     res.redirect(url);
 });
 
@@ -68,6 +68,26 @@ app.get('/login/github', (req, res) => {
 
 app.get('/login/spotify', (req, res) => {
     const url = "https://accounts.spotify.com/authorize?client_id=b348a012872f4fe78567e7cea9e20c7c&response_type=code&redirect_uri=http://localhost:8080/oauth2/spotify&scope=user-read-private";
+    res.redirect(url);
+});
+
+app.get('/login/reddit', (req, res) => {
+    const url = "https://www.reddit.com/api/v1/authorize?client_id=O8RWcER1WbCJpg&response_type=code&state=adeidhiahidlhde&redirect_uri=http://localhost:8080/oauth2/callback/reddit&duration=permanent&scope=*";
+    res.redirect(url);
+});
+
+app.get('/login/twitter', (req, res) => {
+    const url = "http://localhost:8080//oauth2/autorize/twitter";
+    res.redirect(url);
+});
+
+app.get('/login/facebook', (req, res) => {
+    const url = "https://www.facebook.com/v6.0/dialog/oauth?client_id=208135047001196&redirect_uri=http://localhost:8080/oauth2/callback/facebook&state=st=state123abc,ds=123456789&scope=email";
+    res.redirect(url);
+});
+
+app.get('/login/discord', (req, res) => {
+    const url = "https://discordapp.com/api/oauth2/authorize?client_id=679280369891147807&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2%2Fcallback%2Fdiscord&response_type=code&scope=identify%20email"
     res.redirect(url);
 });
 

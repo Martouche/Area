@@ -210,6 +210,8 @@ iframe {
 /*------------------------------------------------------------------
 [ Button sign in with ]*/
 .btn-face,
+.btn-linkedin,
+.btn-spotify,
 .btn-google {
   font-family: Montserrat-SemiBold;
   font-size: 18px;
@@ -240,6 +242,8 @@ iframe {
 }
 
 .btn-google::before,
+.btn-linkedin::before,
+.btn-spotify::before,
 .btn-face::before {
   content: "";
   display: block;
@@ -267,7 +271,29 @@ iframe {
   background-color: #3b5998;
 }
 
+.btn-linkedin {
+  color: #fff;
+  background-color: #0e76a8;
+}
+
+.btn-spotify {
+  color: #fff;
+  background-color: #81b71a;
+}
+
 .btn-face i {
+  font-size: 30px;
+  margin-right: 17px;
+  padding-bottom: 3px;
+}
+
+.btn-linkedin i {
+  font-size: 30px;
+  margin-right: 17px;
+  padding-bottom: 3px;
+}
+
+.btn-spotify i {
   font-size: 30px;
   margin-right: 17px;
   padding-bottom: 3px;
@@ -285,11 +311,15 @@ iframe {
 }
 
 .btn-face:hover:before,
+.btn-linkedin:hover:before,
+.btn-spotify:hover:before,
 .btn-google:hover:before {
   opacity: 1;
 }
 
 .btn-face:hover,
+.btn-linkedin:hover,
+.btn-spotify:hover,
 .btn-google:hover {
   color: #fff;
 }
@@ -521,7 +551,10 @@ iframe {
   }
 
   .btn-face,
+  .btn-linkedin,
+  .btn-spotify,
   .btn-google {
     width: 100%;
   }
 }
+

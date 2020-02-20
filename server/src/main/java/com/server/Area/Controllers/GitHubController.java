@@ -57,7 +57,7 @@ public class GitHubController {
     private String code;
     public int id = 0;
 
-    public GitHubController(String code, Connection c, PreparedStatement stmt) {
+    public GitHubController(int oldid, String code, Connection c, PreparedStatement stmt) {
         String clientId = "1b8ddffb28f26996c08f";
         String clientSecret = "6bd1a06369dc43d0a264847b8ab8ff4f11fb2a84";
 
@@ -69,9 +69,11 @@ public class GitHubController {
 
         System.out.println(datauser);
         String emailUser = (String) datauser.get("email");
-        User.addUserService(emailUser, accessToken, "github", c, stmt);
-
-        this.id = User.getUserIdByName(emailUser, c, stmt);
+        if (oldid == 0) {
+            User.addUserService(emailUser, accessToken, "github", c, stmt);
+            this.id = User.getUserIdByName(emailUser, c, stmt);
+        } else
+            User.updateTokenUser(oldid, accessToken, "github", c, stmt);
     }
 
     public String getUserName(String accessToken)
@@ -124,7 +126,7 @@ public class GitHubController {
                     .put("client_secret", clientSecret)
                     .put("code", code)
                     .put("Accept", "application/json")
-                    .put("redirect_uri", "http://localhost:8080/oauth2/github").build());
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/github").build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);

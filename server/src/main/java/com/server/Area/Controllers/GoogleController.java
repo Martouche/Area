@@ -57,7 +57,7 @@ public class GoogleController {
     private String code;
     public int id = 0;
 
-    public GoogleController(String code, Connection c, PreparedStatement stmt) {
+    public GoogleController(int Userid, String code, Connection c, PreparedStatement stmt) {
         String clientId = "377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com";
         String clientSecret = "dXw6n2fh3lNh6URBVW_0P6xO";
 
@@ -68,9 +68,11 @@ public class GoogleController {
 
         System.out.println(datauser);
         String emailUser = (String) datauser.get("email");
-        User.addUserService(emailUser, accessToken, "google", c, stmt);
-
-        this.id = User.getUserIdByName(emailUser, c, stmt);
+        if (Userid == 0) {
+            User.addUserService(emailUser, accessToken, "google", c, stmt);
+            this.id = User.getUserIdByName(emailUser, c, stmt);
+        } else
+            User.updateTokenUser(Userid, accessToken, "google", c, stmt);
     }
 
     public JSONObject getUserData(String accessToken)
@@ -100,7 +102,7 @@ public class GoogleController {
                     .put("code", code)
                     .put("client_id", clientId)
                     .put("client_secret", clientSecret)
-                    .put("redirect_uri", "http://localhost:8080/oauth2/google")
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/google")
                     .put("grant_type", "authorization_code").build());
 
             System.out.println(body);

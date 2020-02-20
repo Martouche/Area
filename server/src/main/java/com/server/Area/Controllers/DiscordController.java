@@ -56,7 +56,7 @@ public class DiscordController {
     private String code;
     public int id = 0;
 
-    public DiscordController(String code, Connection c, PreparedStatement stmt) {
+    public DiscordController(int  Userid, String code, Connection c, PreparedStatement stmt) {
         String clientId = "679280369891147807";
         String clientSecret = "R3WCY9Hg7Xmts1wCV3rADAMhCoUcymiW";
 
@@ -64,13 +64,8 @@ public class DiscordController {
 
         System.out.println("mon acces token Discord : " + accessToken);
 
-        //JSONObject datauser = getUserData(accessToken);
+        User.updateTokenUser(Userid, accessToken, "discord", c, stmt);
 
-        //System.out.println(datauser);
-        //String emailUser = (String) datauser.get("email");
-        //User.addUserService(emailUser, accessToken, "github", c, stmt);
-
-        //this.id = User.getUserIdByName(emailUser, c, stmt);
     }
 
     public String getUserName(String accessToken)

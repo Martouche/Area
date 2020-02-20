@@ -57,7 +57,7 @@ public class FacebookController {
     private String code;
     public int id = 0;
 
-    public FacebookController(String code, Connection c, PreparedStatement stmt) {
+    public FacebookController(int Userid, String code, Connection c, PreparedStatement stmt) {
         String clientId = "208135047001196";
         String clientSecret = "791fa1e77bab913c09ca89b751c494a9";
 
@@ -68,14 +68,18 @@ public class FacebookController {
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
-        getgraphData((String) datauser.get("id"), accessToken);
-        //User.addUserService(emailUser, accessToken, "github", c, stmt);
-
-        //this.id = User.getUserIdByName(emailUser, c, stmt);
+        JSONObject dataemailuser = getgraphData((String) datauser.get("id"), accessToken);
+        System.out.println(dataemailuser);
+        String emailUser = (String) dataemailuser.get("email");
+        if (Userid == 0) {
+            User.addUserService(emailUser, accessToken, "facebook", c, stmt);
+            this.id = User.getUserIdByName(emailUser, c, stmt);
+        } else
+            User.updateTokenUser(Userid, accessToken, "google", c, stmt);
     }
 
 
-    public void getgraphData(String id_user, String accessToken) {
+    public JSONObject getgraphData(String id_user, String accessToken) {
         String data = null;
         JSONObject datauser = null;
         try {
@@ -90,7 +94,7 @@ public class FacebookController {
             System.out.println(e);
         }
         System.out.println(datauser);
-        return;
+        return datauser;
     }
 
     public JSONObject getUserData(String accessToken)

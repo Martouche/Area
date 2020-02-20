@@ -62,15 +62,13 @@ public class SpotifyController {
     public String clientId = "b348a012872f4fe78567e7cea9e20c7c";
     public String clientSecret = "d9b6729abb1047889404aa335869e36f";
 
-    public SpotifyController(String code, int idUser, Connection c, PreparedStatement stmt) {
+    public SpotifyController(int Userid, String code, Connection c, PreparedStatement stmt) {
 
         String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
         System.out.println("mon acces token spotify : " + accessToken);
 
-        User.addTokenToUser(idUser, accessToken, "spotify", c, stmt);
-
-        id = idUser;
+        User.addTokenToUser(Userid, accessToken, "spotify", c, stmt);
     }
 
     public String getAccesTokenAuth(String code, String clientId, String clientSecret)
@@ -80,7 +78,7 @@ public class SpotifyController {
             String body = post("https://accounts.spotify.com/api/token", ImmutableMap.<String, String>builder()
                     .put("code", code)
                     .put("grant_type", "authorization_code")
-                    .put("redirect_uri", "http://localhost:8080/oauth2/spotify").build());
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/spotify").build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);

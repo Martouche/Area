@@ -50,12 +50,6 @@ import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.ImmutableMap;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
 
 
 public class TwitterController {
@@ -63,56 +57,9 @@ public class TwitterController {
     @ApiModelProperty(notes = "Facebook's Token")
     private String code;
     public int id = 0;
-    public Twitter twitter = TwitterFactory.getSingleton();
 
-    public TwitterController(String oauth_token, String oauth_verifier, Connection c, PreparedStatement stmt) {
-
-        //JSONObject datauser = getUserData(accessToken);
-
-        //System.out.println(datauser);
-        //String emailUser = (String) datauser.get("email");
-        //User.addUserService(emailUser, accessToken, "github", c, stmt);
-
-        //this.id = User.getUserIdByName(emailUser, c, stmt);
-    }
-
-    // makes a GET request to url and returns body as a string
-    public String get(String url) throws ClientProtocolException, IOException {
-        return execute(new HttpGet(url));
-    }
-
-
-    public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
-        HttpPost request = new HttpPost(url);
-        request.addHeader("Accept", "application/json");
-
-
-        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-
-        for (String key : formParameters.keySet()) {
-            nvps.add(new BasicNameValuePair(key, formParameters.get(key)));
-        }
-
-        request.setEntity(new UrlEncodedFormEntity(nvps));
-
-        return execute(request);
-    }
-
-    // makes request and checks response code for 200
-    private String execute(HttpRequestBase request) throws ClientProtocolException, IOException {
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpResponse response = httpClient.execute(request);
-
-        System.out.println("MA REQUETE : " + request);
-
-        HttpEntity entity = response.getEntity();
-        String body = EntityUtils.toString(entity);
-
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Expected 200 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
-        }
-
-        return body;
+    public TwitterController(int Userid, String accessToken, Connection c, PreparedStatement stmt) {
+        User.updateTokenUser(Userid, accessToken, "twitter", c, stmt);
     }
 
     public String getCode() { return code; }

@@ -63,24 +63,17 @@ public class RedditController {
     public String clientId = "O8RWcER1WbCJpg";
     public String clientSecret = "HGWbvhAPBRTAa2zdu-BekeQ72wY";
 
-    public RedditController(String code, Connection c, PreparedStatement stmt) {
+    public RedditController(int Userid, String code, Connection c, PreparedStatement stmt) {
 
         String accessToken = getAccesTokenAuth(code);
 
         System.out.println("mon acces token Reddit : " + accessToken);
 
-        JSONObject datauser = getUserData(accessToken);
+        //JSONObject datauser = getUserData(accessToken);
+        //System.out.println(datauser);
 
-        System.out.println(datauser);
-        datauser = getUserData(accessToken);
-
-        System.out.println(datauser);
-        //String emailUser = (String) datauser.get("email");
-        //User.addUserService(emailUser, accessToken, "github", c, stmt);
-
-        //this.id = User.getUserIdByName(emailUser, c, stmt);
+        User.updateTokenUser(Userid, accessToken, "reddit", c, stmt);
     }
-
 
     public JSONObject getUserData(String accessToken)
     {

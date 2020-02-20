@@ -99,6 +99,7 @@ public class Controller {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public RedirectView logoutUser() {
+		System.out.println("Je suis logout dans le serveur");
 		isLogged = false;
 		id = 0;
 		RedirectView redirectView = new RedirectView();
@@ -133,34 +134,69 @@ public class Controller {
 		return redirectView;
 	}
 
+	// Discord Routes
+	@RequestMapping(value = "/oauth2/autorize/discord", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeDiscord() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://discordapp.com/api/oauth2/authorize?client_id=679280369891147807&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2%2Fcallback%2Fdiscord&response_type=code&scope=identify%20email");
+		return redirectView;
+	}
 	@RequestMapping(value = "/oauth2/callback/discord", method = RequestMethod.GET)
 	public RedirectView getTokenDiscord(@RequestParam(value = "code") String code) {
 		System.out.println("mon code Discord = " + code);
-		DiscordController mine = new DiscordController(code, c, stmt);
+		DiscordController mine = new DiscordController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
+
+	// Reddit Routes
+	@RequestMapping(value = "/oauth2/autorize/reddit", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeReddit() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://www.reddit.com/api/v1/authorize?client_id=O8RWcER1WbCJpg&response_type=code&state=adeidhiahidlhde&redirect_uri=http://localhost:8080/oauth2/callback/reddit&duration=permanent&scope=*");
+		return redirectView;
+	}
 	@RequestMapping(value = "/oauth2/callback/reddit", method = RequestMethod.GET)
 	public RedirectView getTokenReddit(@RequestParam(value = "code") String code) {
 		System.out.println("mon code reddit = " + code);
-		RedditController mine = new RedditController(code, c, stmt);
+		RedditController mine = new RedditController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
 
+	// Facebook Routes
+	@RequestMapping(value = "/oauth2/autorize/facebook", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeFacebook() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://www.facebook.com/v6.0/dialog/oauth?client_id=208135047001196&redirect_uri=http://localhost:8080/oauth2/callback/facebook&state=st=state123abc,ds=123456789&scope=email");
+		return redirectView;
+	}
 	@RequestMapping(value = "/oauth2/callback/facebook", method = RequestMethod.GET)
 	public RedirectView getTokenFacebook(@RequestParam(value = "code") String code) {
 		System.out.println("mon code Facebook = " + code);
-		FacebookController mine = new FacebookController(code, c, stmt);
+		FacebookController mine = new FacebookController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
+
+	// Twitter Routes
+	@RequestMapping(value = "/oauth2/autorize/twitter", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeTwitter() throws Exception {
+		BufferedReader br = null;
+		String clientId = "RyDqv5K1O7VcivZjVUY7oppsS";
+		String clientSecret = "kEJUgA7vzCmtpydZ13bO2WgY2FcBnAwqMl27E0jo1edBiMIHHZ";
+		twitter.setOAuthConsumer(clientId, clientSecret);
+		requestToken = twitter.getOAuthRequestToken();
+		br = new BufferedReader(new InputStreamReader(System.in));
+		RedirectView redirectView = new RedirectView(requestToken.getAuthorizationURL());
+		return redirectView;
+	}
 	@RequestMapping(value = "/oauth2/callback/twitter", method = RequestMethod.GET)
 	public RedirectView getTokenTwitter(@RequestParam(value = "oauth_token") String oauth_token, @RequestParam(value = "oauth_verifier") String oauth_verifier) {
 		try{
@@ -177,47 +213,55 @@ public class Controller {
 			}
 		}
 		System.out.println("acces token twitter " + this.accessTokenTwitter);
+		TwitterController mine = new TwitterController(id, (String) this.accessTokenTwitter.toString(),  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
-	@RequestMapping(value = "/oauth2/autorize/twitter", method = RequestMethod.GET)
-	public RedirectView getTokenTwitter() throws Exception {
-		BufferedReader br = null;
-		String clientId = "RyDqv5K1O7VcivZjVUY7oppsS";
-		String clientSecret = "kEJUgA7vzCmtpydZ13bO2WgY2FcBnAwqMl27E0jo1edBiMIHHZ";
-		twitter.setOAuthConsumer(clientId, clientSecret);
-		requestToken = twitter.getOAuthRequestToken();
-		br = new BufferedReader(new InputStreamReader(System.in));
-		RedirectView redirectView = new RedirectView(requestToken.getAuthorizationURL());
+
+	// Linkedin Routes
+	@RequestMapping(value = "/oauth2/autorize/linkedin", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeLinkedin() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86yu19zq37j60p&redirect_uri=http://localhost:8080/oauth2/callback/linkedin?&scope=r_liteprofile%20r_emailaddress%20w_member_social");
 		return redirectView;
 	}
-
 	@RequestMapping(value = "/oauth2/callback/linkedin", method = RequestMethod.GET)
 	public RedirectView getTokenLinkedin(@RequestParam(value = "code") String code) {
 		System.out.println("mon code linkedin = " + code);
-		LinkedinController mine = new LinkedinController(code, c, stmt);
-		if (!isLogged) {
-			id = mine.id;
-			isLogged = true;
-		}
+		LinkedinController mine = new LinkedinController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
-	@RequestMapping(value = "/oauth2/spotify", method = RequestMethod.GET)
+
+	// Spotify Routes
+	@RequestMapping(value = "/oauth2/autorize/spotify", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeSpotify() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://accounts.spotify.com/authorize?client_id=b348a012872f4fe78567e7cea9e20c7c&response_type=code&redirect_uri=http://localhost:8080/oauth2/callback/spotify&scope=user-read-private");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/callback/spotify", method = RequestMethod.GET)
 	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
-		SpotifyController mine = new SpotifyController(code, id, c, stmt);
+		SpotifyController mine = new SpotifyController(id, code,  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
 
-	@RequestMapping(value = "/oauth2/github", method = RequestMethod.GET)
+	// Github Routes
+	@RequestMapping(value = "/oauth2/autorize/github", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeGithub() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://github.com/login/oauth/authorize?scope=user:email,repo&client_id=1b8ddffb28f26996c08f");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/callback/github", method = RequestMethod.GET)
 	public RedirectView getTokenGitHub(@RequestParam(value = "code") String code) {
-		GitHubController mine = new GitHubController(code, c, stmt);
+		GitHubController mine = new GitHubController(id, code, c, stmt);
 		if (!isLogged) {
 			id = mine.id;
 			isLogged = true;
@@ -227,9 +271,17 @@ public class Controller {
 		return redirectView;
 	}
 
-	@RequestMapping(value = "/oauth2/google", method = RequestMethod.GET)
+
+	// Google Routes
+	@RequestMapping(value = "/oauth2/autorize/google", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeGoogle() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2%2Fcallback%2Fgoogle");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/callback/google", method = RequestMethod.GET)
 	public RedirectView getTokenGoogle(@RequestParam(value = "code") String code) {
-		GoogleController mine = new GoogleController(code, c, stmt);
+		GoogleController mine = new GoogleController(id, code, c, stmt);
 		if (!isLogged) {
 			id = mine.id;
 			isLogged = true;

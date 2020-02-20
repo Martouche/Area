@@ -62,14 +62,13 @@ public class LinkedinController {
     public String clientId = "86yu19zq37j60p";
     public String clientSecret = "gMX9J4ZTlsmtsDtG";
 
-    public LinkedinController(String code, Connection c, PreparedStatement stmt) {
+    public LinkedinController(int Userid, String code, Connection c, PreparedStatement stmt) {
 
         String accessToken = getAccesTokenAuth(code);
 
         System.out.println("mon acces token linkedin : " + accessToken);
 
-        //User.addUserService((String) datauser.get("email"), accessToken, "linkedin", c, stmt);
-
+        User.updateTokenUser(Userid, accessToken, "linkedin", c, stmt);
     }
 
     public String getAccesTokenAuth(String code)
@@ -95,12 +94,6 @@ public class LinkedinController {
         }
         return accessToken;
     }
-
-    // makes a GET request to url and returns body as a string
-    public String get(String url) throws ClientProtocolException, IOException {
-        return execute(new HttpGet(url));
-    }
-
 
     public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException {
         HttpPost request = new HttpPost(url);

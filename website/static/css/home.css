@@ -8349,7 +8349,35 @@
   .subscribe-form .form-control {
     background: rgba(255, 255, 255, 0.2); }
 
-  .place-switch {
-    margin-left: 30%;
+  .place-spotify {
+    margin-left: 52%;
+    margin-top: 7%;
+  }
+  .place-google {
+    margin-left: 50%;
+    margin-top: 7%;
+  }
+  .place-linkedin {
+    margin-left: 47%;
+    margin-top: 7%;
+  }
+  .place-github {
+    margin-left: 52%;
+    margin-top: 7%;
+  }
+  .place-facebook {
+    margin-left: 42%;
+    margin-top: 7%;
+  }
+  .place-twitter {
+    margin-left: 52%;
+    margin-top: 7%;
+  }
+  .place-discord {
+    margin-left: 56%;
+    margin-top: 7%;
+  }
+  .place-reddit {
+    margin-left: 53%;
     margin-top: 7%;
   }

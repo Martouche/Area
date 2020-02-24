@@ -494,4 +494,48 @@ public class Controller {
 		}
 		return email;
 	}
+
+	public int getActionIdbyName(String nameAction) {
+		try {
+			stmt = c.prepareStatement("SELECT id FROM services_actions WHERE name = '" + nameAction + "';");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+	}
+
+	public int getReactionIdbyName(String nameReaction) {
+		try {
+			stmt = c.prepareStatement("SELECT id FROM services_reactions WHERE name = '" + nameReaction + "';");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+	}
+
+	@RequestMapping(value = "/postActionReactionForUser", method = RequestMethod.GET)
+	public String PostActionReaction(@RequestParam(value = "userid") String userId,
+									 @RequestParam(value = "actionName") String actionName,
+									 @RequestParam(value = "actionValue") String actionValue,
+									 @RequestParam(value = "reactionName") String reactionName,
+									 @RequestParam(value = "reactionValue") String reactionValue) {
+		int id_service_action = getActionIdbyName(actionName);
+		int id_service_reaction = getReactionIdbyName(reactionName);
+		try {
+			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
+					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +
+					"SELECT " + userId + ", " + id_service_action + ", '" + actionValue + "'," + id_service_reaction + ", '" + reactionValue + "';");
+			stmt.execute();
+			return "work";
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
 }

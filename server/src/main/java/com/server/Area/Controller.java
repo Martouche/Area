@@ -8,7 +8,10 @@ import java.security.Principal;
 import com.server.Area.User;
 
 import java.util.Random;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -16,6 +19,10 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,6 +113,8 @@ public class Controller {
 		// Table Service Action
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_actions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle3' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle3');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle2' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle2');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle');");
 			stmt.execute();
 		} catch (Exception e) {
@@ -115,7 +124,9 @@ public class Controller {
 		// Table Service Reaction
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_reactions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
-					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle');");
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle2' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle2');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle3' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle3');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -342,25 +353,63 @@ public class Controller {
 		return id;
 	}
 
-	public String[] getServiceIdByName(String[] nameService) {
-		String[] data = new String[8];
-		try {
-			stmt = c.prepareStatement("SELECT * FROM services");
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				data[0] = (rs.getString(2) == null) ? null : "google";
-				data[1] = (rs.getString(3) == null) ? null : "github";
-				data[2] = (rs.getString(4) == null) ? null : "linkedin";
-				data[3] = (rs.getString(5) == null) ? null : "spotify";
-				data[4] = (rs.getString(6) == null) ? null : "discord";
-				data[5] = (rs.getString(7) == null) ? null : "facebook";
-				data[6] = (rs.getString(8) == null) ? null : "reddit";
-				data[7] = (rs.getString(9) == null) ? null : "twitter";
+	public List<String> getServiceIdByName(String[] nameService) {
+		List<String> data = new ArrayList<String>();
+		int size = nameService.length;
+		for (int i=0; i<size; i++)  {
+			try {
+				stmt = c.prepareStatement("SELECT id FROM services where name='" + nameService[i] + "'");
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					data.add(Integer.toString(rs.getInt(1)));
+				}
+				rs.close();
+			}catch (Exception e) {
+				System.out.println(e);
 			}
-			rs.close();
-		} catch (Exception e) {
-			System.out.println(e);
 		}
+		return data;
+	}
+
+	public List<String> getNameReactionByServiceId(List<String> idServices) {
+		List<String> data = new ArrayList<String>();
+		for(String idservice : idServices) {
+			System.out.println(idservice);
+			try {
+				stmt = c.prepareStatement("SELECT name FROM services_reactions WHERE id_service = '" + idservice + "'");
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					data.add(rs.getString("name"));
+				}
+				rs.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}
+		System.out.println("mes reactions dispo");
+		for (String namereaction : data)
+			System.out.println("-> " + namereaction);
+		return data;
+	}
+
+	public List<String> getNameActionByServiceId(List<String> idServices) {
+		List<String> data = new ArrayList<String>();
+		for(String idservice : idServices) {
+			System.out.println(idservice);
+			try {
+				stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id_service = '" + idservice + "'");
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					data.add(rs.getString("name"));
+				}
+				rs.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}
+		System.out.println("mes actions dispo");
+		for (String nameaction : data)
+			System.out.println("-> " + nameaction);
 		return data;
 	}
 
@@ -384,8 +433,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		int size = data.length;
-		for (int i=0; i<size; i++)
-		{
+		for (int i=0; i<size; i++) {
 
 			System.out.println(data[i]);
 		}
@@ -393,16 +441,46 @@ public class Controller {
 		return data;
 	}
 
-	@RequestMapping(value = "/getAction", method = RequestMethod.GET)
+	@RequestMapping(value = "/getActionForUser", method = RequestMethod.GET)
 	public String GetAction(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req " + userId);
 		String[] serviceName = getServiceByUser(userId);
-		String[] serviceId = getServiceIdByName(serviceName);
-		//String[] actionName = getNameActionByService(serviceId);
- 		return null;
+		List<String> serviceId = getServiceIdByName(serviceName);
+		List<String> actionName = getNameActionByServiceId(serviceId);
+		String json = new Gson().toJson(actionName);
+		System.out.println("mon JSON : " + json);
+		return json;
 	}
 
-	@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
+	@RequestMapping(value = "/getReactionForUser", method = RequestMethod.GET)
+	public String GetReaction(@RequestParam(value = "userid") String userId) {
+		System.out.println("monuid user dans ma req " + userId);
+		String[] serviceName = getServiceByUser(userId);
+		List<String> serviceId = getServiceIdByName(serviceName);
+		List<String> actionName = getNameReactionByServiceId(serviceId);
+		String json = new Gson().toJson(actionName);
+		System.out.println("mon JSON : " + json);
+		return json;
+	}
+
+	@RequestMapping(value = "/getServiceForUser", method = RequestMethod.GET)
+	public String GetService(@RequestParam(value = "userid") String userId) {
+		System.out.println("monuid user dans ma req " + userId);
+		List<String> newservicename = new ArrayList<String>();
+		String[] serviceName = getServiceByUser(userId);
+		int size = serviceName.length;
+		for (int i=0; i<size; i++) {
+			if (serviceName[i] != null)
+				newservicename.add(serviceName[i]);
+			System.out.println(serviceName[i]);
+		}
+		String json = new Gson().toJson(newservicename);
+		System.out.println("mon JSON : " + json);
+		return json;
+	}
+
+
+		@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
 	public String GetEmail(@RequestParam(value = "id") String id) {
 		String email = null;
 		try {

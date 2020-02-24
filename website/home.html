@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-		
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/home.css">
   </head>
   <body>
-		
+
 		<div class="d-flex align-items-stretch">
 			<nav id="sidebar" class="img" style="background-image: url(images/bg_1.jpg);">
 				<div class="p-4">
@@ -94,9 +94,8 @@
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-        <h2 class="mb-4">Sidebar #06</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h2 class="mb-4">Votre compte</h2>
+        <p>Vous pouvez retrouver ici tous vos services</p>
       </div>
         </div>
 
@@ -105,21 +104,25 @@
     <script>
       $("#customSwitch1").on( "click", function() {
         if ($("#customSwitch1").is(':checked')) {
-          alert("On");
+          alert("Vous venez d'activer votre service Spotify");
+          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
         }
-        else
-          alert("Off");
+        else {
+          alert("Vous venez de désactiver votre service Spotify");
+        }
       });
       $("#customSwitch2").on( "click", function() {
         if ($("#customSwitch2").is(':checked')) {
-          alert("On");
+          alert("Vous venez d'activer votre service Google");
+          document.location.href="http://localhost:8080/oauth2/autorize/google"
         }
         else
-          alert("Off");
+          alert("Vous venez de désactiver votre service Google");
       });
       $("#customSwitch3").on( "click", function() {
         if ($("#customSwitch3").is(':checked')) {
-          alert("On");
+          alert("Vous venez d'activer votre service");
+          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
         }
         else
           alert("Off");
@@ -127,6 +130,7 @@
       $("#customSwitch4").on( "click", function() {
         if ($("#customSwitch4").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
         }
         else
           alert("Off");
@@ -134,6 +138,7 @@
       $("#customSwitch5").on( "click", function() {
         if ($("#customSwitch5").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/github"
         }
         else
           alert("Off");
@@ -141,6 +146,7 @@
       $("#customSwitch6").on( "click", function() {
         if ($("#customSwitch6").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
         }
         else
           alert("Off");
@@ -148,6 +154,7 @@
       $("#customSwitch7").on( "click", function() {
         if ($("#customSwitch7").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/twitter"
         }
         else
           alert("Off");
@@ -155,6 +162,7 @@
       $("#customSwitch8").on( "click", function() {
         if ($("#customSwitch8").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/discord"
         }
         else
           alert("Off");
@@ -162,6 +170,7 @@
       $("#customSwitch9").on( "click", function() {
         if ($("#customSwitch9").is(':checked')) {
           alert("On");
+          document.location.href="http://localhost:8080/oauth2/autorize/reddit"
         }
         else
           alert("Off");

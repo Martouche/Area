@@ -67,18 +67,26 @@ public class Controller {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		// Table Service
 		Random rand = new Random();
+		String GoogleId = Integer.toString(rand.nextInt(1000));
+		String SpotifyId = Integer.toString(rand.nextInt(1000));
+		String GithubId = Integer.toString(rand.nextInt(1000));
+		String LinkedinId = Integer.toString(rand.nextInt(1000));
+		String DiscordId = Integer.toString(rand.nextInt(1000));
+		String FacebookId = Integer.toString(rand.nextInt(1000));
+		String RedditId = Integer.toString(rand.nextInt(1000));
+		String TwitterId = Integer.toString(rand.nextInt(1000));
+		// Table Service
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services (id INT NOT NULL, name VARCHAR(250) NOT NULL);" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Google' WHERE NOT EXISTS (SELECT * FROM services where name='Google');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Spotify' WHERE NOT EXISTS (SELECT * FROM services where name='Spotify');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Github' WHERE NOT EXISTS (SELECT * FROM services where name='Github');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Linkdedin' WHERE NOT EXISTS (SELECT * FROM services where name='Linkdedin');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Discord' WHERE NOT EXISTS (SELECT * FROM services where name='Discord');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Facebook' WHERE NOT EXISTS (SELECT * FROM services where name='Facebook');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Reddit' WHERE NOT EXISTS (SELECT * FROM services where name='Reddit');" +
-					"INSERT INTO services (id, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 'Twitter' WHERE NOT EXISTS (SELECT * FROM services where name='Twitter');");
+					"INSERT INTO services (id, name) SELECT " + GoogleId + ", 'Google' WHERE NOT EXISTS (SELECT * FROM services where name='Google');" +
+					"INSERT INTO services (id, name) SELECT " + SpotifyId + ", 'Spotify' WHERE NOT EXISTS (SELECT * FROM services where name='Spotify');" +
+					"INSERT INTO services (id, name) SELECT " + GithubId + ", 'Github' WHERE NOT EXISTS (SELECT * FROM services where name='Github');" +
+					"INSERT INTO services (id, name) SELECT " + LinkedinId + ", 'Linkdedin' WHERE NOT EXISTS (SELECT * FROM services where name='Linkdedin');" +
+					"INSERT INTO services (id, name) SELECT " + DiscordId + ", 'Discord' WHERE NOT EXISTS (SELECT * FROM services where name='Discord');" +
+					"INSERT INTO services (id, name) SELECT " + FacebookId + ", 'Facebook' WHERE NOT EXISTS (SELECT * FROM services where name='Facebook');" +
+					"INSERT INTO services (id, name) SELECT " + RedditId + ", 'Reddit' WHERE NOT EXISTS (SELECT * FROM services where name='Reddit');" +
+					"INSERT INTO services (id, name) SELECT " + TwitterId + ", 'Twitter' WHERE NOT EXISTS (SELECT * FROM services where name='Twitter');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,6 +98,32 @@ public class Controller {
 					"google_token VARCHAR(250), github_token VARCHAR(250), linkedin_token VARCHAR(250), " +
 					"spotify_token VARCHAR(250), discord_token VARCHAR(250), facebook_token VARCHAR(250), " +
 					"reddit_token VARCHAR(250), twitter_token VARCHAR(250));");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		// Table Service Action
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_actions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle' WHERE NOT EXISTS (SELECT * FROM services where name='exempleActionGoogle');");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		// Table Service Reaction
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_reactions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle' WHERE NOT EXISTS (SELECT * FROM services where name='exempleReactionGoogle');");
+			stmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		// Table User Actions Reaction
+		try {
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_actions_reactions (id_user INT NOT NULL, id_service_action INT NOT NULL, value_service_action VARCHAR(250) NOT NULL, id_service_reaction INT NOT NULL, value_service_reaction VARCHAR(250) NOT NULL);");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -306,6 +340,70 @@ public class Controller {
 			System.out.println(e);
 		}
 		return id;
+	}
+
+	public String[] getColumnNameByTable(String tableName) {
+		String[] data2 = new String[8];
+		try {
+			stmt = c.prepareStatement("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + tableName + "' ORDER BY ORDINAL_POSITION");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				data2[0] = rs.getString(2);
+				data2[1] =  rs.getString(3);
+				data2[2] =  rs.getString(4);
+				data2[3] =  rs.getString(5);
+				data2[4] =  rs.getString(6);
+				data2[5] =  rs.getString(7);
+				data2[6] =  rs.getString(8);
+				data2[7] =  rs.getString(9);
+				rs.close();
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		int size = data2.length;
+		for (int i=0; i<size; i++)
+		{
+			System.out.println(data2[i]);
+		}
+		return data2;
+	}
+
+	public String[] getServiceByUser(String userId) {
+		String[] data = new String[8];
+		try {
+			stmt = c.prepareStatement("SELECT * FROM user_service_token WHERE id_user = '" + userId + "'");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				data[0] = rs.getString(2);
+				data[1] = rs.getString(3);
+				data[2] = rs.getString(4);
+				data[3] = rs.getString(5);
+				data[4] = rs.getString(6);
+				data[5] = rs.getString(7);
+				data[6] = rs.getString(8);
+				data[7] = rs.getString(9);
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		int size = data.length;
+		for (int i=0; i<size; i++)
+		{
+
+			System.out.println(data[i]);
+		}
+		System.out.println("mes column");
+		getColumnNameByTable("user_service_token");
+		return data;
+	}
+
+	@RequestMapping(value = "/getAction", method = RequestMethod.GET)
+	public String GetAction(@RequestParam(value = "userid") String userId) {
+		System.out.println("monuid user dans ma req " + userId);
+		getServiceByUser(userId);
+		return null;
 	}
 
 	@RequestMapping(value = "/getEmail", method = RequestMethod.GET)

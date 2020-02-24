@@ -479,7 +479,6 @@ public class Controller {
 		return json;
 	}
 
-
 		@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
 	public String GetEmail(@RequestParam(value = "id") String id) {
 		String email = null;

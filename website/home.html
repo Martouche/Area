@@ -20,7 +20,7 @@
 	          <li class="active">
                 <div class="d-flex custom-control custom-switch">
                     <a href="#"><span class="fa fa-spotify mr-3"></span> Spotify </a>
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
                     <label class="custom-control-label place-spotify" for="customSwitch1"></label>
                 </div>
 	          </li>
@@ -100,12 +100,41 @@
         </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
+    var url1 = window.location.href;
+    var id = url.substring(url1.lastIndexOf('=') + 1);
+ /*   var invocation = new XMLHttpRequest();
+    var url = ("http://localhost:8080/getServiceForUser?userid=" + id)
+    alert("nique zeubiiiiiiiiii");
+
+    if(invocation) {
+    invocation.open('GET', url, true);
+    invocation.onreadystatechange = handler;
+    invocation.send();
+  }
+*/      $.ajax({
+          type: "GET",
+          url: ("http://localhost:8080/getServiceForUser?userid=" + id),
+          dataType: "text",
+          success: function(data) {
+               alert(data);
+               console.log("nique ta mereezzzzzzzzzzz" + data);
+          },
+          error: function(data){
+              alert(data[0]);
+              console.log("nique ta mereezzzzzzzzzzz" + data);
+         }
+      });
+      </script>
+
+      <script>
+
       $("#customSwitch1").on( "click", function() {
         if ($("#customSwitch1").is(':checked')) {
           alert("Vous venez d'activer votre service Spotify");
-          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
+          //document.location.href="http://localhost:8080/oauth2/autorize/spotify"
         }
         else {
           alert("Vous venez de désactiver votre service Spotify");
@@ -121,7 +150,7 @@
       });
       $("#customSwitch3").on( "click", function() {
         if ($("#customSwitch3").is(':checked')) {
-          alert("Vous venez d'activer votre service");
+          alert("Vous venez d'activer votre service Google");
           document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
         }
         else
@@ -130,7 +159,7 @@
       $("#customSwitch4").on( "click", function() {
         if ($("#customSwitch4").is(':checked')) {
           alert("On");
-          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
+          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
         }
         else
           alert("Off");

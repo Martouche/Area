@@ -198,7 +198,6 @@ public class Controller {
 		return redirectView;
 	}
 
-
 	// Twitch Routes
 	@RequestMapping(value = "/oauth2/autorize/twitch", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeTwitch() {
@@ -214,7 +213,6 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
-
 
 	// Reddit Routes
 	@RequestMapping(value = "/oauth2/autorize/reddit", method = RequestMethod.GET)
@@ -232,7 +230,6 @@ public class Controller {
 		return redirectView;
 	}
 
-
 	// Facebook Routes
 	@RequestMapping(value = "/oauth2/autorize/facebook", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeFacebook() {
@@ -248,7 +245,6 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
-
 
 	// Twitter Routes
 	@RequestMapping(value = "/oauth2/autorize/twitter", method = RequestMethod.GET)
@@ -284,7 +280,6 @@ public class Controller {
 		return redirectView;
 	}
 
-
 	// Linkedin Routes
 	@RequestMapping(value = "/oauth2/autorize/linkedin", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeLinkedin() {
@@ -300,7 +295,6 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
-
 
 	// Spotify Routes
 	@RequestMapping(value = "/oauth2/autorize/spotify", method = RequestMethod.GET)
@@ -335,7 +329,6 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
-
 
 	// Google Routes
 	@RequestMapping(value = "/oauth2/autorize/google", method = RequestMethod.GET)
@@ -499,7 +492,7 @@ public class Controller {
 		return json;
 	}
 
-		@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
+	@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
 	public String GetEmail(@RequestParam(value = "id") String id) {
 		String email = null;
 		try {

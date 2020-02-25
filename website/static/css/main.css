@@ -210,6 +210,7 @@ iframe {
 /*------------------------------------------------------------------
 [ Button sign in with ]*/
 .btn-face,
+.btn-twitch,
 .btn-github,
 .btn-spotify,
 .btn-google {
@@ -244,6 +245,7 @@ iframe {
 .btn-google::before,
 .btn-github::before,
 .btn-spotify::before,
+.btn-twitch::before,
 .btn-face::before {
   content: "";
   display: block;
@@ -271,6 +273,11 @@ iframe {
   background-color: #3b5998;
 }
 
+.btn-twitch {
+  color: #fff;
+  background-color: #6441a5	;
+}
+
 .btn-github {
   color: #fff;
   background-color: #171515;
@@ -282,6 +289,12 @@ iframe {
 }
 
 .btn-face i {
+  font-size: 30px;
+  margin-right: 17px;
+  padding-bottom: 3px;
+}
+
+.btn-twitch i {
   font-size: 30px;
   margin-right: 17px;
   padding-bottom: 3px;
@@ -311,6 +324,7 @@ iframe {
 }
 
 .btn-face:hover:before,
+.btn-twitch:hover:before,
 .btn-github:hover:before,
 .btn-spotify:hover:before,
 .btn-google:hover:before {
@@ -318,6 +332,7 @@ iframe {
 }
 
 .btn-face:hover,
+.btn-twitch:hover,
 .btn-github:hover,
 .btn-spotify:hover,
 .btn-google:hover {
@@ -551,6 +566,7 @@ iframe {
   }
 
   .btn-face,
+  .btn-twitch,
   .btn-github,
   .btn-spotify,
   .btn-google {

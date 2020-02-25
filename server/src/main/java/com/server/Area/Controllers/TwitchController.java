@@ -20,9 +20,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 //import org.json.JSONObject;
-
-import org.springframework.util.Base64Utils;
-
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -35,9 +32,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.Base64Utils;
+
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -55,58 +54,40 @@ import org.json.simple.parser.ParseException;
 import com.google.common.collect.ImmutableMap;
 
 
-public class RedditController {
+public class TwitchController {
 
-    @ApiModelProperty(notes = "Reddit's Token")
+    @ApiModelProperty(notes = "Twitch's Token")
     private String code;
-    public int id = 0;
-    public String clientId = "O8RWcER1WbCJpg";
-    public String clientSecret = "HGWbvhAPBRTAa2zdu-BekeQ72wY";
+    private int id = 0;
+    public String clientId = "riddoiwsiud1uyk92zkzwrdgipurqp";
+    public String clientSecret = "turd7n7ls74h8y273e2ywkbqeh3mqg";
 
-    public RedditController(int Userid, String code, Connection c, PreparedStatement stmt) {
+    public TwitchController(int Userid, String code, Connection c, PreparedStatement stmt) {
 
-        String accessToken = getAccesTokenAuth(code);
+        String accessToken = getAccesTokenAuth(code, clientId, clientSecret);
 
-        System.out.println("mon acces token Reddit : " + accessToken);
+        System.out.println("mon acces token twitch : " + accessToken);
 
-        //JSONObject datauser = getUserData(accessToken);
-        //System.out.println(datauser);
-
-        User.updateTokenUser(Userid, accessToken, "reddit", c, stmt);
+        User.addTokenToUser(Userid, accessToken, "twitch", c, stmt);
     }
 
-    public JSONObject getUserData(String accessToken)
-    {
-        String data = null;
-        JSONObject datauser = null;
-        try {
-            data = get(new StringBuilder("https://www.oauth.reddit.com/api/v1/me").toString(), accessToken);
-            // get the json
-            try {
-                datauser = (JSONObject) new JSONParser().parse(data);
-            } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse json " + data);
-            }
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return datauser;
-    }
-
-    public String getAccesTokenAuth(String code)
+    public String getAccesTokenAuth(String code, String clientId, String clientSecret)
     {
         String accessToken = null;
         try {
-            String body = post("https://www.reddit.com/api/v1/access_token", ImmutableMap.<String, String>builder()
-                    .put("grant_type", "authorization_code")
+            String body = post("https://id.twitch.tv/oauth2/token", ImmutableMap.<String, String>builder()
+                    .put("client_id", clientId)
+                    .put("client_secret", clientSecret)
                     .put("code", code)
-                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/reddit").build());
+                    .put("grant_type", "authorization_code")
+                    .put("redirect_uri", "http://localhost:8080/oauth2/callback/twitch").build());
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) new JSONParser().parse(body);
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse json " + body);
             }
+            System.out.println(jsonObject);
             accessToken = (String) jsonObject.get("access_token");
         } catch (IOException e) {
             System.out.println(e);
@@ -115,11 +96,8 @@ public class RedditController {
     }
 
     // makes a GET request to url and returns body as a string
-    public String get(String url, String accessToken) throws ClientProtocolException, IOException {
-        HttpGet newget = new HttpGet(url);
-        newget.addHeader("Authorization", "bearer " + accessToken);
-        newget.addHeader("User-Agent", "Mozilla/5.0MAGROSSEBITE");
-        return execute(newget);
+    public String get(String url) throws ClientProtocolException, IOException {
+        return execute(new HttpGet(url));
     }
 
 
@@ -127,9 +105,6 @@ public class RedditController {
         HttpPost request = new HttpPost(url);
         String authString = "Basic " + Base64Utils.encodeToString(String.format("%s:%s", clientId,clientSecret).getBytes());
         request.addHeader("Authorization", authString);
-        request.addHeader("User-Agent", "Mozilla/5.0");
-        request.addHeader("Content-type", "application/x-www-form-urlencoded");
-
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();

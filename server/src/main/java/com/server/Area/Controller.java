@@ -83,6 +83,7 @@ public class Controller {
 		String FacebookId = Integer.toString(rand.nextInt(1000));
 		String RedditId = Integer.toString(rand.nextInt(1000));
 		String TwitterId = Integer.toString(rand.nextInt(1000));
+		String TwitchId = Integer.toString(rand.nextInt(1000));
 		// Table Service
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services (id INT NOT NULL, name VARCHAR(250) NOT NULL);" +
@@ -93,6 +94,7 @@ public class Controller {
 					"INSERT INTO services (id, name) SELECT " + DiscordId + ", 'discord' WHERE NOT EXISTS (SELECT * FROM services where name='discord');" +
 					"INSERT INTO services (id, name) SELECT " + FacebookId + ", 'facebook' WHERE NOT EXISTS (SELECT * FROM services where name='facebook');" +
 					"INSERT INTO services (id, name) SELECT " + RedditId + ", 'reddit' WHERE NOT EXISTS (SELECT * FROM services where name='reddit');" +
+					"INSERT INTO services (id, name) SELECT " + TwitchId + ", 'twitch' WHERE NOT EXISTS (SELECT * FROM services where name='twitch');" +
 					"INSERT INTO services (id, name) SELECT " + TwitterId + ", 'twitter' WHERE NOT EXISTS (SELECT * FROM services where name='twitter');");
 			stmt.execute();
 		} catch (Exception e) {
@@ -104,7 +106,7 @@ public class Controller {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_service_token (id_user VARCHAR(250), " +
 					"google_token VARCHAR(250), github_token VARCHAR(250), linkedin_token VARCHAR(250), " +
 					"spotify_token VARCHAR(250), discord_token VARCHAR(250), facebook_token VARCHAR(250), " +
-					"reddit_token VARCHAR(250), twitter_token VARCHAR(250));");
+					"reddit_token VARCHAR(250), twitter_token VARCHAR(250), twitch_token VARCHAR(250));");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -190,6 +192,23 @@ public class Controller {
 	public RedirectView getTokenDiscord(@RequestParam(value = "code") String code) {
 		System.out.println("mon code Discord = " + code);
 		DiscordController mine = new DiscordController(id, code, c, stmt);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		return redirectView;
+	}
+
+
+	// Twitch Routes
+	@RequestMapping(value = "/oauth2/autorize/twitch", method = RequestMethod.GET)
+	public RedirectView getUrlAutorizeTwitch() {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=riddoiwsiud1uyk92zkzwrdgipurqp&redirect_uri=http://localhost:8080/oauth2/callback/twitch&scope=viewing_activity_read&state=c3ab8aa609ea11e793aa92361f002672");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/callback/twitch", method = RequestMethod.GET)
+	public RedirectView getTokenTwitch(@RequestParam(value = "code") String code) {
+		System.out.println("mon code twitch = " + code);
+		TwitchController mine = new TwitchController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;

@@ -76,6 +76,11 @@ app.get('/login/reddit', (req, res) => {
     res.redirect(url);
 });
 
+app.get('/login/twitch', (req, res) => {
+    const url = "http://localhost:8080/oauth2/autorize/twitch";
+    res.redirect(url);
+});
+
 app.get('/login/twitter', (req, res) => {
     const url = "http://localhost:8080/oauth2/autorize/twitter";
     res.redirect(url);

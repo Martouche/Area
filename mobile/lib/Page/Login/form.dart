@@ -1,11 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mobile/Page/Login/sign_in.dart';
-
 
 class LoginScreen extends StatelessWidget {
   Color backgroundColor1 = Colors.black87;

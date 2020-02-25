@@ -56,6 +56,8 @@ import com.google.common.collect.ImmutableMap;
 
 public class Actions {
     static String apiKeyOpenWhether = "f22fcf91b5ea6b50c3f3510082393fbd";
+    static String twitchClientId = "riddoiwsiud1uyk92zkzwrdgipurqp";
+
 
     public static String getAccesTokenById(int userId, String type, Connection c, PreparedStatement stmt) {
         String accesToken = null;
@@ -90,6 +92,27 @@ public class Actions {
             System.out.println(e);
         }
         return 0;
+    }
+
+    public static boolean twitchStreamerIsOnline(int userId, String channel, Connection c, PreparedStatement stmt) {
+        String data = null;
+        try {
+            HttpGet url = new HttpGet("https://api.twitch.tv/helix/streams?user_login=" + channel);
+            url.addHeader("Client-ID", twitchClientId );
+            url.addHeader("Accept", "application/vnd.twitchtv.v5+json" );
+            String reponse = execute(url);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = (JSONObject) new JSONParser().parse(reponse);
+            } catch (ParseException e) {
+                throw new RuntimeException("Unable to parse json " + reponse);
+            }
+            data = jsonObject.get("data").toString();
+            System.out.println(data.indexOf("title") != -1 ? true : false);
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return data.indexOf("title") != -1 ? true : false;
     }
 
     // makes a GET request to url and returns body as a string

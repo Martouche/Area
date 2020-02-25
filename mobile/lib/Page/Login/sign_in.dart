@@ -43,9 +43,12 @@ class WebViewState extends State<WebView> {
           print("onStateChanged: ${state.type} ${state.url}");
           print("split ${state.url.split("/")}");
           split = state.url.split("/");
-          if (split[2] == "10.16.253.57.xip.io:8080") {
-            flutterWebviewPlugin.close();
-            Navigator.pushNamed(context, '/home');
+          if (split[2] == "localhost:8080") {
+            count++;
+            if (count == 2) {
+              flutterWebviewPlugin.close();
+              Navigator.pushNamed(context, '/home');
+            }
           }
     });
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
@@ -79,7 +82,7 @@ class WebViewState extends State<WebView> {
 
     return WebviewScaffold(
       key: scaffoldKey,
-      url: 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&redirect_uri=http://10.16.253.57.xip.io:8080/oauth2/callback/google',
+      url: 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&redirect_uri=http://localhost:8080/oauth2/autorize/google',
       hidden: true,
       clearCache: true,
       userAgent: _userAgent,

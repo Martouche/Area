@@ -75,7 +75,7 @@ public class FacebookController {
             User.addUserService(emailUser, accessToken, "facebook", c, stmt);
             this.id = User.getUserIdByName(emailUser, c, stmt);
         } else
-            User.updateTokenUser(Userid, accessToken, "google", c, stmt);
+            User.updateTokenUser(Userid, accessToken, "facebook", c, stmt);
     }
 
 

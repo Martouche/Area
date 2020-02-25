@@ -1,5 +1,7 @@
 package com.server.Area;
 
+import com.server.Area.Actions;
+
 import java.util.concurrent.atomic.AtomicLong;
 import java.sql.*;
 import java.io.*;
@@ -550,5 +552,11 @@ public class Controller {
 			System.out.println(e);
 		}
 		return null;
+	}
+
+	@Scheduled(cron = "*/5 * * * * *")
+	public void updateDataBase() {
+		Actions.wetherTemperatureMax(1, "10", c, stmt);
+		System.out.println("je suis alallalalalla");
 	}
 }

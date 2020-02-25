@@ -21,7 +21,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginPage(),
-        '/webview': (context) => WebView(),
+        '/google': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/google'),
+        '/github': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/github'),
+        '/spotify': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/spotify'),
+        '/linkedin': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/linkedin'),
+        '/twitter': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/twitter'),
+        '/facebook': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/facebook'),
         '/home': (context) => Home(),
         '/home/notification' : (context) => NotificationPage(),
       },

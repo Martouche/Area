@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mobile/Container/login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   Color backgroundColor1 = Colors.black87;
@@ -160,21 +161,7 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                color: Colors.white,
-              ),
-                child: _signInButton(context)
-            ),
-          ),
+          SignIn(root: '/google', text: 'Sign in with Google', logo: 'assets/logo-google.png', textColor: Colors.grey,),
           Container(
             width: MediaQuery
                 .of(context)
@@ -210,12 +197,7 @@ class LoginScreen extends StatelessWidget {
     return OutlineButton(
       splashColor: Colors.grey,
       color: Color(0x9900cc66),
-      onPressed: () => Navigator.of(context).pushNamed("/webview"),
-      /*onPressed: () {
-        signInWithGoogle().whenComplete(() {
-          Navigator.of(context).pushReplacementNamed('/home');
-        });
-      },*/
+      onPressed: () => Navigator.of(context).pushNamed("/google"),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12)
       ),

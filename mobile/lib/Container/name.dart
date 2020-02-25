@@ -25,7 +25,7 @@ class _NameContainerState extends State<NameContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Hello " + global.name, style: style),
+              Text("Hello " + "you", style: style),
             ],
           )
       ),

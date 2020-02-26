@@ -66,6 +66,7 @@ public class Controller {
 			System.err.println(e.getClass().getName()+": "+e.getMessage());
 			System.exit(0);
 		}
+		Actions.twitchStreamerIsOnline(1, "wisethug", c, stmt);
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
@@ -557,6 +558,7 @@ public class Controller {
 	@Scheduled(cron = "*/5 * * * * *")
 	public void updateDataBase() {
 		Actions.wetherTemperatureMax(1, "10", c, stmt);
+		Actions.twitchStreamerIsOnline(1, "wisethug", c, stmt);
 		System.out.println("je suis alallalalalla");
 	}
 }

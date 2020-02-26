@@ -48,7 +48,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -65,7 +66,7 @@ public class Actions {
             stmt = c.prepareStatement("SELECT " + type + "_token FROM  user_service_token WHERE id_user = '" + userId + "'");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                accesToken = rs.getString("name");
+                accesToken = rs.getString(1);
             }
             rs.close();
         } catch (Exception e) {
@@ -115,10 +116,68 @@ public class Actions {
         return data.indexOf("title") != -1 ? true : false;
     }
 
+    public static int youtubeGetNumberFriends(int userId, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int friends = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/subscriptions?part=subscriberSnippet&mySubscribers=true");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            friends = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return friends;
+    }
+
+    public static int youtubeGetVideosLike(int userId, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int like = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/videos?part=snippet&myRating=like&maxResults=50");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            like = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println(like);
+        return like;
+    }
+
+    public static int youtubeGetVideosDislike(int userId, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int dislike = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/videos?part=snippet&myRating=dislike&maxResults=50");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            dislike = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println(dislike);
+        return dislike;
+    }
+
+
+
+    public void putValue(int userId, String value, String idAction, Connection c, PreparedStatement stmt) {
+        String accesToken = null;
+        try {
+            stmt = c.prepareStatement("INSERT INTO user_actions_reactions VALUES ('"+ userId + "','" + idAction + "','" + value + "','1','1')");
+            ResultSet rs = stmt.executeQuery();
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // makes a GET request to url and returns body as a string
     public static String get(String url) throws ClientProtocolException, IOException {
         return execute(new HttpGet(url));
     }
+
     // makes request and checks response code for 200
     private static String execute(HttpRequestBase request) throws ClientProtocolException, IOException {
         HttpClient httpClient = new DefaultHttpClient();

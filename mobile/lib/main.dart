@@ -1,3 +1,4 @@
+import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/Page/Home/navigation_bar.dart';
 import 'package:mobile/Page/Login/login.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/twitter': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/twitter'),
         '/facebook': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/facebook'),
         '/home': (context) => Home(),
+        '/home/signin': (context) => HomePage(),
         '/home/notification' : (context) => NotificationPage(),
       },
       home: LoginPage(),

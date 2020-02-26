@@ -44,7 +44,7 @@ class WebViewState extends State<WebView> {
           split = state.url.split("/");
           if (split[2] == "10.0.2.2.xip.io:9090") {
             flutterWebViewPlugin.close();
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/home/signin');
           }
     });
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {

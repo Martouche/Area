@@ -22,35 +22,19 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.black87,
-        child: FutureBuilder<Post>(
-          future: post,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-/*              Timer.periodic(Duration(seconds: 5), (Timer t) =>
-                  setState(() {
-                    NotificationPage();
-                  })
-              );*/
-              initalize_value(snapshot.data);
-              return Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: CustomNameContainer("Notifications"),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: ScrollContainer(),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
-        ),
+          color: Colors.black87,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: CustomNameContainer("Notifications"),
+              ),
+              Expanded(
+                flex: 8,
+                child: ScrollContainer(),
+              ),
+            ],
+          ),
       ),
     );
   }

@@ -50,6 +50,11 @@ flutter:
   assets:
    - assets/logo.png
    - assets/logo-google.png
+   - assets/logo-github.png
+   - assets/logo-spotify.png
+   - assets/logo-linkedin.png
+   - assets/logo-twitter.png
+   - assets/logo-facebook.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

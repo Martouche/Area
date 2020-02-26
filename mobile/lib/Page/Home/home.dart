@@ -1,10 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mobile/Container/Scroll/scrollview_social.dart';
-import 'package:mobile/Page/Home/fetch.dart';
+import 'package:mobile/Container/login_button.dart';
 import 'package:mobile/Container/logout.dart';
-import 'package:mobile/Container/name.dart';
-import 'package:mobile/Container/Scroll/scrollview.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,64 +8,82 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<Post> post;
+  double _height;
+  bool isOpen = false;
 
   @override
   void initState() {
-    post = fetchPost();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       body: Container(
         color: Colors.black87,
-        child: FutureBuilder<Post>(
-          future: post,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-/*              Timer.periodic(Duration(seconds: 5), (Timer t) =>
-                  setState(() {
-                    HomePage();
-                  })
-              );*/
-              initalize_value(snapshot.data);
-              return Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: LogOut(),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: NameContainer(),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          child: ScrollContainer(),
-                          flex: 5,
-                        ),
-                        Expanded(
-                          child: DashboardContainer(),
-                          flex: 5,
-                        ),
-                      ],
-                    )
-                  )
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
+        child: Stack(
+          children: <Widget>[
+            AnimatedPositioned(
+              // Use the properties stored in the State class.
+              top: (isOpen) ? (_height - (_height * .6)) : _height,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              duration: Duration(seconds: 1),
+              curve: Curves.fastOutSlowIn,
+              child: Container(
+                color: Colors.blue,
+                child: SingleChildScrollView(
+                  child: signIn(),
+                ),
+              )
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                LogOut(),
+                FloatingActionButton.extended(
+                  label: (!isOpen) ? Text("Get more") : Text("Close"),
+                  onPressed: () {
+                    setState(() {
+                      isOpen = !isOpen;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
+    );
+  }
+  Widget signIn() {
+    return Column(
+      children: <Widget>[
+        SignIn(root: '/github',
+          text: 'Sign in with Github',
+          logo: 'assets/logo-github.png',),
+        SignIn(root: '/spotify',
+          text: 'Sign in with Spotify',
+          logo: 'assets/logo-spotify.png',
+          textColor: Colors.green,),
+        SignIn(root: '/linkedin',
+          text: 'Sign in with Linkedin',
+          logo: 'assets/logo-linkedin.png',
+          textColor: Colors.blue[600],),
+        SignIn(root: '/twitter',
+          text: 'Sign in with Twitter',
+          logo: 'assets/logo-twitter.png',
+          textColor: Colors.lightBlue,),
+        SignIn(root: '/facebook',
+          text: 'Sign in with Facebook',
+          logo: 'assets/logo-facebook.png',
+          textColor: Colors.blue[900],),
+      ],
     );
   }
 }

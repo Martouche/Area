@@ -103,24 +103,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/core.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
-    var url1 = window.location.href;
-    var id = url.substring(url1.lastIndexOf('=') + 1);
- /*   var invocation = new XMLHttpRequest();
-    var url = ("http://localhost:8080/getServiceForUser?userid=" + id)
-    alert("nique zeubiiiiiiiiii");
+    var url = window.location.href;
+    var id = url.substring(url.lastIndexOf('=') + 1);
+/*    let xhttp = new XMLHttpRequest();
 
-    if(invocation) {
-    invocation.open('GET', url, true);
-    invocation.onreadystatechange = handler;
-    invocation.send();
-  }
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           // Typical action to be performed when the document is ready:
+           document.getElementById("demo").innerHTML = xhttp.responseText;
+        }
+        alert(xhttp.responseText);
+    };
+    xhttp.open('GET', 'http://localhost:8080/getServiceForUser?userid=1');
+    xhttp.send();
+//    alert("niqueee ta mere");
+    xhr.onload = function() {
+        if (xhr.status != 200) { // analyze HTTP status of the response
+            alert("ici");
+        } else { // show the result
+            alert("ici");
+        }
+    };
 */      $.ajax({
           type: "GET",
           url: ("http://localhost:8080/getServiceForUser?userid=" + id),
-          dataType: "text",
+          dataType: "json",
           success: function(data) {
                alert(data);
-               console.log("nique ta mereezzzzzzzzzzz" + data);
+               console.log(data);
           },
           error: function(data){
               alert(data[0]);

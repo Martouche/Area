@@ -25,7 +25,8 @@ import twitter4j.auth.RequestToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.servlet.view.RedirectView;
 import io.swagger.annotations.Api;
 
-
+@CrossOrigin(maxAge = 3600)
 @RestController
 @Api(value="Authentification", description="Routes for login & register")
 public class Controller {
@@ -482,6 +483,7 @@ public class Controller {
 		return json;
 	}
 
+    @CrossOrigin
 	@RequestMapping(value = "/getServiceForUser", method = RequestMethod.GET)
 	public String GetService(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req " + userId);

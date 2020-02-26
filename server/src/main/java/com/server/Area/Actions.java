@@ -41,6 +41,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -75,7 +76,7 @@ public class Actions {
         return accesToken;
     }
 
-    // Faire les actions ici
+    ////
     public static int wetherTemperatureMax(int userId, String valueDegre, Connection c, PreparedStatement stmt) {
         try {
             String reponse = get("http://api.openweathermap.org/data/2.5/weather?q=Nice,fr&APPID=" + apiKeyOpenWhether + "");
@@ -95,6 +96,7 @@ public class Actions {
         return 0;
     }
 
+    //// Return true ou false si un streamer est en ligne
     public static boolean twitchStreamerIsOnline(int userId, String channel, Connection c, PreparedStatement stmt) {
         String data = null;
         try {
@@ -116,6 +118,7 @@ public class Actions {
         return data.indexOf("title") != -1 ? true : false;
     }
 
+    //// Return nombre d'amis qu'on a sur Youtube
     public static int youtubeGetNumberFriends(int userId, Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
         int friends = 0;
@@ -130,6 +133,7 @@ public class Actions {
         return friends;
     }
 
+    //// Return nombre de Videos qu'on a Like
     public static int youtubeGetVideosLike(int userId, Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
         int like = 0;
@@ -145,6 +149,7 @@ public class Actions {
         return like;
     }
 
+    //// Return nombre de Videos qu'on a Dislike
     public static int youtubeGetVideosDislike(int userId, Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
         int dislike = 0;
@@ -160,9 +165,56 @@ public class Actions {
         return dislike;
     }
 
+    //// Return le nombre de Repo qu'on a
+    public static int githubGetRepo(int userId, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/user/repos");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return count;
+    }
 
+    //// Return le nombre de commits d'un Repo
+    public static int githubCommitsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ username + "/" + repoName + "/commits");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        System.out.println(count);
+        return count;
+    }
 
-    public void putValue(int userId, String value, String idAction, Connection c, PreparedStatement stmt) {
+    /// Reaction add comment to a commit
+    public static void githubPostComment(int userId, String username, String repoName, String sha, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        try {
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + username + "/"+ repoName + "/commits/" + sha + "/comments");
+            url.addHeader("Authorization", access_token);
+            JSONObject countryObj = new JSONObject();
+            countryObj.put("body", "Bon travail :)");
+            StringEntity entity = new StringEntity(countryObj.toString());
+            url.setEntity(entity);
+            JSONObject reponse = new JSONObject(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {
             stmt = c.prepareStatement("INSERT INTO user_actions_reactions VALUES ('"+ userId + "','" + idAction + "','" + value + "','1','1')");

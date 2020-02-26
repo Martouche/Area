@@ -11,7 +11,6 @@
       <change afterPath="$PROJECT_DIR$/server/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Actions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controller.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +141,7 @@
       <workItem from="1582538779052" duration="4792000" />
       <workItem from="1582622872565" duration="11117000" />
       <workItem from="1582654303493" duration="4978000" />
-      <workItem from="1582710911830" duration="15768000" />
+      <workItem from="1582710911830" duration="16335000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: Add RegisterController">
       <created>1579274721336</created>
@@ -193,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582732547923</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Commit: add githubAction and reaction (test)">
+      <created>1582741342312</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1582741342312</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,7 +212,8 @@
     <MESSAGE value="Commit: add css Website" />
     <MESSAGE value="Commit: add TwitchAction (streame is online)" />
     <MESSAGE value="Commit: add YoutubeActions (like, dislike and friend)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: add YoutubeActions (like, dislike and friend)" />
+    <MESSAGE value="Commit: add githubAction and reaction (test)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit: add githubAction and reaction (test)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="744" y="382" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579352242024">
@@ -221,10 +228,10 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="1126" y="616" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579352247381" />
-    <state x="473" y="75" key="CommitChangelistDialog2" timestamp="1582732547633">
+    <state x="473" y="75" key="CommitChangelistDialog2" timestamp="1582741342100">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="473" y="75" key="CommitChangelistDialog2/0.0.1792.1120@0.0.1792.1120" timestamp="1582732547633" />
+    <state x="473" y="75" key="CommitChangelistDialog2/0.0.1792.1120@0.0.1792.1120" timestamp="1582741342100" />
     <state x="676" y="96" key="CommitChangelistDialog2/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366442370" />
     <state x="778" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1580911207883">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -238,10 +245,10 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="500" height="445" key="SwitcherDM/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579356723001" />
-    <state x="496" y="296" key="Vcs.Push.Dialog.v2" timestamp="1582732617110">
+    <state x="496" y="296" key="Vcs.Push.Dialog.v2" timestamp="1582741344478">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="496" y="296" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1582732617110" />
+    <state x="496" y="296" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1582741344478" />
     <state x="709" y="381" key="Vcs.Push.Dialog.v2/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366449942" />
     <state x="758" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582741296321">
       <screen x="0" y="0" width="1792" height="1120" />

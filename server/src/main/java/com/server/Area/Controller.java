@@ -69,8 +69,10 @@ public class Controller {
 		}
 		//Actions.twitchStreamerIsOnline(1, "wisethug", c, stmt);
 		//Actions.youtubeGetNumberFriends(1, c, stmt);
-		Actions.youtubeGetVideosLike(1, c, stmt);
-		Actions.youtubeGetVideosDislike(1, c, stmt);
+		//Actions.youtubeGetVideosLike(1, c, stmt);
+		//Actions.youtubeGetVideosDislike(1, c, stmt);
+		//Actions.githubGetRepo(34,c , stmt);
+		Actions.githubPostComment(34,"Martouche", "BSQ","6f9d387ca6e1220fe9488180469d05084c72ca35", c , stmt);
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {

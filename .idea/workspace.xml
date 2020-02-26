@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ca8d408-4930-4e3a-a5b1-4a644368dfee" name="Default Changelist" comment="Commit: Add Doc SwaggerConfig">
+    <list default="true" id="0ca8d408-4930-4e3a-a5b1-4a644368dfee" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/server/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Actions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controllers/Actions/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controllers/Actions/Actions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controllers/TwitchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/Controllers/TwitchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/server/Area/User/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/server/Area/User/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +141,8 @@
       <workItem from="1582122965309" duration="590000" />
       <workItem from="1582538779052" duration="4792000" />
       <workItem from="1582622872565" duration="11117000" />
-      <workItem from="1582654303493" duration="4778000" />
+      <workItem from="1582654303493" duration="4978000" />
+      <workItem from="1582710911830" duration="15768000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: Add RegisterController">
       <created>1579274721336</created>
@@ -173,7 +179,21 @@
       <option name="project" value="LOCAL" />
       <updated>1581514675023</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Commit: add TwitchAction (streame is online)">
+      <created>1582662882458</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1582662882458</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Commit: add YoutubeActions (like, dislike and friend)">
+      <created>1582732547923</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1582732547923</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +204,9 @@
     <MESSAGE value="Commit: Add LoginController and Start Swagger doc (http://localhost:8080/swagger-ui.html)" />
     <MESSAGE value="Commit: Add Doc SwaggerConfig" />
     <MESSAGE value="Commit: add css Website" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: add css Website" />
+    <MESSAGE value="Commit: add TwitchAction (streame is online)" />
+    <MESSAGE value="Commit: add YoutubeActions (like, dislike and friend)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit: add YoutubeActions (like, dislike and friend)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="744" y="382" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579352242024">
@@ -199,10 +221,10 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="1126" y="616" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579352247381" />
-    <state x="473" y="75" key="CommitChangelistDialog2" timestamp="1581514674593">
+    <state x="473" y="75" key="CommitChangelistDialog2" timestamp="1582732547633">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="473" y="75" key="CommitChangelistDialog2/0.0.1792.1120@0.0.1792.1120" timestamp="1581514674593" />
+    <state x="473" y="75" key="CommitChangelistDialog2/0.0.1792.1120@0.0.1792.1120" timestamp="1582732547633" />
     <state x="676" y="96" key="CommitChangelistDialog2/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366442370" />
     <state x="778" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1580911207883">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -216,29 +238,29 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="500" height="445" key="SwitcherDM/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579356723001" />
-    <state x="496" y="296" key="Vcs.Push.Dialog.v2" timestamp="1581514677676">
+    <state x="496" y="296" key="Vcs.Push.Dialog.v2" timestamp="1582732617110">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="496" y="296" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1581514677676" />
+    <state x="496" y="296" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1582732617110" />
     <state x="709" y="381" key="Vcs.Push.Dialog.v2/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366449942" />
-    <state x="758" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582662790027">
+    <state x="758" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582741296321">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="758" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1792.1120@0.0.1792.1120" timestamp="1582662790027" />
+    <state x="758" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1792.1120@0.0.1792.1120" timestamp="1582741296321" />
     <state x="1083" y="639" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366433356" />
-    <state x="665" y="359" width="703" height="518" key="find.popup" timestamp="1582661805897">
+    <state x="665" y="359" width="703" height="518" key="find.popup" timestamp="1582738607747">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="665" y="359" width="703" height="518" key="find.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1582661805897" />
+    <state x="665" y="359" width="703" height="518" key="find.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1582738607747" />
     <state x="950" y="461" width="659" height="518" key="find.popup/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579363741476" />
     <state x="273" y="286" key="new project wizard" timestamp="1580748001527">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="273" y="286" key="new project wizard/0.0.1792.1120@0.0.1792.1120" timestamp="1580748001527" />
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1581505682957">
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1582721907256">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1581505682957" />
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1582721907256" />
     <state x="801" y="323" width="958" height="870" key="search.everywhere.popup/0.0.2560.1440/2560.0.1792.1120@0.0.2560.1440" timestamp="1579366348271" />
     <state x="649" y="263" width="693" height="637" key="search.everywhere.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1581100698508" />
   </component>

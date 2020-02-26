@@ -192,14 +192,27 @@ public class Actions {
         }  catch (IOException e) {
             System.out.println(e);
         }
-        System.out.println(count);
         return count;
     }
 
-    /// Reaction add comment to a commit
-    public static void githubPostComment(int userId, String username, String repoName, String sha, Connection c, PreparedStatement stmt) {
+    //// Return le nombre de commentaires d'un Repo
+    public static int githubCommentsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ username + "/" + repoName + "/comments");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return count;
+    }
+
+    /// REACTION add comment to a commit
+    public static void githubPostComment(int userId, String username, String repoName, String sha, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         try {
             HttpPost url = new HttpPost("https://api.github.com/repos/" + username + "/"+ repoName + "/commits/" + sha + "/comments");
             url.addHeader("Authorization", access_token);
@@ -208,7 +221,39 @@ public class Actions {
             StringEntity entity = new StringEntity(countryObj.toString());
             url.setEntity(entity);
             JSONObject reponse = new JSONObject(execute(url));
-            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    /// REACTION create Repo
+    public static void githubCreateRepo(int userId, String repoName,  Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        try {
+            HttpPost url = new HttpPost("https://api.github.com/user/repos");
+            url.addHeader("Authorization", access_token);
+            JSONObject countryObj = new JSONObject();
+            countryObj.put("name", repoName);
+            StringEntity entity = new StringEntity(countryObj.toString());
+            url.setEntity(entity);
+            JSONObject reponse = new JSONObject(execute(url));
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    /// REACTION add heart Emoji in comment
+    public static void githubReactionComments(int userId, String userName, String repoName, String commentIds, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        try {
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + userName + "/" +  repoName + "/comments/" + commentIds + "/reactions");
+            url.addHeader("Authorization", access_token);
+            url.addHeader("Accept", "application/vnd.github.squirrel-girl-preview+json");
+            JSONObject countryObj = new JSONObject();
+            countryObj.put("content", "heart");
+            StringEntity entity = new StringEntity(countryObj.toString());
+            url.setEntity(entity);
+            JSONObject reponse = new JSONObject(execute(url));
         }  catch (IOException e) {
             System.out.println(e);
         }

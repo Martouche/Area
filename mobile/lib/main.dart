@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/Page/Login/sign_in.dart';
 import 'package:mobile/Page/Notification/notification.dart';
 
+import 'Page/Login/sign_in.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/linkedin': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/linkedin'),
         '/twitter': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/twitter'),
         '/facebook': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/facebook'),
+        '/twitch': (context) => WebView('http://10.0.2.2.xip.io:8080/oauth2/autorize/twitch'),
         '/home': (context) => Home(),
         '/home/signin': (context) => HomePage(),
         '/home/notification' : (context) => NotificationPage(),

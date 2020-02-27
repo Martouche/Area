@@ -74,6 +74,7 @@ public class Controller {
 		//Actions.githubGetRepo(34,c , stmt);
 		//Actions.githubPostComment(34,"Martouche", "BSQ","6f9d387ca6e1220fe9488180469d05084c72ca35", c , stmt);
 		//Actions.githubReactionComments(34, "Martouche", "BSQ", "37507663", c , stmt );
+		Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {

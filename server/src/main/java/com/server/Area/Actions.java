@@ -259,6 +259,22 @@ public class Actions {
         }
     }
 
+    /// REACTION add friend
+    public static void youtubeReactionNewFriend(int userId, String channelId, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        try {
+            HttpPost url = new HttpPost("https://www.googleapis.com/youtube/v3/subscriptions?part=snippet");
+            url.addHeader("Authorization", access_token);
+            url.addHeader("Content-Type", "application/json");
+            String json = "{\"snippet\": {\"resourceId\": {\"kind\": \"youtube#channel\",\"channelId\": \"" + channelId +"\"}}}";
+            StringEntity entity = new StringEntity(json);
+            url.setEntity(entity);
+            JSONObject reponse = new JSONObject(execute(url));
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {

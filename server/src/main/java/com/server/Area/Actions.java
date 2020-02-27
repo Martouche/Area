@@ -96,6 +96,18 @@ public class Actions {
         return (String) datauser.get("email");
     }
 
+    public static int getActionIdbyName(String nameAction, Connection c, PreparedStatement stmt) {
+        try {
+            stmt = c.prepareStatement("SELECT id FROM services_actions WHERE name = '" + nameAction + "';");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                return rs.getInt(1);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
     public static void getGmailCurrentValueNumberMail(int userId, Connection c, PreparedStatement stmt) {
         try {
             String accessToken = getAccesTokenById(userId, "google", c, stmt);
@@ -123,7 +135,7 @@ public class Actions {
                 datauser = new JSONObject(reponse);
                 total = datauser.getInt("messagesTotal");
             } catch (JSONException e) {
-                throw new RuntimeException("Unable to parse json " + data);
+                throw new RuntimeException("Unable to parse json " + reponse);
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -131,8 +143,8 @@ public class Actions {
         if (total != Integer.valueOf(valueTotalMessage)) {
             // a tester
             try {
-                int id_action = getActionIdbyName("gmailNewMail");
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + total + "' WHERE id_user = "+ userId + "AND id_service_action = " + gmailNewMail + "");
+                int id_action = getActionIdbyName("gmailNewMail", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + total + "' WHERE id_user = "+ userId + "AND id_service_action = 'gmailNewMail'");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -415,7 +427,7 @@ public class Actions {
             System.out.println(e);
         }
     }
-
+    /*
     public static void gmailSendMail(int userid, String message, Connection c, PreparedStatement stmt) {
         String accessToken = getAccesTokenById(userId, "google", c, stmt);
         String userEmail = getGmailCurrentEmailUser(accessToken);
@@ -431,7 +443,7 @@ public class Actions {
             System.out.println(e);
         }
     }
-
+    */
     public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {

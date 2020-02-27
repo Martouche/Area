@@ -552,8 +552,8 @@ public class Controller {
 									 @RequestParam(value = "reactionValue") String reactionValue) {
 		int id_service_action = getActionIdbyName(actionName);
 		int id_service_reaction = getReactionIdbyName(reactionName);
-		if (actionName == "gmailNewMail")
-			actionValue = Actions.getGmailCurrentValueNumberMail(userId, c, stmt);
+//		if (actionName == "gmailNewMail")
+//			actionValue = Actions.getGmailCurrentValueNumberMail(Integer.parseInt(userId), c, stmt);
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +

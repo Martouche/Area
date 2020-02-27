@@ -59,6 +59,7 @@ import com.google.common.collect.ImmutableMap;
 public class Actions {
     static String apiKeyOpenWhether = "f22fcf91b5ea6b50c3f3510082393fbd";
     static String twitchClientId = "riddoiwsiud1uyk92zkzwrdgipurqp";
+    static String ApiKeyGoogle = "AIzaSyBnWft8Xhjk1T5Y4oyf2A5RhgbnSKzHv18";
 
 
     public static String getAccesTokenById(int userId, String type, Connection c, PreparedStatement stmt) {
@@ -76,24 +77,164 @@ public class Actions {
         return accesToken;
     }
 
-    ////
-    public static int wetherTemperatureMax(int userId, String valueDegre, Connection c, PreparedStatement stmt) {
+
+    public static String getGmailCurrentEmailUser(String accessToken) {
+        String data = null;
+        JSONObject datauser = null;
+        try {
+            data = get(new StringBuilder("https://www.googleapis.com/oauth2/v1/userinfo?access_token=").append(accessToken).toString());
+
+            // get the json
+            try {
+                datauser = new JSONObject(data);
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + data);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return (String) datauser.get("email");
+    }
+
+    public static void getGmailCurrentValueNumberMail(int userId, Connection c, PreparedStatement stmt) {
+        try {
+            String accessToken = getAccesTokenById(userId, "google", c, stmt);
+            HttpGet url = new HttpGet("https://www.googleapis.com/gmail/v1/users/"+ getGmailCurrentEmailUser(accessToken) +"/profile?key=" + ApiKeyGoogle + "");
+            url.addHeader("Authorization",  "Bearer " + accessToken);
+            url.addHeader("Accept", "application/json");
+            String reponse = execute(url);
+            System.out.println("reponse " + reponse);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    //// Return True si le nombre de mail a augmenté
+    public static boolean gmailNewMail(int userId, String valueTotalMessage, Connection c, PreparedStatement stmt) {
+        JSONObject datauser = null;
+        int total = 0;
+        try {
+            String accessToken = getAccesTokenById(userId, "google", c, stmt);
+            HttpGet url = new HttpGet("https://www.googleapis.com/gmail/v1/users/"+ getGmailCurrentEmailUser(accessToken) +"/profile?key=AIzaSyBnWft8Xhjk1T5Y4oyf2A5RhgbnSKzHv18");
+            url.addHeader("Authorization",  "Bearer " + accessToken);
+            url.addHeader("Accept", "application/json");
+            String reponse = execute(url);
+            System.out.println("reponse " + reponse);
+            try {
+                datauser = new JSONObject(reponse);
+                total = datauser.getInt("messagesTotal");
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + data);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        if (total != Integer.valueOf(valueTotalMessage)) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("gmailNewMail");
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + total + "' WHERE id_user = "+ userId + "AND id_service_action = " + gmailNewMail + "");
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //// Return True si la temperature depase la valeur fixé sinon false
+    public static boolean wetherTemperatureMax(int userId, String valueDegre, Connection c, PreparedStatement stmt) {
+        double temp = 0;
         try {
             String reponse = get("http://api.openweathermap.org/data/2.5/weather?q=Nice,fr&APPID=" + apiKeyOpenWhether + "");
             System.out.println("ma reponse : " + reponse);
             JSONObject jsonObject = null;
             try {
-                jsonObject = (JSONObject) new JSONParser().parse(reponse);
-            } catch (ParseException e) {
+                jsonObject = (JSONObject) new JSONObject(reponse);
+            } catch (JSONException e) {
                 throw new RuntimeException("Unable to parse json " + reponse);
             }
-            System.out.println(jsonObject);
-            //String accessToken = (String) jsonObject.get("main");
-            //System.out.println(accessToken);
+            JSONObject test = jsonObject.getJSONObject("main");
+            temp = test.getInt("temp") - 273.15;
+            System.out.println(temp) ;
         }  catch (IOException e) {
             System.out.println(e);
         }
-        return 0;
+        if (Integer.valueOf(valueDegre) < temp)
+            return true;
+        return false;
+    }
+    //// Return True si la temperature est en dessous la valeur fixé sinon false
+    public static boolean wetherTemperatureMin(int userId, String valueDegre, Connection c, PreparedStatement stmt) {
+        double temp = 0;
+        try {
+            String reponse = get("http://api.openweathermap.org/data/2.5/weather?q=Nice,fr&APPID=" + apiKeyOpenWhether + "");
+            System.out.println("ma reponse : " + reponse);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = (JSONObject) new JSONObject(reponse);
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + reponse);
+            }
+            JSONObject test = jsonObject.getJSONObject("main");
+            temp = test.getInt("temp") - 273.15;
+            System.out.println(temp) ;
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (Integer.valueOf(valueDegre) > temp)
+            return true;
+        return false;
+    }
+
+    //// Return True si l humidite est en dessous la valeur fixé sinon false
+    public static boolean wetherHumidityMin(int userId, String valueHumidity, Connection c, PreparedStatement stmt) {
+        int humidity = 0;
+        try {
+            String reponse = get("http://api.openweathermap.org/data/2.5/weather?q=Nice,fr&APPID=" + apiKeyOpenWhether + "");
+            System.out.println("ma reponse : " + reponse);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = (JSONObject) new JSONObject(reponse);
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + reponse);
+            }
+            System.out.println("mon object json " + jsonObject);
+            JSONObject test = jsonObject.getJSONObject("main");
+            System.out.println("mon object json apres test  " + test);
+            humidity = test.getInt("humidity");
+            System.out.println(humidity) ;
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (Integer.valueOf(valueHumidity) > humidity)
+            return true;
+        return false;
+    }
+
+    //// Return True si l humidite est au dessus la valeur fixé sinon false
+    public static boolean wetherHumidityMax(int userId, String valueHumidity, Connection c, PreparedStatement stmt) {
+        int humidity = 0;
+        try {
+            String reponse = get("http://api.openweathermap.org/data/2.5/weather?q=Nice,fr&APPID=" + apiKeyOpenWhether + "");
+            System.out.println("ma reponse : " + reponse);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = (JSONObject) new JSONObject(reponse);
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + reponse);
+            }
+            System.out.println("mon object json " + jsonObject);
+            JSONObject test = jsonObject.getJSONObject("main");
+            System.out.println("mon object json apres test  " + test);
+            humidity = test.getInt("humidity");
+            System.out.println(humidity) ;
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (Integer.valueOf(valueHumidity) < humidity)
+            return true;
+        return false;
     }
 
     //// Return true ou false si un streamer est en ligne
@@ -275,6 +416,22 @@ public class Actions {
         }
     }
 
+    public static void gmailSendMail(int userid, String message, Connection c, PreparedStatement stmt) {
+        String accessToken = getAccesTokenById(userId, "google", c, stmt);
+        String userEmail = getGmailCurrentEmailUser(accessToken);
+        try {
+            HttpPost url = new HttpPost("https://www.googleapis.com/gmail/v1/users/"+ userEmail +"/messages/send?key=" + ApiKeyGoogle +"");
+            url.addHeader("Authorization", "Bearer " + access_token);
+            url.addHeader("Accept", "application/json");
+            url.addHeader("Content-Type", "application/json");
+            String json = "{\"raw\": \"mon message\"}";
+            StringEntity entity = new StringEntity(json);
+            url.setEntity(entity);
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {
@@ -301,8 +458,8 @@ public class Actions {
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
 
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Expected 200 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
+        if (response.getStatusLine().getStatusCode() != 200 || response.getStatusLine().getStatusCode() != 201) {
+            throw new RuntimeException("Expected 200 or 201 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
         }
 
         return body;

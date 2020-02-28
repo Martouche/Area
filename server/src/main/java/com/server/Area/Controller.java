@@ -132,9 +132,18 @@ public class Controller {
 		// Table Service Action
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_actions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle3' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle3');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle2' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle2');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleActionGoogle' WHERE NOT EXISTS (SELECT * FROM services_actions where name='exempleActionGoogle');");
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'gmailNewMail' WHERE NOT EXISTS (SELECT * FROM services_actions where name='gmailNewMail');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherTemperatureMax' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherTemperatureMax');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherTemperatureMin' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherTemperatureMin');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherHumidityMin' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherHumidityMin');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherHumidityMax' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherHumidityMax');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + TwitchId + ", 'twitchStreamerIsOnline' WHERE NOT EXISTS (SELECT * FROM services_actions where name='twitchStreamerIsOnline');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetNumberFriends' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetNumberFriends');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosLike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosLike');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosDislike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosDislike');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubGetRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubGetRepo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCommitsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubCommitsRepo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubCommentsRepo');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,9 +152,10 @@ public class Controller {
 		// Table Service Reaction
 		try {
 			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS services_reactions (id INT NOT NULL, id_service INT NOT NULL, name VARCHAR(250) NOT NULL);" +
-					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle');" +
-					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle2' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle2');" +
-					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'exempleReactionGoogle3' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='exempleReactionGoogle3');");
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubPostComment' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubPostComment');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCreateRepo' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubCreateRepo');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubReactionComments' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubReactionComments');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeReactionNewFriend' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='youtubeReactionNewFriend');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,8 +163,7 @@ public class Controller {
 		}
 		// Table User Actions Reaction
 		try {
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_actions_reactions (id_user INT NOT NULL, id_service_action INT NOT NULL, value_service_action VARCHAR(250) NOT NULL, id_service_reaction INT NOT NULL, value_service_reaction VARCHAR(250) NOT NULL);" +
-					"INSERT INTO user_actions_reactions (id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) SELECT 1, 10, 'testvalueaction', 20, 'testvaluereaction';");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_actions_reactions (id_user INT NOT NULL, id_service_action INT NOT NULL, value_service_action VARCHAR(250) NOT NULL, id_service_reaction INT NOT NULL, value_service_reaction VARCHAR(250) NOT NULL);");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -558,8 +567,9 @@ public class Controller {
 									 @RequestParam(value = "reactionValue") String reactionValue) {
 		int id_service_action = getActionIdbyName(actionName);
 		int id_service_reaction = getReactionIdbyName(reactionName);
-//		if (actionName == "gmailNewMail")
-//			actionValue = Actions.getGmailCurrentValueNumberMail(Integer.parseInt(userId), c, stmt);
+		int int_user_id = Integer.parseInt(userId);
+		if (actionName == "gmailNewMail")
+			actionValue = String.valueOf(Actions.getGmailCurrentValueNumberMail(int_user_id, c, stmt));
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +

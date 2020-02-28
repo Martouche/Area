@@ -108,7 +108,9 @@ public class Actions {
         return 0;
     }
 
-    public static void getGmailCurrentValueNumberMail(int userId, Connection c, PreparedStatement stmt) {
+    public static int getGmailCurrentValueNumberMail(int userId, Connection c, PreparedStatement stmt) {
+        JSONObject datauser = null;
+        int total = 0;
         try {
             String accessToken = getAccesTokenById(userId, "google", c, stmt);
             HttpGet url = new HttpGet("https://www.googleapis.com/gmail/v1/users/"+ getGmailCurrentEmailUser(accessToken) +"/profile?key=" + ApiKeyGoogle + "");
@@ -116,9 +118,16 @@ public class Actions {
             url.addHeader("Accept", "application/json");
             String reponse = execute(url);
             System.out.println("reponse " + reponse);
+            try {
+                datauser = new JSONObject(reponse);
+                total = datauser.getInt("messagesTotal");
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + reponse);
+            }
         } catch (IOException e) {
             System.out.println(e);
         }
+        return total;
     }
     //// Return True si le nombre de mail a augmenté
     public static boolean gmailNewMail(int userId, String valueTotalMessage, Connection c, PreparedStatement stmt) {
@@ -361,71 +370,6 @@ public class Actions {
             System.out.println(e);
         }
         return count;
-    }
-
-    /// REACTION add comment to a commit
-    public static void githubPostComment(int userId, String username, String repoName, String sha, Connection c, PreparedStatement stmt) {
-        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
-        try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + username + "/"+ repoName + "/commits/" + sha + "/comments");
-            url.addHeader("Authorization", access_token);
-            JSONObject countryObj = new JSONObject();
-            countryObj.put("body", "Bon travail :)");
-            StringEntity entity = new StringEntity(countryObj.toString());
-            url.setEntity(entity);
-            JSONObject reponse = new JSONObject(execute(url));
-        }  catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    /// REACTION create Repo
-    public static void githubCreateRepo(int userId, String repoName,  Connection c, PreparedStatement stmt) {
-        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
-        try {
-            HttpPost url = new HttpPost("https://api.github.com/user/repos");
-            url.addHeader("Authorization", access_token);
-            JSONObject countryObj = new JSONObject();
-            countryObj.put("name", repoName);
-            StringEntity entity = new StringEntity(countryObj.toString());
-            url.setEntity(entity);
-            JSONObject reponse = new JSONObject(execute(url));
-        }  catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    /// REACTION add heart Emoji in comment
-    public static void githubReactionComments(int userId, String userName, String repoName, String commentIds, Connection c, PreparedStatement stmt) {
-        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
-        try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + userName + "/" +  repoName + "/comments/" + commentIds + "/reactions");
-            url.addHeader("Authorization", access_token);
-            url.addHeader("Accept", "application/vnd.github.squirrel-girl-preview+json");
-            JSONObject countryObj = new JSONObject();
-            countryObj.put("content", "heart");
-            StringEntity entity = new StringEntity(countryObj.toString());
-            url.setEntity(entity);
-            JSONObject reponse = new JSONObject(execute(url));
-        }  catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    /// REACTION add friend
-    public static void youtubeReactionNewFriend(int userId, String channelId, Connection c, PreparedStatement stmt) {
-        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
-        try {
-            HttpPost url = new HttpPost("https://www.googleapis.com/youtube/v3/subscriptions?part=snippet");
-            url.addHeader("Authorization", access_token);
-            url.addHeader("Content-Type", "application/json");
-            String json = "{\"snippet\": {\"resourceId\": {\"kind\": \"youtube#channel\",\"channelId\": \"" + channelId +"\"}}}";
-            StringEntity entity = new StringEntity(json);
-            url.setEntity(entity);
-            JSONObject reponse = new JSONObject(execute(url));
-        }  catch (IOException e) {
-            System.out.println(e);
-        }
     }
     /*
     public static void gmailSendMail(int userid, String message, Connection c, PreparedStatement stmt) {

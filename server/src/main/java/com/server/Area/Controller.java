@@ -80,6 +80,7 @@ public class Controller {
 		//Actions.githubPostComment(34,"Martouche", "BSQ","6f9d387ca6e1220fe9488180469d05084c72ca35", c , stmt);
 		//Actions.githubReactionComments(34, "Martouche", "BSQ", "37507663", c , stmt );
 		//Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
+		Reactions.gmailSendMail(1, c, stmt );
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
@@ -360,7 +361,7 @@ public class Controller {
 	@RequestMapping(value = "/oauth2/autorize/google", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeGoogle() {
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube&response_type=code&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2%2Fcallback%2Fgoogle");
+		redirectView.setUrl("https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fmail.google.com+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.send+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube&response_type=code&client_id=377968007025-013sa07vehs51n1rau6qfmplp7esq964.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2%2Fcallback%2Fgoogle");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/callback/google", method = RequestMethod.GET)

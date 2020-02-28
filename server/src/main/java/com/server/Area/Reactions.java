@@ -2,7 +2,7 @@ package com.server.Area;
 
 
 import java.sql.*;
-import java.util.Map;
+import java.util.*;
 
 import java.io.*;
 import java.lang.*;
@@ -24,8 +24,6 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -55,6 +53,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.ImmutableMap;
+
 
 public class Reactions {
     static String apiKeyOpenWhether = "f22fcf91b5ea6b50c3f3510082393fbd";
@@ -141,23 +140,50 @@ public class Reactions {
             System.out.println(e);
         }
     }
-    /*
-    public static void gmailSendMail(int userid, String message, Connection c, PreparedStatement stmt) {
+
+    public static String getGmailCurrentEmailUser(String accessToken) {
+        String data = null;
+        JSONObject datauser = null;
+        try {
+            data = get(new StringBuilder("https://www.googleapis.com/oauth2/v1/userinfo?access_token=").append(accessToken).toString());
+
+            // get the json
+            try {
+                datauser = new JSONObject(data);
+            } catch (JSONException e) {
+                throw new RuntimeException("Unable to parse json " + data);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return (String) datauser.get("email");
+    }
+
+    public static void gmailSendMail(int userId, Connection c, PreparedStatement stmt) {
         String accessToken = getAccesTokenById(userId, "google", c, stmt);
         String userEmail = getGmailCurrentEmailUser(accessToken);
+        String bytes = "From: maxence.svensson06@gmail.com\r\n" +
+                "To: evenshoot@gmail.com\r\n" +
+                "Subject: Subject Example\r\n" +
+                "This is content: hope you got it\r\n";
+
+        String b64 = Base64Utils.encodeToString(String.format("%s", bytes).getBytes());
+
         try {
             HttpPost url = new HttpPost("https://www.googleapis.com/gmail/v1/users/"+ userEmail +"/messages/send?key=" + ApiKeyGoogle +"");
-            url.addHeader("Authorization", "Bearer " + access_token);
+            url.addHeader("Authorization", "Bearer " + accessToken);
             url.addHeader("Accept", "application/json");
             url.addHeader("Content-Type", "application/json");
-            String json = "{\"raw\": \"mon message\"}";
+            System.out.println(b64);
+            String json = "{\"raw\": \"" + b64 + "\"}";
             StringEntity entity = new StringEntity(json);
             url.setEntity(entity);
+            JSONObject reponse = new JSONObject(execute(url));
         }  catch (IOException e) {
             System.out.println(e);
         }
     }
-    */
+
     public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {
@@ -184,7 +210,7 @@ public class Reactions {
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
 
-        if (response.getStatusLine().getStatusCode() != 200 || response.getStatusLine().getStatusCode() != 201) {
+        if (response.getStatusLine().getStatusCode() != 200) {
             throw new RuntimeException("Expected 200 or 201 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
         }
 

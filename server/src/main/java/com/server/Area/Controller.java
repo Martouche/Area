@@ -536,6 +536,31 @@ public class Controller {
 		return email;
 	}
 
+	public String getReactionNamebyId(int idAction) {
+		try {
+			stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id = " + idAction + ";");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next())
+				return rs.getString(1);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
+
+	public String getActionNamebyId(int idAction) {
+		try {
+			stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id = " + idAction + ";");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next())
+				return rs.getString(1);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
 	public int getActionIdbyName(String nameAction) {
 		try {
 			stmt = c.prepareStatement("SELECT id FROM services_actions WHERE name = '" + nameAction + "';");
@@ -571,6 +596,18 @@ public class Controller {
 		int int_user_id = Integer.parseInt(userId);
 		if (actionName == "gmailNewMail")
 			actionValue = String.valueOf(Actions.getGmailCurrentValueNumberMail(int_user_id, c, stmt));
+		if (actionName == "youtubeNewFriend")
+			actionValue = String.valueOf(Action.youtubeGetNumberFriends(int_user_id, c, stmt));
+		if (actionName == "youtubeLikingVideo")
+			actionValue = String.valueOf(Action.youtubeGetVideosLike(int_user_id, c, stmt));
+		if (actionName == "youtubeDislikingVideo")
+			actionValue = String.valueOf(Action.youtubeGetVideosDislike(int_user_id, c, stmt));
+		if (actionName == "githubNewRepo")
+			actionValue = String.valueOf(Action.githubGetRepo(int_user_id, c, stmt));
+		if (actionName == "githubNewCommitsRepo")
+			actionValue = actionValue + ":" + String.valueOf(Action.githubGetCommitsRepo(int_user_id, actionValue, c, stmt));
+		if (actionName == "githubNewCommentsRepo")
+			actionValue = actionValue + ":" + String.valueOf(Action.githubGetCommentsRepo(int_user_id, actionValue, c, stmt));
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +
@@ -594,6 +631,47 @@ public class Controller {
 				String action_value = rs.getString("value_service_action");
 				int reaction_id = rs.getInt("id_service_reaction");
 				String reaction_value = rs.getString("value_service_reaction");
+
+				boolean resultaction = false;
+				String nameAction = getActionNamebyId(action_id);
+
+				if (nameAction == "gmailNewMail")
+					resultaction = Action.gmailNewMail(user_id, action_value, c, stmt);
+				if (nameAction == "youtubeNewFriend")
+					resultaction = Action.youtubeNewFriend(user_id, action_value, c, stmt);
+				if (nameAction == "youtubeLikingVideo")
+					resultaction = Action.youtubeLikingVideo(user_id, action_value, c, stmt);
+				if (nameAction == "youtubeDislikingVideo")
+					resultaction = Action.youtubeDislikingVideo(user_id, action_value, c, stmt);
+				if (nameAction == "githubNewRepo")
+					resultaction = Action.githubNewRepo(user_id, action_value, c, stmt);
+				if (nameAction == "githubNewCommitsRepo")
+					resultaction = Action.githubNewCommitsRepo(user_id, action_value, c, stmt);
+				if (nameAction == "githubNewCommentsRepo")
+					resultaction = Action.githubNewCommentsRepo(user_id, action_value, c, stmt);
+				if (nameAction == "wetherTemperatureMax")
+					resultaction = Action.wetherTemperatureMax(user_id, action_value, c, stmt);
+				if (nameAction == "wetherTemperatureMin")
+					resultaction = Action.wetherTemperatureMin(user_id, action_value, c, stmt);
+				if (nameAction == "wetherHumidityMax")
+					resultaction = Action.wetherHumidityMax(user_id, action_value, c, stmt);
+				if (nameAction == "wetherHumidityMin")
+					resultaction = Action.wetherHumidityMin(user_id, action_value, c, stmt);
+				if (nameAction == "twitchStreamerIsOnline")
+					resultaction = Action.twitchStreamerIsOnline(user_id, action_value, c, stmt);
+				if (resultaction) {
+					String nameReaction = getReactionNamebyId(action_id);
+					if (nameReaction == "githubPostComment")
+							Reactions.githubPostComment();
+					if (nameReaction == "githubCreateRepo")
+						Reactions.githubCreateRepo();
+					if (nameReaction == "githubReactionComments")
+						Reactions.githubReactionComments();
+					if (nameReaction == "youtubeReactionNewFriend")
+						Reactions.youtubeReactionNewFriend();
+					if (nameReaction == "gmailSendMail")
+						Reactions.gmailSendMail();
+				}
 				System.out.println(user_id);
 				System.out.println(action_id);
 				System.out.println(action_value);

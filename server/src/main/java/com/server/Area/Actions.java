@@ -129,6 +129,7 @@ public class Actions {
         }
         return total;
     }
+
     //// Return True si le nombre de mail a augmenté
     public static boolean gmailNewMail(int userId, String valueTotalMessage, Connection c, PreparedStatement stmt) {
         JSONObject datauser = null;
@@ -295,6 +296,32 @@ public class Actions {
         return friends;
     }
 
+    //// ACTION NEW FRIEND
+    public static boolean youtubeNewFriend(int userId, String valueTotalFriend, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int friends = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/subscriptions?part=subscriberSnippet&mySubscribers=true");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            friends = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (friends != Integer.valueOf(valueTotalFriend)) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("youtubeNewFriend", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + friends + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
     //// Return nombre de Videos qu'on a Like
     public static int youtubeGetVideosLike(int userId, Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
@@ -309,6 +336,32 @@ public class Actions {
         }
         System.out.println(like);
         return like;
+    }
+
+    //// ACTION NEW LIKE
+    public static boolean youtubeLikingVideo(int userId, String valueTotalLike, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int like = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/videos?part=snippet&myRating=like&maxResults=50");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            like = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (like != Integer.valueOf(valueTotalLike)) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("youtubeLikingVideo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + like + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
     }
 
     //// Return nombre de Videos qu'on a Dislike
@@ -327,6 +380,32 @@ public class Actions {
         return dislike;
     }
 
+    //// ACTION DISLIKE VIDEO
+    public static boolean youtubeDislikingVideo(int userId, String valueTotalDisLike, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int dislike = 0;
+        try {
+            HttpGet url = new HttpGet("https://www.googleapis.com/youtube/v3/videos?part=snippet&myRating=dislike&maxResults=50");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            dislike = reponse.getJSONObject("pageInfo").getInt("totalResults");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (dislike != Integer.valueOf(valueTotalDisLike)) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("youtubeDislikingVideo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + dislike + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
     //// Return le nombre de Repo qu'on a
     public static int githubGetRepo(int userId, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
@@ -342,12 +421,38 @@ public class Actions {
         return count;
     }
 
-    //// Return le nombre de commits d'un Repo
-    public static int githubCommitsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
+    //// ACTION NEW REPO
+    public static boolean githubNewRepo(int userId, String githubTotalRepo, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
         try {
-            HttpGet url = new HttpGet("https://api.github.com/repos/"+ username + "/" + repoName + "/commits");
+            HttpGet url = new HttpGet("https://api.github.com/user/repos");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (count != Integer.valueOf(githubTotalRepo)) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("githubGetRepo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //// Return le nombre de commits d'un Repo
+    public static int githubGetCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ value + "/commits");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
@@ -357,8 +462,35 @@ public class Actions {
         return count;
     }
 
+    //// ACTION NEW COMMITS
+    public static boolean githubNewCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
+        String[] test = value.split(":");
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+  test[0] + "/commits");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (count != Integer.valueOf(test[1])) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("githubNewCommitsRepo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
     //// Return le nombre de commentaires d'un Repo
-    public static int githubCommentsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
+    public static int githubGetCommentsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
         try {
@@ -371,23 +503,34 @@ public class Actions {
         }
         return count;
     }
-    /*
-    public static void gmailSendMail(int userid, String message, Connection c, PreparedStatement stmt) {
-        String accessToken = getAccesTokenById(userId, "google", c, stmt);
-        String userEmail = getGmailCurrentEmailUser(accessToken);
+
+    //// ACTION NEW COMMITS
+    public static boolean githubNewCommentsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
+        String[] test = value.split(":");
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
         try {
-            HttpPost url = new HttpPost("https://www.googleapis.com/gmail/v1/users/"+ userEmail +"/messages/send?key=" + ApiKeyGoogle +"");
-            url.addHeader("Authorization", "Bearer " + access_token);
-            url.addHeader("Accept", "application/json");
-            url.addHeader("Content-Type", "application/json");
-            String json = "{\"raw\": \"mon message\"}";
-            StringEntity entity = new StringEntity(json);
-            url.setEntity(entity);
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+  test[0] + "/comments");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
         }  catch (IOException e) {
             System.out.println(e);
         }
+        if (count != Integer.valueOf(test[1])) {
+            // a tester
+            try {
+                int id_action = getActionIdbyName("githubNewCommentsRepo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
     }
-    */
+
     public static void putValue(int userId, int value, int idAction, Connection c, PreparedStatement stmt) {
         String accesToken = null;
         try {

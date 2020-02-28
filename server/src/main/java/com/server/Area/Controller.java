@@ -40,6 +40,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.servlet.view.RedirectView;
 import io.swagger.annotations.Api;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@Configuration
+@EnableScheduling
 @CrossOrigin(maxAge = 3600)
 @RestController
 @Api(value="Authentification", description="Routes for login & register")
@@ -148,7 +153,8 @@ public class Controller {
 		}
 		// Table User Actions Reaction
 		try {
-			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_actions_reactions (id_user INT NOT NULL, id_service_action INT NOT NULL, value_service_action VARCHAR(250) NOT NULL, id_service_reaction INT NOT NULL, value_service_reaction VARCHAR(250) NOT NULL);");
+			stmt = c.prepareStatement("CREATE TABLE IF NOT EXISTS user_actions_reactions (id_user INT NOT NULL, id_service_action INT NOT NULL, value_service_action VARCHAR(250) NOT NULL, id_service_reaction INT NOT NULL, value_service_reaction VARCHAR(250) NOT NULL);" +
+					"INSERT INTO user_actions_reactions (id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) SELECT 1, 10, 'testvalueaction', 20, 'testvaluereaction';");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -566,10 +572,26 @@ public class Controller {
 		return null;
 	}
 
-	@Scheduled(cron = "*/5 * * * * *")
+	@Scheduled(cron = "*/10 * * * * *")
 	public void updateDataBase() {
-		Actions.wetherTemperatureMax(1, "10", c, stmt);
-		Actions.twitchStreamerIsOnline(1, "wisethug", c, stmt);
+		try {
+			stmt = c.prepareStatement("SELECT * FROM user_actions_reactions");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int user_id = rs.getInt("id_user");
+				int action_id = rs.getInt("id_service_action");
+				String action_value = rs.getString("value_service_action");
+				int reaction_id = rs.getInt("id_service_reaction");
+				String reaction_value = rs.getString("value_service_reaction");
+				System.out.println(user_id);
+				System.out.println(action_id);
+				System.out.println(action_value);
+				System.out.println(reaction_id);
+				System.out.println(reaction_value);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		System.out.println("je suis alallalalalla");
 	}
 }

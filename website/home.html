@@ -93,20 +93,94 @@
     	</nav>
 
         <!-- Page Content  -->
+        <!-- Page Content  -->
+        <style>
+       .POSTbutton {
+          background: #9E9E9E;
+          border-radius: 60px;
+          padding: 5px 30px;
+          color: #fff;
+          text-decoration: none;
+          font-size: 1.45em;
+      }
+      .POSTbutton:hover {
+          -webkit-animation: hover 1200ms linear 2 alternate;
+          animation: hover 1200ms linear 2 alternate;
+      }
+
+/* Active state animation applied here */
+    .POSTbutton:active {
+        -webkit-animation: active 1200ms ease 1 alternate;
+        animation: active 1200ms ease 1 alternate;
+        background: #9E9E9E;
+    }
+    .formfield-select {
+    	position: relative;
+    }
+
+    .formfield-select--container {
+    	position: relative;
+
+    	background-color: #fff;
+    	border: #777 1px solid;
+    	margin: 0 0 1.5em 0;
+
+    	overflow: hidden;
+    }
+    .formfield-select--container::after {
+    	/* Le pointeur du select */
+    	content: '';
+    	position: absolute;
+    	top: 50%;
+    	margin-top: -3px;
+    	right: .75em;
+    	display: block;
+    	width: 0; height: 0;
+    	border-color: transparent;
+    	border-top-color: #444;
+    	border-width: 6px;
+    	border-style: solid;
+    	pointer-events: none;
+    }
+
+    .formfield-select--container select {
+    	-webkit-appearance: none;
+    	-moz-appearance: none;
+    	appearance: none;
+    	width: 15%;
+    	height: auto;
+    	border: 0;
+    	margin: 0;
+    	padding: .75em;
+    	border-radius: 0;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    }
+    .ListReaction {
+         position: relative;
+         font-family: Arial;
+     }
+     .ListActions {
+         position: relative;
+        font-family: Arial;
+     }
+      </style>
       <div id="content" class="p-4 p-md-5 pt-5">
-          <h2 class="mb-4">Votre compte</h2>
-          <p>Vous pouvez retrouver ici tous vos services</p>
+        <h2 class="mb-4">Votre compte</h2>
+        <p>Vous pouvez retrouver ici tous vos services</p>
+        <label for="mon_select" >Choisir une action</label>
+        <div class="formfield-select--container">
           <select id="ListActions" name="Actions">
           </select>
           <input name="ActionValueInput" type="text">
           <select id="ListReaction" name="Reaction">
           </select>
           <input name="ReactionValueInput" type="text">
-          <button type="button" onclick="<a href=></a>">Add service</button>
+          <button id="PostActionButton" type="submit" class="POSTbutton">Envoyer l'action</button>
+      </div>
           <div id = "AllActionReactionOfUser"> MES ACTIONS REACTIONS</div>
       </div>
 
-        </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/core.js"></script>
@@ -138,9 +212,9 @@
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
                 console.log("ma data ", data[i]);
-                option = document.createElement( 'option' );
+                option = document.createElement('option');
                 option.value = option.text = data[i];
-                document.getElementById("ListActions").add( option );
+                document.getElementById("ListActions").add(option);
             }
         },
         error: function(data) {
@@ -180,7 +254,30 @@
             alert("mauvaise réponse du serveur");
         }
     });
+    $(document).ready(function post_action() {
+        var selectAction = document.getElementById("ListActions");
+        var selectReaction = document.getElementById("ListReaction");
+/*        $("#POSTbutton").click( function() {
 
+        }
+      );
+*/  });
+/*  $.ajax({
+      type: "POST",
+      url: ("http://localhost:8080/postActionReactionForUser?userid=" + id +"&actionName=" + selectAction +"&actionValue=" + null +"&reactionName=" + selectReaction + "&reactionValue" + null),
+      dataType: "json",
+      async: false,
+      success: function(data) {
+          for (var i = 0; i < data.length; i++) {
+              console.log("ma data ", data[i]);
+              $("#AllActionReactionOfUser").append("<div> "+ data[i] +" </div>");
+          }
+      },
+      error: function(data) {
+          alert("mauvaise réponse du serveur");
+      }
+  });
+*/
     $("#customSwitchspotify").on( "click", function() {
       if ($("#customSwitchspotify").is(':checked') && tmp.includes("spotify") == false) {
           console.log("tmpp -->>>", tmp[0]);

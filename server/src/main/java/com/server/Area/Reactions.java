@@ -79,12 +79,31 @@ public class Reactions {
         return accesToken;
     }
 
+
+    //// Return le dernier commits d'un Repo
+    public static String githubGetLastCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        String sha = null;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ value + "/commits");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+            sha = reponse.getJSONObject(0).getString("sha");
+
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return sha;
+    }
+
     /// REACTION add comment to a commit
     public static void githubPostComment(int userId, String value, Connection c, PreparedStatement stmt) {
-        String[] value_split = value.split(":|\\/");
+        String[] value_split = value.split(":");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + value_split[0] + "/"+ value_split[1] + "/commits/" + value_split[3] + "/comments");
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + value_split[0] + "/commits/" + githubGetLastCommitsRepo(userId, value, c, stmt) + "/comments");
             url.addHeader("Authorization", access_token);
             JSONObject countryObj = new JSONObject();
             countryObj.put("body", "Bon travail :)");
@@ -112,12 +131,29 @@ public class Reactions {
         }
     }
 
+    //// Return le dernier commits id
+    public static int githubGetLastRepo(int userId, String usernameReponame, Connection c, PreparedStatement stmt) {
+        String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        int count = 0;
+        int Id = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ usernameReponame + "/comments");
+            url.addHeader("Authorization", access_token);
+            JSONArray reponse = new JSONArray(execute(url));
+            count = reponse.length();
+            JSONObject test = (JSONObject) reponse.get(count - 1);
+            Id = test.getInt("id");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return Id;
+    }
+
     /// REACTION add heart Emoji in comment
     public static void githubReactionComments(int userId, String value, Connection c, PreparedStatement stmt) {
-        String[] value_split = value.split(":|\\/");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + value_split[0] + "/" +  value_split[1] + "/comments/" + value_split[3] + "/reactions");
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + value + "/comments/" + githubGetLastRepo(userId, value, c, stmt) + "/reactions");
             url.addHeader("Authorization", access_token);
             url.addHeader("Accept", "application/vnd.github.squirrel-girl-preview+json");
             JSONObject countryObj = new JSONObject();

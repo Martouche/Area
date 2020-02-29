@@ -212,20 +212,20 @@ public class Reactions {
     public static void gmailSendMail(int userId, String valueReaction, Connection c, PreparedStatement stmt) {
         String accessToken = getAccesTokenById(userId, "google", c, stmt);
         String userEmail = getGmailCurrentEmailUser(accessToken);
-        String bytes = "From: maxence.svensson06@gmail.com\r\n" +
-                "To: evenshoot@gmail.com\r\n" +
+
+        String bytes2 = "From: maxence.svensson06@gmail.com\r\n" +
+                "To: "+ valueReaction+"\r\n" +
                 "Subject: Subject Example\r\n" +
                 "This is content: hope you got it\r\n";
 
-        String b64 = Base64Utils.encodeToString(String.format("%s", bytes).getBytes());
-        System.out.println("J'envoie un mail zebi");
+        String b642 = Base64Utils.encodeToString(String.format("%s", bytes2).getBytes());
+        System.out.println("b642 "+b642);
         try {
             HttpPost url = new HttpPost("https://www.googleapis.com/gmail/v1/users/"+ userEmail +"/messages/send?key=" + ApiKeyGoogle +"");
             url.addHeader("Authorization", "Bearer " + accessToken);
             url.addHeader("Accept", "application/json");
             url.addHeader("Content-Type", "application/json");
-            System.out.println(b64);
-            String json = "{\"raw\": \"" + b64 + "\"}";
+            String json = "{\"raw\": \"" + b642 + "\"}";
             StringEntity entity = new StringEntity(json);
             url.setEntity(entity);
             JSONObject reponse = new JSONObject(execute(url));

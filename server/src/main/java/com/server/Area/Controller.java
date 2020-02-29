@@ -788,6 +788,7 @@ public class Controller {
 
 				boolean resultaction = false;
 				String nameAction = getActionNamebyId(action_id);
+				System.out.println("mon action :" + nameAction + "  -> value : " + action_value);
 
 				if (nameAction.equals("gmailNewMail"))
 					resultaction = Actions.gmailNewMail(user_id, action_value, c, stmt);
@@ -816,7 +817,7 @@ public class Controller {
 				if (resultaction) {
 					System.out.println("mon action :" + nameAction + "  a marché");
 					String nameReaction = getReactionNamebyId(reaction_id);
-					System.out.println("ma reaction :" + nameReaction);
+					System.out.println("ma reaction :" + nameReaction + "  -> value : " + reaction_value);
 					if (nameReaction.equals("githubPostComment"))
 						Reactions.githubPostComment(user_id, reaction_value, c ,stmt);
 					if (nameReaction.equals("githubCreateRepo"))
@@ -830,11 +831,6 @@ public class Controller {
 					if (nameReaction.equals("twitterNewPost"))
 						Reactions.twitterNewPost(twitter, reaction_value);
 				}
-				System.out.println(user_id);
-				System.out.println(action_id);
-				System.out.println(action_value);
-				System.out.println(reaction_id);
-				System.out.println(reaction_value);
 			}
 		} catch (Exception e) {
 			System.out.println(e);

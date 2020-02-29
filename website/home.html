@@ -20,57 +20,64 @@
 	          <li class="active">
                 <div class="d-flex custom-control custom-switch">
                     <a href="#"><span class="fa fa-spotify mr-3"></span> Spotify </a>
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label place-spotify" for="customSwitch1"></label>
+                    <input type="checkbox" class="custom-control-input" id="customSwitchspotify">
+                    <label class="custom-control-label place-spotify" for="customSwitchspotify"></label>
                 </div>
 	          </li>
 	          <li>
               <div class="d-flex custom-control custom-switch">
                 <a href="#"><span class="fa fa-google mr-3"></span> Google </a>
-                <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                <label class="custom-control-label place-google" for="customSwitch2"></label>
+                <input type="checkbox" class="custom-control-input" id="customSwitchgoogle">
+                <label class="custom-control-label place-google" for="customSwitchgoogle"></label>
               </div>
 	          </li>
 	          <li>
               <div class="d-flex custom-control custom-switch">
                 <a href="#"><span class="fa fa-linkedin mr-3"></span> Linkedin </a>
-                <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                <label class="custom-control-label place-linkedin" for="customSwitch3"></label>
+                <input type="checkbox" class="custom-control-input" id="customSwitchlinkedin">
+                <label class="custom-control-label place-linkedin" for="customSwitchlinkedin"></label>
               </div>
 	          </li>
 	          <li>
               <div class="d-flex custom-control custom-switch">
                 <a href="#"><span class="fa fa-github mr-3"></span> GitHub </a>
-                <input type="checkbox" class="custom-control-input" id="customSwitch5">
-                <label class="custom-control-label place-github" for="customSwitch5"></label>
+                <input type="checkbox" class="custom-control-input" id="customSwitchgithub">
+                <label class="custom-control-label place-github" for="customSwitchgithub"></label>
               </div>
 	          </li>
 	          <li>
               <div class="d-flex custom-control custom-switch">
                 <a href="#"><span class="fa fa-facebook mr-3"></span> Facebook </a>
-                <input type="checkbox" class="custom-control-input" id="customSwitch6">
-                <label class="custom-control-label place-facebook" for="customSwitch6"></label>
+                <input type="checkbox" class="custom-control-input" id="customSwitchfacebook">
+                <label class="custom-control-label place-facebook" for="customSwitchfacebook"></label>
               </div>
               </li>
               <li>
                 <div class="d-flex custom-control custom-switch">
                   <a href="#"><span class="fa fa-twitter mr-3"></span> Twitter </a>
-                  <input type="checkbox" class="custom-control-input" id="customSwitch7">
-                  <label class="custom-control-label place-twitter" for="customSwitch7"></label>
+                  <input type="checkbox" class="custom-control-input" id="customSwitchtwitter">
+                  <label class="custom-control-label place-twitter" for="customSwitchtwitter"></label>
                 </div>
               </li>
               <li>
                 <div class="d-flex custom-control custom-switch">
                   <a href="#"><span class="fa fa-discord mr-3"></span> Discord </a>
-                  <input type="checkbox" class="custom-control-input" id="customSwitch8">
-                  <label class="custom-control-label place-discord" for="customSwitch8"></label>
+                  <input type="checkbox" class="custom-control-input" id="customSwitchdiscord">
+                  <label class="custom-control-label place-discord" for="customSwitchdiscord"></label>
                 </div>
               </li>
               <li>
                 <div class="d-flex custom-control custom-switch">
                   <a href="#"><span class="fa fa-reddit mr-3"></span> Reddit </a>
-                  <input type="checkbox" class="custom-control-input" id="customSwitch9">
-                  <label class="custom-control-label place-reddit" for="customSwitch9"></label>
+                  <input type="checkbox" class="custom-control-input" id="customSwitchreddit">
+                  <label class="custom-control-label place-reddit" for="customSwitchreddit"></label>
+                </div>
+              </li>
+              <li>
+                <div class="d-flex custom-control custom-switch">
+                  <a href="#"><span class="fa fa-twitch mr-3"></span> Twitch </a>
+                  <input type="checkbox" class="custom-control-input" id="customSwitchtwich">
+                  <label class="custom-control-label place-twitch" for="customSwitchtwich"></label>
                 </div>
               </li>
               <li>
@@ -98,101 +105,88 @@
     <script>
     var url = window.location.href;
     var id = url.substring(url.lastIndexOf('=') + 1);
-/*    let xhttp = new XMLHttpRequest();
+    var tmp;
+    $.ajax({
+        type: "GET",
+        url: ("http://localhost:8080/getServiceForUser?userid=" + id),
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            tmp = data;
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("customSwitch" + data[i]).checked = true;
+            }
+        },
+        error: function(data) {
+            alert("mauvaise réponse du serveur");
+        }
+    });
 
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-           // Typical action to be performed when the document is ready:
-           document.getElementById("demo").innerHTML = xhttp.responseText;
-        }
-        alert(xhttp.responseText);
-    };
-    xhttp.open('GET', 'http://localhost:8080/getServiceForUser?userid=1');
-    xhttp.send();
-//    alert("niqueee ta mere");
-    xhr.onload = function() {
-        if (xhr.status != 200) { // analyze HTTP status of the response
-            alert("ici");
-        } else { // show the result
-            alert("ici");
-        }
-    };
-*/      $.ajax({
-          type: "GET",
-          url: ("http://localhost:8080/getServiceForUser?userid=" + id),
-          dataType: "json",
-          success: function(data) {
-               alert(data);
-               console.log(data);
-          },
-          error: function(data){
-              alert(data[0]);
-              console.log("nique ta mereezzzzzzzzzzz" + data);
-         }
-      });
-      </script>
+    $("#customSwitchspotify").on( "click", function() {
+      if ($("#customSwitchspotify").is(':checked') && tmp.includes("spotify") == false) {
+          console.log("tmpp -->>>", tmp[0]);
+        document.location.href="http://localhost:8080/oauth2/autorize/spotify"
+      }
+      else {
+        document.location.href="http://localhost:8080/oauth2/logout/spotify?userid=" + id;
+      }
+    });
 
-      <script>
-
-      var url = window.location.href;
-      var id = url.substring(url.lastIndexOf('=') + 1);
-
-      $("#customSwitch1").on( "click", function() {
-        if ($("#customSwitch1").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
-        }
-        else {
-          document.location.href="http://localhost:8080/oauth2/logout/spotify?userid=" + id;
-        }
-      });
-      $("#customSwitch2").on( "click", function() {
-        if ($("#customSwitch2").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/google"
-        }
-        else
-          document.location.href="http://localhost:8080/oauth2/logout/google?userid=" + id;
-      });
-      $("#customSwitch3").on( "click", function() {
-        if ($("#customSwitch3").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
-        }
-        else
-          document.location.href="http://localhost:8080/oauth2/logout/linkedin?userid=" + id;
-      });
-      $("#customSwitch5").on( "click", function() {
-        if ($("#customSwitch5").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/github"
-        }
-        else
-          document.location.href="http://localhost:8080/oauth2/logout/github?userid=" + id;
-      });
-      $("#customSwitch6").on( "click", function() {
-        if ($("#customSwitch6").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/facebook"
-        }
-        else
-          document.location.href="http://localhost:8080/oauth2/logout/facebook?userid=" + id;
-      });
-      $("#customSwitch7").on( "click", function() {
-        if ($("#customSwitch7").is(':checked')) {
-          document.location.href="http://localhost:8080/oauth2/autorize/twitter"
-        }
-        else
-          document.location.href="http://localhost:8080/oauth2/logout/twitter?userid=" + id;
-      });
-      $("#customSwitch8").on( "click", function() {
-        if ($("#customSwitch8").is(':checked')) {
+    $("#customSwitchgoogle").on( "click", function(tmp) {
+      if ($("#customSwitchgoogle").is(':checked') && tmp.includes("google") == false) {
+        document.location.href="http://localhost:8080/oauth2/autorize/google"
+      }
+      else
+        document.location.href="http://localhost:8080/oauth2/logout/google?userid=" + id;
+    });
+    $("#customSwitchlinkedin").on( "click", function() {
+      if ($("#customSwitchlinkedin").is(':checked') && tmp.includes("linkedin") == false) {
+        document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
+      }
+      else
+        document.location.href="http://localhost:8080/oauth2/logout/linkedin?userid=" + id;
+    });
+    $("#customSwitchgithub").on( "click", function() {
+      if ($("#customSwitchgithub").is(':checked') && tmp.includes("github") == false) {
+        document.location.href="http://localhost:8080/oauth2/autorize/github"
+      }
+      else
+        document.location.href="http://localhost:8080/oauth2/logout/github?userid=" + id;
+    });
+    $("#customSwitchfacebook").on( "click", function() {
+      if ($("#customSwitchfacebook").is(':checked') && tmp.includes("facebook") == false) {
+        document.location.href="http://localhost:8080/oauth2/autorize/facebook"
+      }
+      else
+        document.location.href="http://localhost:8080/oauth2/logout/facebook?userid=" + id;
+     });
+     $("#customSwitchtwitter").on( "click", function() {
+      if ($("#customSwitchtwitter").is(':checked') && tmp.includes("twitter") == false) {
+        document.location.href="http://localhost:8080/oauth2/autorize/twitter"
+      }
+      else
+        document.location.href="http://localhost:8080/oauth2/logout/twitter?userid=" + id;
+     });
+    $("#customSwitchdiscord").on( "click", function() {
+        if ($("#customSwitchdiscord").is(':checked') && tmp.includes("discord") == false) {
           document.location.href="http://localhost:8080/oauth2/autorize/discord"
         }
         else
           document.location.href="http://localhost:8080/oauth2/logout/discord?userid=" + id;
       });
-      $("#customSwitch9").on( "click", function() {
-        if ($("#customSwitch9").is(':checked')) {
+      $("#customSwitchreddit").on( "click", function() {
+        if ($("#customSwitchreddit").is(':checked') && tmp.includes("reddit") == false) {
           document.location.href="http://localhost:8080/oauth2/autorize/reddit"
         }
         else
           document.location.href="http://localhost:8080/oauth2/logout/reddit?userid=" + id;
+      });
+      $("#customSwitchtwitch").on( "click", function() {
+        if ($("#customSwitchtwitch").is(':checked') && tmp.includes("twitch") == false) {
+          document.location.href="http://localhost:8080/oauth2/autorize/twitch"
+        }
+        else
+          document.location.href="http://localhost:8080/oauth2/logout/twitch?userid=" + id;
       });
 
     </script>

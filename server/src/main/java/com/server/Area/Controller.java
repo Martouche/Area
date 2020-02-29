@@ -302,12 +302,7 @@ public class Controller {
 			}
 		}
 		System.out.println("acces token twitter " + this.accessTokenTwitter);
-		/*
-		try {
-			twitter.updateStatus("Check this out, test tweet");
-		} catch (TwitterException e) {
-			System.out.println("Failed to get timeline: " + e.getMessage());
-		}*/
+
 		TwitterController mine = new TwitterController(id, (String) this.accessTokenTwitter.toString(),  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");

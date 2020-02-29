@@ -53,6 +53,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.ImmutableMap;
+import twitter4j.Twitter;
 
 
 public class Reactions {
@@ -139,6 +140,15 @@ public class Reactions {
         }  catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    // REACTION create tweet
+    public static void twitterNewPost(Twitter twitter, String message) {
+		try {
+			twitter.updateStatus(message);
+		} catch (TwitterException e) {
+			System.out.println("Failed to post a tweet: " + e.getMessage());
+		}
     }
 
     public static String getGmailCurrentEmailUser(String accessToken) {

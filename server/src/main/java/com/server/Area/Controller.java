@@ -224,8 +224,20 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/discord", method = RequestMethod.GET)
+	public RedirectView logoutDiscord(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET discord_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
 
-	// Twitch Routes
+		// Twitch Routes
 	@RequestMapping(value = "/oauth2/autorize/twitch", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeTwitch() {
 		RedirectView redirectView = new RedirectView();
@@ -238,6 +250,18 @@ public class Controller {
 		TwitchController mine = new TwitchController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/logout/twitch", method = RequestMethod.GET)
+	public RedirectView logoutTwitch(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET twitch_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -256,6 +280,18 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/reddit", method = RequestMethod.GET)
+	public RedirectView logoutReddit(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET reddit_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
 
 	// Facebook Routes
 	@RequestMapping(value = "/oauth2/autorize/facebook", method = RequestMethod.GET)
@@ -272,6 +308,18 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/facebook", method = RequestMethod.GET)
+	public RedirectView logoutFacebook(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET facebook_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
 
 	// Twitter Routes
 	@RequestMapping(value = "/oauth2/autorize/twitter", method = RequestMethod.GET)
@@ -279,7 +327,6 @@ public class Controller {
 		BufferedReader br = null;
 		String clientId = "RyDqv5K1O7VcivZjVUY7oppsS";
 		String clientSecret = "kEJUgA7vzCmtpydZ13bO2WgY2FcBnAwqMl27E0jo1edBiMIHHZ";
-		twitter = TwitterFactory.getSingleton();
 		twitter.setOAuthConsumer(clientId, clientSecret);
 		requestToken = twitter.getOAuthRequestToken();
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -308,6 +355,20 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/twitter", method = RequestMethod.GET)
+	public RedirectView logoutTwitter(@RequestParam(value = "userid") String userId) {
+		twitter = TwitterFactory.getSingleton();
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET twitter_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
+
 
 	// Linkedin Routes
 	@RequestMapping(value = "/oauth2/autorize/linkedin", method = RequestMethod.GET)
@@ -324,6 +385,18 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/linkedin", method = RequestMethod.GET)
+	public RedirectView logoutLinkedin(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET linkedin_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
 
 	// Spotify Routes
 	@RequestMapping(value = "/oauth2/autorize/spotify", method = RequestMethod.GET)
@@ -337,6 +410,18 @@ public class Controller {
 		SpotifyController mine = new SpotifyController(id, code,  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/logout/spotify", method = RequestMethod.GET)
+	public RedirectView logoutSpotify(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET spotify_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -358,6 +443,19 @@ public class Controller {
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
+	@RequestMapping(value = "/oauth2/logout/github", method = RequestMethod.GET)
+	public RedirectView logoutGithub(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET github_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		return redirectView;
+	}
+
 
 	// Google Routes
 	@RequestMapping(value = "/oauth2/autorize/google", method = RequestMethod.GET)
@@ -376,6 +474,18 @@ public class Controller {
 		System.out.println("mon putain d'id = " + mine.getId());
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		return redirectView;
+	}
+	@RequestMapping(value = "/oauth2/logout/google", method = RequestMethod.GET)
+	public RedirectView logoutGoogle(@RequestParam(value = "userid") String userId) {
+		try {
+			stmt = c.prepareStatement("UPDATE user_service_token SET google_token = NULL WHERE id_user = '" + userId + "';");
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
 		return redirectView;
 	}
 

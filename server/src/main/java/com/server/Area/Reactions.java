@@ -54,6 +54,8 @@ import org.json.simple.parser.ParseException;
 
 import com.google.common.collect.ImmutableMap;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
+
 
 
 public class Reactions {

@@ -80,7 +80,7 @@ public class Controller {
 		//Actions.githubPostComment(34,"Martouche", "BSQ","6f9d387ca6e1220fe9488180469d05084c72ca35", c , stmt);
 		//Actions.githubReactionComments(34, "Martouche", "BSQ", "37507663", c , stmt );
 		//Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
-		Reactions.gmailSendMail(1, c, stmt );
+		//Reactions.gmailSendMail(1, c, stmt );
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
@@ -279,6 +279,7 @@ public class Controller {
 		BufferedReader br = null;
 		String clientId = "RyDqv5K1O7VcivZjVUY7oppsS";
 		String clientSecret = "kEJUgA7vzCmtpydZ13bO2WgY2FcBnAwqMl27E0jo1edBiMIHHZ";
+		twitter = TwitterFactory.getSingleton();
 		twitter.setOAuthConsumer(clientId, clientSecret);
 		requestToken = twitter.getOAuthRequestToken();
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -301,6 +302,12 @@ public class Controller {
 			}
 		}
 		System.out.println("acces token twitter " + this.accessTokenTwitter);
+		/*
+		try {
+			twitter.updateStatus("Check this out, test tweet");
+		} catch (TwitterException e) {
+			System.out.println("Failed to get timeline: " + e.getMessage());
+		}*/
 		TwitterController mine = new TwitterController(id, (String) this.accessTokenTwitter.toString(),  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
@@ -597,17 +604,17 @@ public class Controller {
 		if (actionName == "gmailNewMail")
 			actionValue = String.valueOf(Actions.getGmailCurrentValueNumberMail(int_user_id, c, stmt));
 		if (actionName == "youtubeNewFriend")
-			actionValue = String.valueOf(Action.youtubeGetNumberFriends(int_user_id, c, stmt));
+			actionValue = String.valueOf(Actions.youtubeGetNumberFriends(int_user_id, c, stmt));
 		if (actionName == "youtubeLikingVideo")
-			actionValue = String.valueOf(Action.youtubeGetVideosLike(int_user_id, c, stmt));
+			actionValue = String.valueOf(Actions.youtubeGetVideosLike(int_user_id, c, stmt));
 		if (actionName == "youtubeDislikingVideo")
-			actionValue = String.valueOf(Action.youtubeGetVideosDislike(int_user_id, c, stmt));
+			actionValue = String.valueOf(Actions.youtubeGetVideosDislike(int_user_id, c, stmt));
 		if (actionName == "githubNewRepo")
-			actionValue = String.valueOf(Action.githubGetRepo(int_user_id, c, stmt));
+			actionValue = String.valueOf(Actions.githubGetRepo(int_user_id, c, stmt));
 		if (actionName == "githubNewCommitsRepo")
-			actionValue = actionValue + ":" + String.valueOf(Action.githubGetCommitsRepo(int_user_id, actionValue, c, stmt));
+			actionValue = actionValue + ":" + String.valueOf(Actions.githubGetCommitsRepo(int_user_id, actionValue, c, stmt));
 		if (actionName == "githubNewCommentsRepo")
-			actionValue = actionValue + ":" + String.valueOf(Action.githubGetCommentsRepo(int_user_id, actionValue, c, stmt));
+			actionValue = actionValue + ":" + String.valueOf(Actions.githubGetCommentsRepo(int_user_id, actionValue, c, stmt));
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +
@@ -636,29 +643,30 @@ public class Controller {
 				String nameAction = getActionNamebyId(action_id);
 
 				if (nameAction == "gmailNewMail")
-					resultaction = Action.gmailNewMail(user_id, action_value, c, stmt);
+					resultaction = Actions.gmailNewMail(user_id, action_value, c, stmt);
 				if (nameAction == "youtubeNewFriend")
-					resultaction = Action.youtubeNewFriend(user_id, action_value, c, stmt);
+					resultaction = Actions.youtubeNewFriend(user_id, action_value, c, stmt);
 				if (nameAction == "youtubeLikingVideo")
-					resultaction = Action.youtubeLikingVideo(user_id, action_value, c, stmt);
+					resultaction = Actions.youtubeLikingVideo(user_id, action_value, c, stmt);
 				if (nameAction == "youtubeDislikingVideo")
-					resultaction = Action.youtubeDislikingVideo(user_id, action_value, c, stmt);
+					resultaction = Actions.youtubeDislikingVideo(user_id, action_value, c, stmt);
 				if (nameAction == "githubNewRepo")
-					resultaction = Action.githubNewRepo(user_id, action_value, c, stmt);
+					resultaction = Actions.githubNewRepo(user_id, action_value, c, stmt);
 				if (nameAction == "githubNewCommitsRepo")
-					resultaction = Action.githubNewCommitsRepo(user_id, action_value, c, stmt);
+					resultaction = Actions.githubNewCommitsRepo(user_id, action_value, c, stmt);
 				if (nameAction == "githubNewCommentsRepo")
-					resultaction = Action.githubNewCommentsRepo(user_id, action_value, c, stmt);
+					resultaction = Actions.githubNewCommentsRepo(user_id, action_value, c, stmt);
 				if (nameAction == "wetherTemperatureMax")
-					resultaction = Action.wetherTemperatureMax(user_id, action_value, c, stmt);
+					resultaction = Actions.wetherTemperatureMax(user_id, action_value, c, stmt);
 				if (nameAction == "wetherTemperatureMin")
-					resultaction = Action.wetherTemperatureMin(user_id, action_value, c, stmt);
+					resultaction = Actions.wetherTemperatureMin(user_id, action_value, c, stmt);
 				if (nameAction == "wetherHumidityMax")
-					resultaction = Action.wetherHumidityMax(user_id, action_value, c, stmt);
+					resultaction = Actions.wetherHumidityMax(user_id, action_value, c, stmt);
 				if (nameAction == "wetherHumidityMin")
-					resultaction = Action.wetherHumidityMin(user_id, action_value, c, stmt);
+					resultaction = Actions.wetherHumidityMin(user_id, action_value, c, stmt);
 				if (nameAction == "twitchStreamerIsOnline")
-					resultaction = Action.twitchStreamerIsOnline(user_id, action_value, c, stmt);
+					resultaction = Actions.twitchStreamerIsOnline(user_id, action_value, c, stmt);
+				/*
 				if (resultaction) {
 					String nameReaction = getReactionNamebyId(action_id);
 					if (nameReaction == "githubPostComment")
@@ -671,7 +679,7 @@ public class Controller {
 						Reactions.youtubeReactionNewFriend();
 					if (nameReaction == "gmailSendMail")
 						Reactions.gmailSendMail();
-				}
+				}*/
 				System.out.println(user_id);
 				System.out.println(action_id);
 				System.out.println(action_value);

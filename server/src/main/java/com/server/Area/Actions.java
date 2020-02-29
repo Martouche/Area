@@ -490,11 +490,11 @@ public class Actions {
     }
 
     //// Return le nombre de commentaires d'un Repo
-    public static int githubGetCommentsRepo(int userId, String username, String repoName, Connection c, PreparedStatement stmt) {
+    public static int githubGetCommentsRepo(int userId, String usernameReponame, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
         try {
-            HttpGet url = new HttpGet("https://api.github.com/repos/"+ username + "/" + repoName + "/comments");
+            HttpGet url = new HttpGet("https://api.github.com/repos/"+ usernameReponame + "/comments");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();

@@ -8,6 +8,7 @@ import java.io.*;
 import java.lang.*;
 
 import com.server.Area.User;
+import org.apache.http.client.methods.HttpPut;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,6 +111,34 @@ public class Reactions {
             StringEntity entity = new StringEntity(countryObj.toString());
             url.setEntity(entity);
             JSONObject reponse = new JSONObject(execute(url));
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    /// Get Device Id Spotify
+    public static String spotifyGetDevice(int userId, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+        String id = null;
+        try {
+            HttpGet url = new HttpGet("https://api.spotify.com/v1/me/player/devices");
+            url.addHeader("Authorization", access_token);
+            JSONObject reponse = new JSONObject(execute(url));
+            id = reponse.getJSONArray("devices").getJSONObject(0).getString("id");
+
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return id;
+    }
+
+    /// REACTION Augmenter
+    public static void spotifyVolumeMax(int userId,  Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+        try {
+            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/volume?volume_percent=100&device_id=" + spotifyGetDevice(userId, c, stmt));
+            url.addHeader("Authorization", access_token);
+            execute(url);
         }  catch (IOException e) {
             System.out.println(e);
         }
@@ -254,6 +283,9 @@ public class Reactions {
     private static String execute(HttpRequestBase request) throws ClientProtocolException, IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response = httpClient.execute(request);
+
+        if (response.getStatusLine().getStatusCode() == 204)
+            return "NULL";
 
         System.out.println("MA REQUETE : " + request);
 

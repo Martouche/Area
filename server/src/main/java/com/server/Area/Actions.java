@@ -258,6 +258,52 @@ public class Actions {
         return false;
     }
 
+    //// Return true ou false si écoute une musique
+    public static boolean spotifyListen(int userId, Connection c, PreparedStatement stmt) {
+        String data = null;
+        int count= 0;
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+
+        try {
+            HttpGet url = new HttpGet("https://api.spotify.com/v1/me/player/currently-playing");
+            url.addHeader("Authorization", access_token );
+            if (execute(url) == "NULL")
+                return false;
+            JSONObject reponse = new JSONObject(execute(url));
+
+            count = reponse.length();
+            System.out.println("1 "+count);
+
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return true;
+    }
+
+    //// Return true ou false si écoute une musique
+    public static boolean spotifyListenJul(int userId, Connection c, PreparedStatement stmt) {
+        String data = null;
+        int count= 0;
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+
+        try {
+            HttpGet url = new HttpGet("https://api.spotify.com/v1/me/player/currently-playing");
+            url.addHeader("Authorization", access_token );
+            if (execute(url) == "NULL")
+                return false;
+            JSONObject reponse = new JSONObject(execute(url));
+
+            data = reponse.getJSONObject("item").getJSONObject("album").getJSONArray("artists").getJSONObject(0).getString("name");
+            System.out.println("1 "+data);
+
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (data.equals("Jul"))
+            return true;
+        return false;
+    }
+
     //// Return true ou false si un streamer est en ligne
     public static boolean twitchStreamerIsOnline(int userId, String channel, Connection c, PreparedStatement stmt) {
         String data = null;
@@ -554,6 +600,9 @@ public class Actions {
     private static String execute(HttpRequestBase request) throws ClientProtocolException, IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response = httpClient.execute(request);
+
+        if (response.getStatusLine().getStatusCode() == 204)
+            return "NULL";
 
         System.out.println("MA REQUETE : " + request);
 

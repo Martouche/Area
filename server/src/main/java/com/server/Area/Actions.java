@@ -421,7 +421,7 @@ public class Actions {
         return count;
     }
 
-    //// ACTION NEW REPO
+    //// ACTION NEW REPO value = Martouche/BSQ:5
     public static boolean githubNewRepo(int userId, String githubTotalRepo, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
@@ -448,30 +448,35 @@ public class Actions {
     }
 
     //// Return le nombre de commits d'un Repo
-    public static int githubGetCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
+    public static String githubGetCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
+        String sha = null;
         try {
             HttpGet url = new HttpGet("https://api.github.com/repos/"+ value + "/commits");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
+            sha = reponse.getJSONObject(0).getString("sha");
         }  catch (IOException e) {
             System.out.println(e);
         }
-        return count;
+        System.out.println(count + ":" + sha);
+        return count + ":" + sha;
     }
 
-    //// ACTION NEW COMMITS
+    //// ACTION NEW COMMITS value = Martouche/BSQ:5
     public static boolean githubNewCommitsRepo(int userId, String value, Connection c, PreparedStatement stmt) {
         String[] test = value.split(":");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
+        String sha2 = null;
         int count = 0;
         try {
             HttpGet url = new HttpGet("https://api.github.com/repos/"+  test[0] + "/commits");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
+            sha2 = reponse.getJSONObject(0).getString("sha");
         }  catch (IOException e) {
             System.out.println(e);
         }
@@ -479,7 +484,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("githubNewCommitsRepo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + ":"+ sha2 + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -490,18 +495,22 @@ public class Actions {
     }
 
     //// Return le nombre de commentaires d'un Repo
-    public static int githubGetCommentsRepo(int userId, String usernameReponame, Connection c, PreparedStatement stmt) {
+    public static String githubGetCommentsRepo(int userId, String usernameReponame, Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
+        int Id = 0;
         try {
             HttpGet url = new HttpGet("https://api.github.com/repos/"+ usernameReponame + "/comments");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
+            JSONObject test = (JSONObject) reponse.get(count - 1);
+            Id = test.getInt("id");
         }  catch (IOException e) {
             System.out.println(e);
         }
-        return count;
+        System.out.println(count +":" + Id);
+        return count + ":" + Id;
     }
 
     //// ACTION NEW COMMITS
@@ -509,11 +518,14 @@ public class Actions {
         String[] test = value.split(":");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         int count = 0;
+        int Id2 = 0;
         try {
             HttpGet url = new HttpGet("https://api.github.com/repos/"+  test[0] + "/comments");
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
+            JSONObject test2 = (JSONObject) reponse.get(count - 1);
+            Id2 = test2.getInt("id");
         }  catch (IOException e) {
             System.out.println(e);
         }
@@ -521,7 +533,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("githubNewCommentsRepo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + ":" + Id2 + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -557,7 +569,7 @@ public class Actions {
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
 
-        if (response.getStatusLine().getStatusCode() != 200 || response.getStatusLine().getStatusCode() != 201) {
+        if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 201) {
             throw new RuntimeException("Expected 200 or 201 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
         }
 

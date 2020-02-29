@@ -593,6 +593,7 @@ public class Controller {
 		return data;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/getActionForUser", method = RequestMethod.GET)
 	public String GetAction(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req " + userId);
@@ -604,6 +605,7 @@ public class Controller {
 		return json;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/getReactionForUser", method = RequestMethod.GET)
 	public String GetReaction(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req " + userId);

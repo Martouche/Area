@@ -638,7 +638,7 @@ public class Controller {
 
 	@CrossOrigin
 	@RequestMapping(value = "/getActionReactionByUser", method = RequestMethod.GET)
-	public String GetService(@RequestParam(value = "userid") String userId) {
+	public String GetActionReaction(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req " + userId);
 		List<String> allactionreaction = new ArrayList<String>();
 		try {

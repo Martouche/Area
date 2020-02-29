@@ -173,7 +173,7 @@ public class Reactions {
         return (String) datauser.get("email");
     }
 
-    public static void gmailSendMail(int userId, Connection c, PreparedStatement stmt) {
+    public static void gmailSendMail(int userId, String valueReaction, Connection c, PreparedStatement stmt) {
         String accessToken = getAccesTokenById(userId, "google", c, stmt);
         String userEmail = getGmailCurrentEmailUser(accessToken);
         String bytes = "From: maxence.svensson06@gmail.com\r\n" +

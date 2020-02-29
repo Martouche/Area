@@ -797,20 +797,21 @@ public class Controller {
 					resultaction = Actions.wetherHumidityMin(user_id, action_value, c, stmt);
 				if (nameAction == "twitchStreamerIsOnline")
 					resultaction = Actions.twitchStreamerIsOnline(user_id, action_value, c, stmt);
-				/*
 				if (resultaction) {
 					String nameReaction = getReactionNamebyId(action_id);
 					if (nameReaction == "githubPostComment")
-							Reactions.githubPostComment();
+							Reactions.githubPostComment(user_id, reaction_value, c ,stmt);
 					if (nameReaction == "githubCreateRepo")
-						Reactions.githubCreateRepo();
+						Reactions.githubCreateRepo(user_id, reaction_value, c ,stmt);
 					if (nameReaction == "githubReactionComments")
-						Reactions.githubReactionComments();
+						Reactions.githubReactionComments(user_id, reaction_value, c ,stmt);
 					if (nameReaction == "youtubeReactionNewFriend")
-						Reactions.youtubeReactionNewFriend();
+						Reactions.youtubeReactionNewFriend(user_id, reaction_value, c ,stmt);
 					if (nameReaction == "gmailSendMail")
-						Reactions.gmailSendMail();
-				}*/
+						Reactions.gmailSendMail(user_id, reaction_value, c ,stmt);
+					if (nameReaction == "twitterNewPost")
+						Reactions.twitterNewPost(twitter, reaction_value);
+				}
 				System.out.println(user_id);
 				System.out.println(action_id);
 				System.out.println(action_value);

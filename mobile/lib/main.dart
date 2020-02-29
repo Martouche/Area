@@ -4,6 +4,7 @@ import 'package:mobile/Page/Login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/Page/Login/webview.dart';
 import 'package:mobile/Page/Notification/notification.dart';
+import 'package:mobile/global.dart';
 
 import 'Page/Login/webview.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginPage(),
+        '/server': (context) => WebView('http://localhost:8080/login?name=${user.name}&pwd=${user.pass}', 'Connection AREA', ''),
         '/google': (context) => WebView('http://localhost:8080/oauth2/autorize/google', 'Connection GOOGLE', 'google'),
         '/github': (context) => WebView('http://localhost:8080/oauth2/autorize/github', 'Connection GITHUB', 'github'),
         '/spotify': (context) => WebView('http://localhost:8080/oauth2/autorize/spotify', 'Connection SPOTIFY', 'spotify'),

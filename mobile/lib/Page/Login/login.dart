@@ -1,6 +1,5 @@
 import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:mobile/Container/login_button.dart';
-import 'package:mobile/Page/Login/webview.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/global.dart';
 
@@ -28,7 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   Color backgroundColor1 = Colors.black87;
   final Color backgroundColor2 = Colors.grey;
   final Color highlightColor = Color(0x9900cc66);
@@ -107,6 +111,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 new Expanded(
                   child: TextField(
+                    onChanged: (value) {setState(() { user.name = value; });},
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -148,6 +153,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 new Expanded(
                   child: TextField(
+                    onChanged: (value) {setState(() { user.pass = value; });},
                     obscureText: true,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -177,7 +183,7 @@ class LoginScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/home/signin'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/server'),
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),

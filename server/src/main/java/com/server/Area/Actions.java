@@ -140,7 +140,6 @@ public class Actions {
             url.addHeader("Authorization",  "Bearer " + accessToken);
             url.addHeader("Accept", "application/json");
             String reponse = execute(url);
-            System.out.println("reponse " + reponse);
             try {
                 datauser = new JSONObject(reponse);
                 total = datauser.getInt("messagesTotal");
@@ -154,7 +153,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("gmailNewMail", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + total + "' WHERE id_user = "+ userId + "AND id_service_action = 'gmailNewMail'");
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + total + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);

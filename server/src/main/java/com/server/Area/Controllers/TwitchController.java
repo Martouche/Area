@@ -68,7 +68,7 @@ public class TwitchController {
 
         System.out.println("mon acces token twitch : " + accessToken);
 
-        User.addTokenToUser(Userid, accessToken, "twitch", c, stmt);
+        User.updateTokenUser(Userid, accessToken, "twitch", c, stmt);
     }
 
     public String getAccesTokenAuth(String code, String clientId, String clientSecret)

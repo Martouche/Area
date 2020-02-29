@@ -68,7 +68,7 @@ public class SpotifyController {
 
         System.out.println("mon acces token spotify : " + accessToken);
 
-        User.addTokenToUser(Userid, accessToken, "spotify", c, stmt);
+        User.updateTokenUser(Userid, accessToken, "spotify", c, stmt);
     }
 
     public String getAccesTokenAuth(String code, String clientId, String clientSecret)

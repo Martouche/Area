@@ -182,7 +182,7 @@ public class Reactions {
                 "This is content: hope you got it\r\n";
 
         String b64 = Base64Utils.encodeToString(String.format("%s", bytes).getBytes());
-
+        System.out.println("J'envoie un mail zebi");
         try {
             HttpPost url = new HttpPost("https://www.googleapis.com/gmail/v1/users/"+ userEmail +"/messages/send?key=" + ApiKeyGoogle +"");
             url.addHeader("Authorization", "Bearer " + accessToken);

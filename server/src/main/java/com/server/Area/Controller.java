@@ -158,6 +158,8 @@ public class Controller {
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubPostComment' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubPostComment');" +
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCreateRepo' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubCreateRepo');" +
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubReactionComments' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='githubReactionComments');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + TwitterId + ", 'twitterNewPost' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='twitterNewPost');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'gmailSendMail' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='gmailSendMail');" +
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeReactionNewFriend' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='youtubeReactionNewFriend');");
 			stmt.execute();
 		} catch (Exception e) {
@@ -352,7 +354,7 @@ public class Controller {
 		}
 		System.out.println("acces token twitter " + this.accessTokenTwitter);
 
-		TwitterController mine = new TwitterController(id, (String) this.accessTokenTwitter.toString(),  c, stmt);
+		TwitterController mine = new TwitterController(id, "fakeaccestokenpasbesoinenfaite",  c, stmt);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
@@ -676,7 +678,7 @@ public class Controller {
 
 	public String getReactionNamebyId(int idAction) {
 		try {
-			stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id = " + idAction + ";");
+			stmt = c.prepareStatement("SELECT name FROM services_reactions WHERE id = " + idAction + ";");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next())
 				return rs.getString(1);
@@ -732,20 +734,33 @@ public class Controller {
 		int id_service_action = getActionIdbyName(actionName);
 		int id_service_reaction = getReactionIdbyName(reactionName);
 		int int_user_id = Integer.parseInt(userId);
-		if (actionName == "gmailNewMail")
+
+
+		System.out.println("JE SUIS DANS LE POST DES ACTION REACTION");
+		System.out.println(userId);
+		System.out.println(actionName);
+		System.out.println(actionValue);
+		System.out.println(reactionName);
+		System.out.println(reactionValue);
+
+		if (actionName.equals("gmailNewMail"))
 			actionValue = String.valueOf(Actions.getGmailCurrentValueNumberMail(int_user_id, c, stmt));
-		if (actionName == "youtubeNewFriend")
+		if (actionName.equals("youtubeNewFriend"))
 			actionValue = String.valueOf(Actions.youtubeGetNumberFriends(int_user_id, c, stmt));
-		if (actionName == "youtubeLikingVideo")
+		if (actionName.equals("youtubeLikingVideo"))
 			actionValue = String.valueOf(Actions.youtubeGetVideosLike(int_user_id, c, stmt));
-		if (actionName == "youtubeDislikingVideo")
+		if (actionName.equals("youtubeDislikingVideo"))
 			actionValue = String.valueOf(Actions.youtubeGetVideosDislike(int_user_id, c, stmt));
-		if (actionName == "githubNewRepo")
+		if (actionName.equals("githubNewRepo"))
 			actionValue = String.valueOf(Actions.githubGetRepo(int_user_id, c, stmt));
-		if (actionName == "githubNewCommitsRepo")
+		if (actionName.equals("githubNewCommitsRepo"))
 			actionValue = actionValue + ":" + Actions.githubGetCommitsRepo(int_user_id, actionValue, c, stmt);
-		if (actionName == "githubNewCommentsRepo")
+		if (actionName.equals("githubNewCommentsRepo"))
 			actionValue = actionValue + ":" + Actions.githubGetCommentsRepo(int_user_id, actionValue, c, stmt);
+
+		System.out.println("MA VALEUR D ACTION APRES LES SETTER");
+		System.out.println(actionValue);
+
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +
@@ -773,43 +788,45 @@ public class Controller {
 				boolean resultaction = false;
 				String nameAction = getActionNamebyId(action_id);
 
-				if (nameAction == "gmailNewMail")
+				if (nameAction.equals("gmailNewMail"))
 					resultaction = Actions.gmailNewMail(user_id, action_value, c, stmt);
-				if (nameAction == "youtubeNewFriend")
+				if (nameAction.equals("youtubeNewFriend"))
 					resultaction = Actions.youtubeNewFriend(user_id, action_value, c, stmt);
-				if (nameAction == "youtubeLikingVideo")
+				if (nameAction.equals("youtubeLikingVideo"))
 					resultaction = Actions.youtubeLikingVideo(user_id, action_value, c, stmt);
-				if (nameAction == "youtubeDislikingVideo")
+				if (nameAction.equals("youtubeDislikingVideo"))
 					resultaction = Actions.youtubeDislikingVideo(user_id, action_value, c, stmt);
-				if (nameAction == "githubNewRepo")
+				if (nameAction.equals("githubNewRepo"))
 					resultaction = Actions.githubNewRepo(user_id, action_value, c, stmt);
-				if (nameAction == "githubNewCommitsRepo")
+				if (nameAction.equals("githubNewCommitsRepo"))
 					resultaction = Actions.githubNewCommitsRepo(user_id, action_value, c, stmt);
-				if (nameAction == "githubNewCommentsRepo")
+				if (nameAction.equals("githubNewCommentsRepo"))
 					resultaction = Actions.githubNewCommentsRepo(user_id, action_value, c, stmt);
-				if (nameAction == "wetherTemperatureMax")
+				if (nameAction.equals("wetherTemperatureMax"))
 					resultaction = Actions.wetherTemperatureMax(user_id, action_value, c, stmt);
-				if (nameAction == "wetherTemperatureMin")
+				if (nameAction.equals("wetherTemperatureMin"))
 					resultaction = Actions.wetherTemperatureMin(user_id, action_value, c, stmt);
-				if (nameAction == "wetherHumidityMax")
+				if (nameAction.equals("wetherHumidityMax"))
 					resultaction = Actions.wetherHumidityMax(user_id, action_value, c, stmt);
-				if (nameAction == "wetherHumidityMin")
+				if (nameAction.equals("wetherHumidityMin"))
 					resultaction = Actions.wetherHumidityMin(user_id, action_value, c, stmt);
-				if (nameAction == "twitchStreamerIsOnline")
+				if (nameAction.equals("twitchStreamerIsOnline"))
 					resultaction = Actions.twitchStreamerIsOnline(user_id, action_value, c, stmt);
 				if (resultaction) {
-					String nameReaction = getReactionNamebyId(action_id);
-					if (nameReaction == "githubPostComment")
-							Reactions.githubPostComment(user_id, reaction_value, c ,stmt);
-					if (nameReaction == "githubCreateRepo")
+					System.out.println("mon action :" + nameAction + "  a marché");
+					String nameReaction = getReactionNamebyId(reaction_id);
+					System.out.println("ma reaction :" + nameReaction);
+					if (nameReaction.equals("githubPostComment"))
+						Reactions.githubPostComment(user_id, reaction_value, c ,stmt);
+					if (nameReaction.equals("githubCreateRepo"))
 						Reactions.githubCreateRepo(user_id, reaction_value, c ,stmt);
-					if (nameReaction == "githubReactionComments")
+					if (nameReaction.equals("githubReactionComments"))
 						Reactions.githubReactionComments(user_id, reaction_value, c ,stmt);
-					if (nameReaction == "youtubeReactionNewFriend")
+					if (nameReaction.equals("youtubeReactionNewFriend"))
 						Reactions.youtubeReactionNewFriend(user_id, reaction_value, c ,stmt);
-					if (nameReaction == "gmailSendMail")
+					if (nameReaction.equals("gmailSendMail"))
 						Reactions.gmailSendMail(user_id, reaction_value, c ,stmt);
-					if (nameReaction == "twitterNewPost")
+					if (nameReaction.equals("twitterNewPost"))
 						Reactions.twitterNewPost(twitter, reaction_value);
 				}
 				System.out.println(user_id);

@@ -8378,6 +8378,10 @@
     margin-top: 7%;
   }
   .place-reddit {
-    margin-left: 53%;
-    margin-top: 7%;
-  }
+       margin-left: 53%;
+       margin-top: 7%;
+   }
+ .place-twitch {
+     margin-left: 50%;
+     margin-top: 7%;
+ }

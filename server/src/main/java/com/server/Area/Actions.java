@@ -461,7 +461,6 @@ public class Actions {
         }  catch (IOException e) {
             System.out.println(e);
         }
-        System.out.println(count + ":" + sha);
         return count + ":" + sha;
     }
 

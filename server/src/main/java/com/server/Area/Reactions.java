@@ -80,10 +80,11 @@ public class Reactions {
     }
 
     /// REACTION add comment to a commit
-    public static void githubPostComment(int userId, String username, String repoName, String sha, Connection c, PreparedStatement stmt) {
+    public static void githubPostComment(int userId, String value, Connection c, PreparedStatement stmt) {
+        String[] value_split = value.split(":|\\/");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + username + "/"+ repoName + "/commits/" + sha + "/comments");
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + value_split[0] + "/"+ value_split[1] + "/commits/" + value_split[3] + "/comments");
             url.addHeader("Authorization", access_token);
             JSONObject countryObj = new JSONObject();
             countryObj.put("body", "Bon travail :)");
@@ -112,10 +113,11 @@ public class Reactions {
     }
 
     /// REACTION add heart Emoji in comment
-    public static void githubReactionComments(int userId, String userName, String repoName, String commentIds, Connection c, PreparedStatement stmt) {
+    public static void githubReactionComments(int userId, String value, Connection c, PreparedStatement stmt) {
+        String[] value_split = value.split(":|\\/");
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);
         try {
-            HttpPost url = new HttpPost("https://api.github.com/repos/" + userName + "/" +  repoName + "/comments/" + commentIds + "/reactions");
+            HttpPost url = new HttpPost("https://api.github.com/repos/" + value_split[0] + "/" +  value_split[1] + "/comments/" + value_split[3] + "/reactions");
             url.addHeader("Authorization", access_token);
             url.addHeader("Accept", "application/vnd.github.squirrel-girl-preview+json");
             JSONObject countryObj = new JSONObject();

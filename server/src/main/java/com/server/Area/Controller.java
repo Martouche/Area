@@ -142,9 +142,9 @@ public class Controller {
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherHumidityMin' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherHumidityMin');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", 0, 'wetherHumidityMax' WHERE NOT EXISTS (SELECT * FROM services_actions where name='wetherHumidityMax');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + TwitchId + ", 'twitchStreamerIsOnline' WHERE NOT EXISTS (SELECT * FROM services_actions where name='twitchStreamerIsOnline');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetNumberFriends' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetNumberFriends');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosLike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosLike');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosDislike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosDislike');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeNewFriend' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeNewFriend');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeLikingVideo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeLikingVideo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeDislikingVideo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeDislikingVideo');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewRepo');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommitsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommitsRepo');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommentsRepo');");
@@ -788,6 +788,7 @@ public class Controller {
 
 				boolean resultaction = false;
 				String nameAction = getActionNamebyId(action_id);
+				System.out.println("mon action :" + nameAction + "  -> value : " + action_value);
 
 				if (nameAction.equals("gmailNewMail"))
 					resultaction = Actions.gmailNewMail(user_id, action_value, c, stmt);
@@ -816,7 +817,7 @@ public class Controller {
 				if (resultaction) {
 					System.out.println("mon action :" + nameAction + "  a marché");
 					String nameReaction = getReactionNamebyId(reaction_id);
-					System.out.println("ma reaction :" + nameReaction);
+					System.out.println("ma reaction :" + nameReaction + "  -> value : " + reaction_value);
 					if (nameReaction.equals("githubPostComment"))
 						Reactions.githubPostComment(user_id, reaction_value, c ,stmt);
 					if (nameReaction.equals("githubCreateRepo"))
@@ -830,11 +831,6 @@ public class Controller {
 					if (nameReaction.equals("twitterNewPost"))
 						Reactions.twitterNewPost(twitter, reaction_value);
 				}
-				System.out.println(user_id);
-				System.out.println(action_id);
-				System.out.println(action_value);
-				System.out.println(reaction_id);
-				System.out.println(reaction_value);
 			}
 		} catch (Exception e) {
 			System.out.println(e);

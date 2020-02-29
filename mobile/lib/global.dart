@@ -1,9 +1,11 @@
-// usr info //
-String email;
-String pass;
-String name;
+import 'package:http/http.dart' as http;
 
 String userAgent;
+
+int count = 1;
+List<Post> post = new List<Post>();
+User user = new User();
+API api = new API();
 
 bool google = false;
 bool github = false;
@@ -25,3 +27,22 @@ Map<String, bool> connectedService() => {
   'reddit' : reddit,
 };
 
+class Post {
+  String action;
+  String reaction;
+  String actionValue;
+  String reactionValue;
+}
+
+class API {
+  static Future getID() {
+    return http.get('localhost:9090/getId');
+  }
+}
+
+
+class User {
+  String id;
+  String name;
+  String pass = "";
+}

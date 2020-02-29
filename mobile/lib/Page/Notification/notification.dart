@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/Container/custom_name.dart';
-import 'package:mobile/Page/Home/fetch.dart';
 import 'package:mobile/Container/Scroll/scrollview.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -10,11 +9,9 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  Future<Post> post;
 
   @override
   void initState() {
-    post = fetchPost();
     super.initState();
   }
 

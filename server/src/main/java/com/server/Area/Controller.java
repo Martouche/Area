@@ -52,7 +52,7 @@ public class Controller {
 	Connection c = null;
 	PreparedStatement stmt = null;
 	boolean isLogged = false;
-	int id = 0;
+	int id;
 
 	Twitter twitter = TwitterFactory.getSingleton();
 	AccessToken accessTokenTwitter = null;
@@ -61,6 +61,7 @@ public class Controller {
 
 
 	public Controller() {
+		id = 0;
 		try {
 			Class.forName("org.postgresql.Driver");
 			c = DriverManager
@@ -551,12 +552,23 @@ public class Controller {
 
 	public List<String> getNameActionByServiceId(List<String> idServices) {
 		List<String> data = new ArrayList<String>();
+		try {
+			stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id_service = '0';");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				data.add(rs.getString("name"));
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		for(String idservice : idServices) {
 			System.out.println(idservice);
 			try {
-				stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id_service = '" + idservice + "'");
+				stmt = c.prepareStatement("SELECT name FROM services_actions WHERE id_service = '" + idservice + "';");
 				ResultSet rs = stmt.executeQuery();
 				while (rs.next()) {
+					System.out.println("caca " + rs.getString("name"));
 					data.add(rs.getString("name"));
 				}
 				rs.close();
@@ -571,7 +583,7 @@ public class Controller {
 	}
 
 	public String[] getServiceByUser(String userId) {
-		String[] data = new String[8];
+		String[] data = new String[9];
 		try {
 			stmt = c.prepareStatement("SELECT * FROM user_service_token WHERE id_user = '" + userId + "'");
 			ResultSet rs = stmt.executeQuery();
@@ -584,6 +596,7 @@ public class Controller {
 				data[5] = (rs.getString(7) == null) ? null : "facebook";
 				data[6] = (rs.getString(8) == null) ? null : "reddit";
 				data[7] = (rs.getString(9) == null) ? null : "twitter";
+				data[8] = (rs.getString(10) == null) ? null : "twitch";
 			}
 			rs.close();
 		} catch (Exception e) {

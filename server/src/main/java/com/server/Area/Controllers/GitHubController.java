@@ -69,6 +69,7 @@ public class GitHubController {
 
         System.out.println(datauser);
         String emailUser = (String) datauser.get("email");
+        System.out.println("mon old id " + oldid);
         if (oldid == 0) {
             User.addUserService(emailUser, accessToken, "github", c, stmt);
             this.id = User.getUserIdByName(emailUser, c, stmt);

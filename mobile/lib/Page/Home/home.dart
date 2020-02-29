@@ -64,33 +64,46 @@ class _HomePageState extends State<HomePage> {
   Widget signIn() {
     return Column(
       children: <Widget>[
-        SignIn(root: '/github',
-          text: 'Sign in with Github',
-          logo: 'assets/logo-github.png',),
-        SignIn(root: '/spotify',
-          text: 'Sign in with Spotify',
+        SignIn(root: 'google',
+          serviceName: 'Google',
+          logo: 'assets/logo-google.png',
+          textColor: Colors.grey,),
+        SignIn(root: 'github',
+          serviceName: 'Github',
+          logo: 'assets/logo-github.png',
+          textColor: Colors.black,),
+        SignIn(root: 'spotify',
+          serviceName: 'Spotify',
           logo: 'assets/logo-spotify.png',
           textColor: Color(0xFF1DB954),),
-        SignIn(root: '/linkedin',
-          text: 'Sign in with Linkedin',
+        SignIn(root: 'linkedin',
+          serviceName: 'Linkedin',
           logo: 'assets/logo-linkedin.png',
           textColor: Color(0xFF0072b1),),
-        SignIn(root: '/twitter',
-          text: 'Sign in with Twitter',
+        SignIn(root: 'twitter',
+          serviceName: 'Twitter',
           logo: 'assets/logo-twitter.png',
           textColor: Color(0xFF00acee),),
-        SignIn(root: '/facebook',
-          text: 'Sign in with Facebook',
+        SignIn(root: 'facebook',
+          serviceName: 'Facebook',
           logo: 'assets/logo-facebook.png',
           textColor: Color(0xFF3b5998),),
-        SignIn(root: '/twitch',
-          text: 'Sign in with Twitch',
+        SignIn(root: 'twitch',
+          serviceName: 'Twitch',
           logo: 'assets/logo-twitch.png',
           textColor: Color(0xFF6441A4),),
-        SignIn(root: '/reddit',
-          text: 'Sign in with Reddit',
+        SignIn(root: 'reddit',
+          serviceName: 'Reddit',
           logo: 'assets/logo-reddit.png',
           textColor: Color(0xFFFF5700),),
+        SizedBox(height: 50,),
+      ],
+    );
+  }
+  Widget action() {
+    return ListView(
+      children: <Widget>[
+
       ],
     );
   }

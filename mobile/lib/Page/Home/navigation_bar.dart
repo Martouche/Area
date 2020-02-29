@@ -3,14 +3,14 @@ import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/Page/Notification/notification.dart';
 import 'package:morpheus/morpheus.dart';
 
-class Home extends StatefulWidget {
+class BottomBarPage extends StatefulWidget {
 
   @override
-  _HomeState createState() => _HomeState();
+  _BottomBarPageState createState() => _BottomBarPageState();
 
 }
 
-class _HomeState extends State<Home> {
+class _BottomBarPageState extends State<BottomBarPage> {
 
   final List<Widget> _screens = [
     HomePage(),

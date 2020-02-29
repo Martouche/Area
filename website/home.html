@@ -40,13 +40,6 @@
 	          </li>
 	          <li>
               <div class="d-flex custom-control custom-switch">
-                <a href="#"><span class="fa fa-spotify mr-3"></span> Spotify </a>
-                <input type="checkbox" class="custom-control-input" id="customSwitch4">
-                <label class="custom-control-label place-spotify" for="customSwitch4"></label>
-              </div>
-            </li>
-	          <li>
-              <div class="d-flex custom-control custom-switch">
                 <a href="#"><span class="fa fa-github mr-3"></span> GitHub </a>
                 <input type="checkbox" class="custom-control-input" id="customSwitch5">
                 <label class="custom-control-label place-github" for="customSwitch5"></label>
@@ -81,7 +74,7 @@
                 </div>
               </li>
               <li>
-                <a href="/logout"><span class="fa fa-sign-out mr-3 "></span> Sign out</a>
+                <a href="/logout"><span class="fa fa-sign-out mr-3 "></span> Log out</a>
               </li>
 	        </ul>
 
@@ -141,78 +134,65 @@
 
       <script>
 
+      var url = window.location.href;
+      var id = url.substring(url.lastIndexOf('=') + 1);
+
       $("#customSwitch1").on( "click", function() {
         if ($("#customSwitch1").is(':checked')) {
-          alert("Vous venez d'activer votre service Spotify");
-          //document.location.href="http://localhost:8080/oauth2/autorize/spotify"
+          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
         }
         else {
-          alert("Vous venez de désactiver votre service Spotify");
+          document.location.href="http://localhost:8080/oauth2/logout/spotify?userid=" + id;
         }
       });
       $("#customSwitch2").on( "click", function() {
         if ($("#customSwitch2").is(':checked')) {
-          alert("Vous venez d'activer votre service Google");
           document.location.href="http://localhost:8080/oauth2/autorize/google"
         }
         else
-          alert("Vous venez de désactiver votre service Google");
+          document.location.href="http://localhost:8080/oauth2/logout/google?userid=" + id;
       });
       $("#customSwitch3").on( "click", function() {
         if ($("#customSwitch3").is(':checked')) {
-          alert("Vous venez d'activer votre service Google");
           document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
         }
         else
-          alert("Off");
-      });
-      $("#customSwitch4").on( "click", function() {
-        if ($("#customSwitch4").is(':checked')) {
-          alert("On");
-          document.location.href="http://localhost:8080/oauth2/autorize/spotify"
-        }
-        else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/linkedin?userid=" + id;
       });
       $("#customSwitch5").on( "click", function() {
         if ($("#customSwitch5").is(':checked')) {
-          alert("On");
           document.location.href="http://localhost:8080/oauth2/autorize/github"
         }
         else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/github?userid=" + id;
       });
       $("#customSwitch6").on( "click", function() {
         if ($("#customSwitch6").is(':checked')) {
-          alert("On");
-          document.location.href="http://localhost:8080/oauth2/autorize/linkedin"
+          document.location.href="http://localhost:8080/oauth2/autorize/facebook"
         }
         else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/facebook?userid=" + id;
       });
       $("#customSwitch7").on( "click", function() {
         if ($("#customSwitch7").is(':checked')) {
-          alert("On");
           document.location.href="http://localhost:8080/oauth2/autorize/twitter"
         }
         else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/twitter?userid=" + id;
       });
       $("#customSwitch8").on( "click", function() {
         if ($("#customSwitch8").is(':checked')) {
-          alert("On");
           document.location.href="http://localhost:8080/oauth2/autorize/discord"
         }
         else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/discord?userid=" + id;
       });
       $("#customSwitch9").on( "click", function() {
         if ($("#customSwitch9").is(':checked')) {
-          alert("On");
           document.location.href="http://localhost:8080/oauth2/autorize/reddit"
         }
         else
-          alert("Off");
+          document.location.href="http://localhost:8080/oauth2/logout/reddit?userid=" + id;
       });
 
     </script>

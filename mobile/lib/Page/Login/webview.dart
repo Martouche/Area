@@ -16,6 +16,7 @@ class WebView extends StatefulWidget {
 }
 
 class WebViewState extends State<WebView> {
+  var uri;
   final flutterWebViewPlugin = new FlutterWebviewPlugin();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<String> _onUrlChanged;
@@ -38,6 +39,11 @@ class WebViewState extends State<WebView> {
           print("split ${state.url.split("/")}");
           split = state.url.split("/");
           if (split[2] == "localhost:9090") {
+            uri = Uri.parse(state.url);
+            uri.queryParameters.forEach((k, v) {
+              if (k == "id")
+                user.id = v;
+            });
             flutterWebViewPlugin.close();
             setState(() {
               switch (widget.service) {
@@ -64,6 +70,8 @@ class WebViewState extends State<WebView> {
                   break;
                 case "reddit" :
                   reddit = true;
+                  break;
+                default :
                   break;
               }
             });

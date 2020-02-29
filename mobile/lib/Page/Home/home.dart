@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Container/action_bloc.dart';
 import 'package:mobile/Container/login_button.dart';
 import 'package:mobile/Container/logout.dart';
+import 'package:mobile/global.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    print("IDDDDDDD ${user.id}");
     super.initState();
   }
 
@@ -27,25 +30,14 @@ class _HomePageState extends State<HomePage> {
         color: Colors.black87,
         child: Stack(
           children: <Widget>[
-            AnimatedPositioned(
-              // Use the properties stored in the State class.
-              top: (isOpen) ? (_height - (_height * .6)) : _height,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              duration: Duration(seconds: 1),
-              curve: Curves.fastOutSlowIn,
-              child: Container(
-                color: Colors.blue,
-                child: SingleChildScrollView(
-                  child: signIn(),
-                ),
-              )
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 LogOut(),
+                Container(
+                  height: MediaQuery.of(context).size.height * .8,
+                  child: service(),
+                ),
                 FloatingActionButton.extended(
                   label: (!isOpen) ? Text("Get more") : Text("Close"),
                   onPressed: () {
@@ -56,6 +48,21 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            AnimatedPositioned(
+              // Use the properties stored in the State class.
+                top: (isOpen) ? (_height - (_height * .6)) : _height,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                duration: Duration(seconds: 1),
+                curve: Curves.fastOutSlowIn,
+                child: Container(
+                  color: Colors.blue,
+                  child: SingleChildScrollView(
+                    child: signIn(),
+                  ),
+                )
+            ),
           ],
         ),
       ),
@@ -64,6 +71,11 @@ class _HomePageState extends State<HomePage> {
   Widget signIn() {
     return Column(
       children: <Widget>[
+        Center(child: IconButton(
+          icon: Icon(Icons.keyboard_arrow_down),
+          onPressed: () {setState(() {isOpen = !isOpen;});},
+          color: Colors.white,
+        )),
         SignIn(root: 'google',
           serviceName: 'Google',
           logo: 'assets/logo-google.png',
@@ -100,12 +112,43 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  Widget action() {
-    return ListView(
-      children: <Widget>[
-
-      ],
+  Widget service() {
+    post.add(new Post());
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (context, index) {
+        if (count == index + 1) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    count += 1;
+                  });
+                },
+              ),
+              (count > 1) ? IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    count -= 1;
+                  });
+                },
+              ) : Container()
+            ],
+          );
+        } else {
+          return ActionBloc(
+            index: index,
+            actionList: ['New sub', 'New friend', 'Friend is in live'],
+            reactionList: ['Sub back', 'Send message', 'Share'],
+          );
+        }
+      }
     );
   }
 }
-

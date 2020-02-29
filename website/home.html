@@ -94,8 +94,8 @@
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-        <h2 class="mb-4">Votre compte</h2>
-        <p>Vous pouvez retrouver ici tous vos services</p>
+          <h2 class="mb-4">Votre compte</h2>
+          <p>Vous pouvez retrouver ici tous vos services</p>
           <select id="ListActions" name="Actions">
           </select>
           <input name="ActionValueInput" type="text">
@@ -103,7 +103,7 @@
           </select>
           <input name="ReactionValueInput" type="text">
           <button type="button" onclick="<a href=></a>">Add service</button>
-
+          <div id = "AllActionReactionOfUser"> MES ACTIONS REACTIONS</div>
       </div>
 
         </div>
@@ -158,6 +158,22 @@
                 option = document.createElement( 'option' );
                 option.value = option.text = data[i];
                 document.getElementById("ListReaction").add( option );
+            }
+        },
+        error: function(data) {
+            alert("mauvaise réponse du serveur");
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: ("http://localhost:8080/getActionReactionByUser?userid=" + id),
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                console.log("ma data ", data[i]);
+                // IL FAUT ZAJOUTER LE BUTON DELETE AVEC LE HREF ET FAIRE LA FONCITON LA ROUTE DES DELET ACTIONS REACTIONS
+                $("#AllActionReactionOfUser").append("<div> "+ data[i] +" </div>");
             }
         },
         error: function(data) {

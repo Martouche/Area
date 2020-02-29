@@ -311,7 +311,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("youtubeNewFriend", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + friends + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + friends + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -353,7 +353,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("youtubeLikingVideo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + like + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + like + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -395,7 +395,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("youtubeDislikingVideo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + dislike + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + dislike + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -429,14 +429,15 @@ public class Actions {
             url.addHeader("Authorization", access_token);
             JSONArray reponse = new JSONArray(execute(url));
             count = reponse.length();
+            System.out.println("laaaaaaa"+count);
         }  catch (IOException e) {
             System.out.println(e);
         }
         if (count != Integer.valueOf(githubTotalRepo)) {
             // a tester
             try {
-                int id_action = getActionIdbyName("githubGetRepo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                int id_action = getActionIdbyName("githubNewRepo", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + count + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -479,7 +480,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("githubNewCommitsRepo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);
@@ -523,7 +524,7 @@ public class Actions {
             // a tester
             try {
                 int id_action = getActionIdbyName("githubNewCommentsRepo", c, stmt);
-                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + "AND id_service_action = " + id_action);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + test[0] + ":" + count + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
                 stmt.execute();
             }catch (Exception e) {
                 System.out.println(e);

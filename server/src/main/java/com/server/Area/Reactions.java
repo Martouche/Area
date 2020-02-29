@@ -260,7 +260,7 @@ public class Reactions {
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity);
 
-        if (response.getStatusLine().getStatusCode() != 200) {
+        if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 201) {
             throw new RuntimeException("Expected 200 or 201 but got " + response.getStatusLine().getStatusCode() + ", with body " + body);
         }
 

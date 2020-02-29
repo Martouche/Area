@@ -83,6 +83,7 @@ public class Controller {
 		//Actions.githubReactionComments(34, "Martouche", "BSQ", "37507663", c , stmt );
 		//Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
 		//Reactions.gmailSendMail(1, c, stmt );
+		//Actions.youtubeNewFriend()
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
@@ -144,9 +145,9 @@ public class Controller {
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetNumberFriends' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetNumberFriends');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosLike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosLike');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeGetVideosDislike' WHERE NOT EXISTS (SELECT * FROM services_actions where name='youtubeGetVideosDislike');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubGetRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubGetRepo');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCommitsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubCommitsRepo');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubCommentsRepo');");
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewRepo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommitsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommitsRepo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommentsRepo');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();

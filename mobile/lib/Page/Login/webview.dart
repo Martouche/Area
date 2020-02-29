@@ -18,6 +18,8 @@ class WebView extends StatefulWidget {
 }
 
 class WebViewState extends State<WebView> {
+  Set<dynamic> setAction;
+  Set<dynamic> setReaction;
   var uri;
   final flutterWebViewPlugin = new FlutterWebviewPlugin();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -46,39 +48,56 @@ class WebViewState extends State<WebView> {
                   user.id = v;
                 });
             });
-            fetchAction().then((onValue) { print("fetching.............. $onValue"); });
-            flutterWebViewPlugin.close();
-            setState(() {
-              print("SERVICE: ${widget.service} ::: ${connectedService()['${widget.service}']}");
-              switch (widget.service) {
-                case "google" :
-                  google = widget.isNotLog;
-                  break;
-                case "github" :
-                  github = widget.isNotLog;
-                  break;
-                case "spotify" :
-                  spotify = widget.isNotLog;
-                  break;
-                case "linkedin" :
-                  linkedin = widget.isNotLog;
-                  break;
-                case "twitter" :
-                  twitter = widget.isNotLog;
-                  break;
-                case "facebook" :
-                  facebook = widget.isNotLog;
-                  break;
-                case "twitch" :
-                  twitch = widget.isNotLog;
-                  break;
-                case "reddit" :
-                  reddit = widget.isNotLog;
-                  break;
-                default :
-                  break;
-              }
+            fetchAction().then((onValue) {
+              actionList = List<String>.from(onValue);
             });
+            fetchReaction().then((onValue) {
+              reactionList = List<String>.from(onValue);
+            });
+            fetchService().then((onValue) {
+              google = false;
+              github = false;
+              spotify = false;
+              linkedin = false;
+              twitter = false;
+              facebook = false;
+              twitch = false;
+              reddit = false;
+              serviceList = List<String>.from(onValue);
+              serviceList.forEach((f) {
+                setState(() {
+                  switch (f) {
+                    case "google" :
+                      google = true;
+                      break;
+                    case "github" :
+                      github = true;
+                      break;
+                    case "spotify" :
+                      spotify = true;
+                      break;
+                    case "linkedin" :
+                      linkedin = true;
+                      break;
+                    case "twitter" :
+                      twitter = true;
+                      break;
+                    case "facebook" :
+                      facebook = true;
+                      break;
+                    case "twitch" :
+                      twitch = true;
+                      break;
+                    case "reddit" :
+                      reddit = true;
+                      break;
+                    default :
+                      break;
+                  }
+                });
+              });
+            });
+            flutterWebViewPlugin.close();
             Navigator.pushNamed(context, widget.root);
           }
     });

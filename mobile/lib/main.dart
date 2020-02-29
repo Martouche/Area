@@ -2,6 +2,7 @@ import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/Page/Home/navigation_bar.dart';
 import 'package:mobile/Page/Login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/Page/Login/register.dart';
 import 'package:mobile/Page/Login/webview.dart';
 import 'package:mobile/Page/Notification/notification.dart';
 import 'package:mobile/global.dart';
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
         '/login/server': (context) => WebView('http://localhost:8080/login?name=${user.name}&pwd=${user.pass}', 'Connection AREA', ''),
+        '/register/server': (context) => WebView('http://localhost:8080/register?name=${user.name}&pwd=${user.pass}', 'Connection AREA', ''),
         '/logout/server': (context) => WebView('http://localhost:8080/logout', 'Deconnection', '', root: '/login',),
         '/login/google': (context) => WebView('http://localhost:8080/oauth2/autorize/google', 'Connection GOOGLE', 'google'),
         '/logout/google': (context) => WebView('http://localhost:8080/oauth2/logout/google?userid=${user.id}', 'Deconnection GOOGLE', 'google', isNotLog: false,),

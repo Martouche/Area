@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/global.dart';
 
 class SignIn extends StatelessWidget {
   final root;
-  final text;
+  final serviceName;
   final logo;
   final backgroundColor;
   final textColor;
 
-  SignIn({this.root, this.text, this.logo, this.backgroundColor = Colors.white, this.textColor = Colors.black});
+  SignIn({this.root, this.serviceName, this.logo, this.backgroundColor = Colors.white, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +26,10 @@ class SignIn extends StatelessWidget {
             .width*.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
-          color: backgroundColor,
+          color: connectedService()[root] ? Colors.grey : backgroundColor,
         ),
         child: OutlineButton(
-          onPressed: () => Navigator.of(context).pushNamed(root),
+          onPressed: () => connectedService()[root] ? null : Navigator.of(context).pushNamed('/$root'),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12)
           ),
@@ -44,10 +45,10 @@ class SignIn extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
-                    text,
+                    connectedService()[root] ? "Sign out to $serviceName" : "Sign in with $serviceName",
                     style: TextStyle(
                       fontSize: 20,
-                      color: textColor,
+                      color: connectedService()[root] ? Colors.white : textColor,
                     ),
                   ),
                 )

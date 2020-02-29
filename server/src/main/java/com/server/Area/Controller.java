@@ -634,6 +634,28 @@ public class Controller {
 		return json;
 	}
 
+	@CrossOrigin
+	@RequestMapping(value = "/getActionReactionByUser", method = RequestMethod.GET)
+	public String GetService(@RequestParam(value = "userid") String userId) {
+		System.out.println("monuid user dans ma req " + userId);
+		List<String> allactionreaction = new ArrayList<String>();
+		try {
+			stmt = c.prepareStatement("SELECT * FROM user_actions_reactions WHERE id_user = " + userId + "");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String nameaction = getActionNamebyId(rs.getInt("id_service_action"));
+				String namereaction = getActionNamebyId(rs.getInt("id_service_reaction"));
+				allactionreaction.add(nameaction + ":" + rs.getString("value_service_action") + "|" + namereaction + ":" + rs.getString("value_service_reaction"));
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		String json = new Gson().toJson(allactionreaction);
+		System.out.println("mon JSON : " + json);
+		return json;
+	}
+
 	@RequestMapping(value = "/getEmail", method = RequestMethod.GET)
 	public String GetEmail(@RequestParam(value = "id") String id) {
 		String email = null;
@@ -719,9 +741,9 @@ public class Controller {
 		if (actionName == "githubNewRepo")
 			actionValue = String.valueOf(Actions.githubGetRepo(int_user_id, c, stmt));
 		if (actionName == "githubNewCommitsRepo")
-			actionValue = actionValue + ":" + String.valueOf(Actions.githubGetCommitsRepo(int_user_id, actionValue, c, stmt));
+			actionValue = actionValue + ":" + Actions.githubGetCommitsRepo(int_user_id, actionValue, c, stmt);
 		if (actionName == "githubNewCommentsRepo")
-			actionValue = actionValue + ":" + String.valueOf(Actions.githubGetCommentsRepo(int_user_id, actionValue, c, stmt));
+			actionValue = actionValue + ":" + Actions.githubGetCommentsRepo(int_user_id, actionValue, c, stmt);
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +

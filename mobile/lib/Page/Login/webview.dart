@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/global.dart';
 
 class WebView extends StatefulWidget {
   final String url;
   final String title;
   final String service;
-  WebView(this.url, this.title, this.service);
+  final String root;
+  final bool isNotLog;
+  WebView(this.url, this.title, this.service, {this.root = "/login/home", this.isNotLog = true});
   @override
   WebViewState createState() {
     return new WebViewState();
@@ -22,8 +24,6 @@ class WebViewState extends State<WebView> {
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription _onDestroy;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-
-//  String _userAgent = "CFNetwork/1121.2.1 Darwin/19.3.0 (iPhone/11_Pro_Max iOS/13.3)";
 
   @override
   void initState() {
@@ -42,40 +42,44 @@ class WebViewState extends State<WebView> {
             uri = Uri.parse(state.url);
             uri.queryParameters.forEach((k, v) {
               if (k == "id")
-                user.id = v;
+                setState(() {
+                  user.id = v;
+                });
             });
+            fetchAction().then((onValue) { print("fetching.............. $onValue"); });
             flutterWebViewPlugin.close();
             setState(() {
+              print("SERVICE: ${widget.service} ::: ${connectedService()['${widget.service}']}");
               switch (widget.service) {
                 case "google" :
-                  google = true;
+                  google = widget.isNotLog;
                   break;
                 case "github" :
-                  github = true;
+                  github = widget.isNotLog;
                   break;
                 case "spotify" :
-                  spotify = true;
+                  spotify = widget.isNotLog;
                   break;
                 case "linkedin" :
-                  linkedin = true;
+                  linkedin = widget.isNotLog;
                   break;
                 case "twitter" :
-                  twitter = true;
+                  twitter = widget.isNotLog;
                   break;
                 case "facebook" :
-                  facebook = true;
+                  facebook = widget.isNotLog;
                   break;
                 case "twitch" :
-                  twitch = true;
+                  twitch = widget.isNotLog;
                   break;
                 case "reddit" :
-                  reddit = true;
+                  reddit = widget.isNotLog;
                   break;
                 default :
                   break;
               }
             });
-            Navigator.pushNamed(context, '/home/signin');
+            Navigator.pushNamed(context, widget.root);
           }
     });
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
@@ -110,7 +114,7 @@ class WebViewState extends State<WebView> {
       hidden: true,
       clearCache: true,
       userAgent: userAgent,
-      clearCookies: false,
+      clearCookies: true,
 //      appBar: AppBar(title: Text("Current Url")),
     );
   }
@@ -143,7 +147,7 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   child: InAppWebView(
                     initialData: InAppWebViewInitialData(
                         data: """
-<!DOCTYPE html>
+<DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">

@@ -14,7 +14,7 @@ class LogOut extends StatelessWidget {
           ),
           child: IconButton(
             icon: Icon(Icons.power_settings_new, color: Colors.blue),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/logout/server'),
           ),
         ),
     ],

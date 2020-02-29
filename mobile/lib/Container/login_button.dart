@@ -29,7 +29,7 @@ class SignIn extends StatelessWidget {
           color: connectedService()[root] ? Colors.grey : backgroundColor,
         ),
         child: OutlineButton(
-          onPressed: () => connectedService()[root] ? null : Navigator.of(context).pushNamed('/$root'),
+          onPressed: () => connectedService()[root] ? Navigator.of(context).pushNamed('/logout/$root') : Navigator.of(context).pushNamed('/login/$root'),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12)
           ),

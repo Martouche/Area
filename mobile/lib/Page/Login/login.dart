@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/server'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/login/server'),
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),
@@ -193,7 +193,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-          SignIn(root: 'github', serviceName: 'Github', logo: 'assets/logo-github.png',),
           Container(
             width: MediaQuery
                 .of(context)

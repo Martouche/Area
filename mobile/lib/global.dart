@@ -6,6 +6,9 @@ int count = 1;
 List<Post> post = new List<Post>();
 User user = new User();
 API api = new API();
+List<String> actionList = [];
+List<String> reactionList = [];
+List<String> serviceList;
 
 bool google = false;
 bool github = false;

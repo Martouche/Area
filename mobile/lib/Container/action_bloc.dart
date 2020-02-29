@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/Page/Login/webview.dart';
 import 'package:mobile/global.dart';
+import 'package:http/http.dart' as http;
 
 class ActionBloc extends StatefulWidget {
   final int index;
   final List<String> actionList;
   final List<String> reactionList;
+  String actionVal = "";
+  String reactionVal = "";
   ActionBloc({this.index, this.actionList, this.reactionList});
   @override
   _ActionBlocState createState() => _ActionBlocState();
 }
 
 class _ActionBlocState extends State<ActionBloc> {
+  bool isSub = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +26,20 @@ class _ActionBlocState extends State<ActionBloc> {
       child: Column(
         children: <Widget>[
           Text("Action"),
-          service(widget.index),
+          action(widget.index),
           Text("Reaction"),
-          area(widget.index),
+          reaction(widget.index),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
+              Text("Subscribe"),
               IconButton(
                 icon: Icon(Icons.check),
-                onPressed: () {setState(() {count = count;});},
-              ),
+                onPressed: () {setState(() {
+                  print(widget.reactionVal);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WebView('http://localhost:8080/postActionReactionForUser?userid=${user.id}&actionName=${post[widget.index].action}&actionValue=${widget.reactionVal}&reactionName=${post[widget.index].reaction}&reactionValue=${widget.reactionVal}', 'Add service', '')));
+                });},
+              )
             ],
           )
         ],
@@ -38,7 +47,7 @@ class _ActionBlocState extends State<ActionBloc> {
     );
   }
 
-  Widget service(int index) {
+  Widget action(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
@@ -60,7 +69,9 @@ class _ActionBlocState extends State<ActionBloc> {
           child: TextField(
             textAlign: TextAlign.center,
             onChanged: (value) {
-              post[index].actionValue = value;
+              setState(() {
+                widget.actionVal = value;
+              });
             },
           ),
         )
@@ -68,7 +79,7 @@ class _ActionBlocState extends State<ActionBloc> {
     );
   }
 
-  Widget area(int index) {
+  Widget reaction(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
@@ -90,8 +101,12 @@ class _ActionBlocState extends State<ActionBloc> {
           child: TextField(
             textAlign: TextAlign.center,
             onChanged: (value) {
-              post[index].reactionValue = value;
-            },
+              setState(() {
+                print(value);
+                widget.reactionVal = value;
+                print(widget.reactionVal);
+              });
+              },
           ),
         )
       ],

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/global.dart';
 
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
       FlutterUserAgent.getPropertyAsync('userAgent')
@@ -183,36 +183,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/login/server'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/register/server'),
                     child: Text(
-                      "Log In",
+                      "Register",
                       style: TextStyle(color: this.foregroundColor),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            margin: const EdgeInsets.only(
-                left: 40.0, right: 40.0, top: 10.0, bottom: 20.0),
-            alignment: Alignment.center,
-            child: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/register'),
-                    child: Text(
-                      "Don't have an account? Create One",
-                      style: TextStyle(
-                          color: this.foregroundColor.withOpacity(0.5)),
                     ),
                   ),
                 ),

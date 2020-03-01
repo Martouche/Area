@@ -280,12 +280,15 @@
         url: ("http://localhost:8080/getActionReactionByUser?userid=" + id),
         dataType: "json",
         async: false,
-        success: function(data) {
-            for (var i = 0; i < data.length; i++) {
-//                console.log("ma data ", data[i]);
-                // IL FAUT ZAJOUTER LE BUTON DELETE AVEC LE HREF ET FAIRE LA FONCITON LA ROUTE DES DELET ACTIONS REACTIONS
-                $("#AllActionReactionOfUser").append("<div> "+ data[i] +" </div>");
-            }
+        success: function(datas) {
+          for (var i = 0; i < datas.length; i++) {
+            var data = datas[i];
+            console.log("ma data au debut ->", data);
+            var res = data[0].split("|");
+            var resaction = res[0].split(":");
+            var resreaction = res[1].split(":");
+            $("#AllActionReactionOfUser").append("<div> action : " + resaction[0] + ", value -> " + resaction[1] + " --- reaction " + resreaction[0] + ", value -> " + resreaction[1] + "<a href=\"http://localhost:8080/deleteActionReactionForUser?userid=" + id + "&actionName=" + resaction[0] + "&actionValue=" + resaction[1] + "&reactionName=" + resreaction[0] + "&reactionValue=" + resreaction[1] + "\" class=\"button\">Remove</a></div>");
+          }
         },
         error: function(data) {
             alert("mauvaise réponse du serveur");

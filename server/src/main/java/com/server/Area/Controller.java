@@ -664,6 +664,8 @@ public class Controller {
 	@RequestMapping(value = "/getActionReactionByUser", method = RequestMethod.GET)
 	public String GetActionReaction(@RequestParam(value = "userid") String userId) {
 		System.out.println("monuid user dans ma req getActionReactionByUser" + userId);
+		String valueaction = "";
+		String valuereaction = "";
 		List<String> allactionreaction = new ArrayList<String>();
 		try {
 			stmt = c.prepareStatement("SELECT * FROM user_actions_reactions WHERE id_user = " + userId + "");
@@ -671,14 +673,28 @@ public class Controller {
 			while (rs.next()) {
 				String nameaction = getActionNamebyId(rs.getInt("id_service_action"));
 				String namereaction = getReactionNamebyId(rs.getInt("id_service_reaction"));
-				allactionreaction.add(nameaction + ":" + rs.getString("value_service_action") + "|" + namereaction + ":" + rs.getString("value_service_reaction"));
+				if (rs.getString("value_service_action").isEmpty()) {
+					valueaction = "null";
+				} else {
+					valueaction = rs.getString("value_service_action");
+				}
+				if (rs.getString("value_service_reaction").isEmpty()) {
+						valuereaction = "null";
+					} else {
+						valuereaction = rs.getString("value_service_reaction");
+					}
+
+				System.out.println(valueaction);
+				System.out.println(valuereaction);
+
+				allactionreaction.add(nameaction + ":" + valueaction + "|" + namereaction + ":" + valuereaction);
 			}
 			rs.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		String json = new Gson().toJson(allactionreaction);
-		System.out.println("mon JSON : " + json);
+		System.out.println("mon JSON11 : " + json);
 		return json;
 	}
 
@@ -749,7 +765,7 @@ public class Controller {
 
 
 	@RequestMapping(value = "/deleteActionReactionForUser", method = RequestMethod.GET)
-	public String deleteActionReaction(@RequestParam(value = "userid") String userId,
+	public RedirectView deleteActionReaction(@RequestParam(value = "userid") String userId,
 									 @RequestParam(value = "actionName") String actionName,
 									 @RequestParam(value = "actionValue") String actionValue,
 									 @RequestParam(value = "reactionName") String reactionName,
@@ -758,14 +774,15 @@ public class Controller {
 		int id_service_reaction = getReactionIdbyName(reactionName);
 		int int_user_id = Integer.parseInt(userId);
 
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:9090/home?id=" + userId);
 		try {
 			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user = " + userId + " AND id_service_action = " + id_service_action + " AND value_service_action = '" + actionValue + "' AND id_service_reaction = " + id_service_reaction + " AND value_service_reaction = '" + reactionValue + "';");
 			stmt.execute();
-			return "delete work";
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return null;
+		return redirectView;
 	}
 
 	@RequestMapping(value = "/postActionReactionForUser", method = RequestMethod.GET)

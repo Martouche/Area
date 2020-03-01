@@ -3,7 +3,7 @@ FROM debian:stretch
 ENV FLUTTER_VERSION="v1.12.13-hotfixes"
 ENV ANDROID_VERSION="28"
 
-WORKDIR /
+WORKDIR /common_volume
 
 RUN apt-get update -y
 RUN apt-get install -y \
@@ -47,15 +47,6 @@ RUN yes "y" | flutter doctor --android-licenses
 
 ENV PATH $PATH:/flutter/bin/cache/dart-sdk/bin:/flutter/bin
 
-RUN mkdir mobile
-COPY * mobile/
-COPY android/ mobile/android/
-COPY assets/ mobile/assets/
-COPY ios/ mobile/ios/
-COPY lib/ mobile/lib/
-COPY test/ mobile/test/
 
-WORKDIR /mobile
-
-RUN flutter pub get
-RUN flutter build apk --release
+CMD flutter pub get
+CMD flutter build apk --release

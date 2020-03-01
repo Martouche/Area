@@ -25,8 +25,12 @@ services:
     build: ./website
     ports:
         - "9090:9090"
+    volumes:
+      - ./website/:/common_volume
   mobile:
     build: ./mobile
+    volumes:
+      - ./mobile/:/common_volume
 
 volumes:
   db-data:

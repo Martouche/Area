@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/Page/Login/webview.dart';
 import 'package:mobile/global.dart';
-import 'package:http/http.dart' as http;
 
 class ActionBloc extends StatefulWidget {
   final int index;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/global.dart' as global;
 
 class CustomNameContainer extends StatefulWidget {
   final String text;

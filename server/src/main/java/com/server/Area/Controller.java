@@ -85,6 +85,7 @@ public class Controller {
 		//Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
 		//Reactions.gmailSendMail(1,"maxence.svensson@epitech.eu", c, stmt );
 		//Actions.youtubeNewFriend()
+		Actions.spotifyGetPlaylist(1, c, stmt);
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {
@@ -150,7 +151,8 @@ public class Controller {
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommitsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommitsRepo');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyListenJul' WHERE NOT EXISTS (SELECT * FROM services_actions where name='spotifyListenJul');" +
 					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyListen' WHERE NOT EXISTS (SELECT * FROM services_actions where name='spotifyListen');" +
-					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommentsRepo');");
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GithubId + ", 'githubNewCommentsRepo' WHERE NOT EXISTS (SELECT * FROM services_actions where name='githubNewCommentsRepo');" +
+					"INSERT INTO services_actions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyNewPlaylist' WHERE NOT EXISTS (SELECT * FROM services_actions where name='spotifyNewPlaylist');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -165,7 +167,9 @@ public class Controller {
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + TwitterId + ", 'twitterNewPost' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='twitterNewPost');" +
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'gmailSendMail' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='gmailSendMail');" +
 					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + GoogleId + ", 'youtubeReactionNewFriend' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='youtubeReactionNewFriend');" +
-					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyVolumeMax' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='spotifyVolumeMax');");
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyVolumeMax' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='spotifyVolumeMax');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyPause' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='spotifyPause');" +
+					"INSERT INTO services_reactions (id, id_service, name) SELECT " + Integer.toString(rand.nextInt(1000)) + ", " + SpotifyId + ", 'spotifyNext' WHERE NOT EXISTS (SELECT * FROM services_reactions where name='spotifyNext');");
 			stmt.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -411,7 +415,7 @@ public class Controller {
 	@RequestMapping(value = "/oauth2/autorize/spotify", method = RequestMethod.GET)
 	public RedirectView getUrlAutorizeSpotify() {
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("https://accounts.spotify.com/authorize?client_id=b348a012872f4fe78567e7cea9e20c7c&response_type=code&redirect_uri=http://localhost:8080/oauth2/callback/spotify&scope=user-read-private+user-read-currently-playing+user-read-playback-state+user-modify-playback-state");
+		redirectView.setUrl("https://accounts.spotify.com/authorize?client_id=b348a012872f4fe78567e7cea9e20c7c&response_type=code&redirect_uri=http://localhost:8080/oauth2/callback/spotify&scope=user-read-private+user-read-currently-playing+user-read-playback-state+user-modify-playback-state+user-library-read+user-follow-read+playlist-read-private+playlist-read-collaborative");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/callback/spotify", method = RequestMethod.GET)
@@ -762,6 +766,8 @@ public class Controller {
 
 		if (actionName.equals("gmailNewMail"))
 			actionValue = String.valueOf(Actions.getGmailCurrentValueNumberMail(int_user_id, c, stmt));
+		if (actionName.equals("spotifyNewPlaylist"))
+			actionValue = String.valueOf(Actions.spotifyGetPlaylist(int_user_id, c, stmt));
 		if (actionName.equals("youtubeNewFriend"))
 			actionValue = String.valueOf(Actions.youtubeGetNumberFriends(int_user_id, c, stmt));
 		if (actionName.equals("youtubeLikingVideo"))
@@ -834,6 +840,8 @@ public class Controller {
 					resultaction = Actions.spotifyListen(user_id, c, stmt);
 				if (nameAction.equals("spotifyListenJul"))
 					resultaction = Actions.spotifyListenJul(user_id, c, stmt);
+				if (nameAction.equals("spotifyNewPlaylist"))
+					resultaction = Actions.spotifyNewPlaylist(user_id, action_value, c, stmt);
 				if (resultaction) {
 					System.out.println("mon action :" + nameAction + "  a marché");
 					String nameReaction = getReactionNamebyId(reaction_id);
@@ -852,6 +860,10 @@ public class Controller {
 						Reactions.twitterNewPost(twitter, reaction_value);
 					if (nameReaction.equals("spotifyVolumeMax"))
 						Reactions.spotifyVolumeMax(user_id, c, stmt);
+					if (nameReaction.equals("spotifyPause"))
+					Reactions.spotifyPause(user_id, c, stmt);
+					if (nameReaction.equals("spotifyNext"))
+						Reactions.spotifyNext(user_id, c, stmt);
 				}
 			}
 		} catch (Exception e) {

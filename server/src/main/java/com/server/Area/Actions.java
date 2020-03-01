@@ -281,6 +281,48 @@ public class Actions {
     }
 
     //// Return true ou false si écoute une musique
+    public static int spotifyGetPlaylist(int userId, Connection c, PreparedStatement stmt) {
+        String data = null;
+        int count= 0;
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+
+        try {
+            HttpGet url = new HttpGet("https://api.spotify.com/v1/me/playlists?limit=50");
+            url.addHeader("Authorization", access_token );
+            JSONObject reponse = new JSONObject(execute(url));
+            count = reponse.getInt("total");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        return count;
+    }
+
+    //// ACTION NEW FRIEND
+    public static boolean spotifyNewPlaylist(int userId, String valueTotalPlaylist, Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "google", c, stmt);
+        int count = 0;
+        try {
+            HttpGet url = new HttpGet("https://api.spotify.com/v1/me/playlists?limit=50");
+            url.addHeader("Authorization", access_token );
+            JSONObject reponse = new JSONObject(execute(url));
+            count = reponse.getInt("total");
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+        if (count != Integer.valueOf(valueTotalPlaylist)) {
+            try {
+                int id_action = getActionIdbyName("spotifyNewPlaylist", c, stmt);
+                stmt = c.prepareStatement("UPDATE user_actions_reactions SET value_service_action = '" + count + "' WHERE id_user = "+ userId + " AND id_service_action = " + id_action + ";");
+                stmt.execute();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //// Return true ou false si écoute une musique
     public static boolean spotifyListenJul(int userId, Connection c, PreparedStatement stmt) {
         String data = null;
         int count= 0;

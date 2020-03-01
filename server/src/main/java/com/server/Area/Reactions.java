@@ -144,6 +144,32 @@ public class Reactions {
         }
     }
 
+    /// REACTION Pause
+    public static void spotifyPause(int userId,  Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+        try {
+            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/pause&device_id=" + spotifyGetDevice(userId, c, stmt));
+            url.addHeader("Authorization", access_token);
+            execute(url);
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    /// REACTION Next Track
+    public static void spotifyNext(int userId,  Connection c, PreparedStatement stmt) {
+        String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
+        try {
+            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/next&device_id=" + spotifyGetDevice(userId, c, stmt));
+            url.addHeader("Authorization", access_token);
+            execute(url);
+        }  catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+
+
     /// REACTION create Repo
     public static void githubCreateRepo(int userId, String repoName,  Connection c, PreparedStatement stmt) {
         String access_token = "token "+ getAccesTokenById(userId, "github", c, stmt);

@@ -24,7 +24,7 @@ services:
   website:
     build: ./website
     ports:
-        - "9090:9090"
+        - "8081:8081"
     volumes:
       - ./website/:/common_volume
   mobile:

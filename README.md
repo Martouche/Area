@@ -70,7 +70,7 @@ docker-compose up --build
 
 ## Usage
 
-* Login page http://localhost:9090/login
+* Login page http://localhost:8081/login
 
 <!-- LICENSE -->
 ## License

@@ -216,7 +216,7 @@ public class Controller {
 		isLogged = false;
 		id = 0;
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/login");
+		redirectView.setUrl("http://localhost:8081/login");
 		return redirectView;
 	}
 
@@ -229,9 +229,9 @@ public class Controller {
 		}
 		RedirectView redirectView = new RedirectView();
 		if (mine.state == 1)
-			redirectView.setUrl("http://localhost:9090/signup?value=error1");
+			redirectView.setUrl("http://localhost:8081/signup?value=error1");
 		else
-			redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+			redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 
@@ -243,7 +243,7 @@ public class Controller {
 			isLogged = true;
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 
@@ -259,7 +259,7 @@ public class Controller {
 		System.out.println("mon code Discord = " + code);
 		DiscordController mine = new DiscordController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/discord", method = RequestMethod.GET)
@@ -271,7 +271,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -287,7 +287,7 @@ public class Controller {
 		System.out.println("mon code twitch = " + code);
 		TwitchController mine = new TwitchController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/twitch", method = RequestMethod.GET)
@@ -299,7 +299,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -315,7 +315,7 @@ public class Controller {
 		System.out.println("mon code reddit = " + code);
 		RedditController mine = new RedditController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/reddit", method = RequestMethod.GET)
@@ -327,7 +327,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -344,7 +344,7 @@ public class Controller {
 		FacebookController mine = new FacebookController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
 		System.out.println("mon id sorti Facebook = " + id);
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/facebook", method = RequestMethod.GET)
@@ -356,7 +356,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -391,7 +391,7 @@ public class Controller {
 
 		TwitterController mine = new TwitterController(id, "fakeaccestokenpasbesoinenfaite",  c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/twitter", method = RequestMethod.GET)
@@ -404,7 +404,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -421,7 +421,7 @@ public class Controller {
 		System.out.println("mon code linkedin = " + code);
 		LinkedinController mine = new LinkedinController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/linkedin", method = RequestMethod.GET)
@@ -433,7 +433,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -448,7 +448,7 @@ public class Controller {
 	public RedirectView getTokenSpotify(@RequestParam(value = "code") String code) {
 		SpotifyController mine = new SpotifyController(id, code,  c, stmt);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/spotify", method = RequestMethod.GET)
@@ -460,7 +460,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -479,7 +479,7 @@ public class Controller {
 			isLogged = true;
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/github", method = RequestMethod.GET)
@@ -491,7 +491,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -512,7 +512,7 @@ public class Controller {
 		}
 		System.out.println("mon putain d'id = " + mine.getId());
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + id + "");
 		return redirectView;
 	}
 	@RequestMapping(value = "/oauth2/logout/google", method = RequestMethod.GET)
@@ -524,7 +524,7 @@ public class Controller {
 			System.out.println(e);
 		}
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId + "");
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId + "");
 		return redirectView;
 	}
 
@@ -807,7 +807,7 @@ public class Controller {
 		int int_user_id = Integer.parseInt(userId);
 
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:9090/home?id=" + userId);
+		redirectView.setUrl("http://localhost:8081/home?id=" + userId);
 		try {
 			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user = " + userId + " AND id_service_action = " + id_service_action + " AND value_service_action = '" + actionValue + "' AND id_service_reaction = " + id_service_reaction + " AND value_service_reaction = '" + reactionValue + "';");
 			System.out.println("ma requete  quand je delete : " + stmt);

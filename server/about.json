@@ -1,6 +1,6 @@
 {
   " client ": {
-    " host ": "localhost:9090"
+    " host ": "localhost:8081"
   } ,
   " server ": {
     " current_time ": 1531680780 ,

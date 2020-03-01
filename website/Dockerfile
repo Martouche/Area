@@ -4,5 +4,5 @@ RUN ["ls"]
 RUN ["pwd"]
 COPY . .
 RUN npm install
-EXPOSE 9090
+EXPOSE 8081
 CMD [ "node", "app.js" ]

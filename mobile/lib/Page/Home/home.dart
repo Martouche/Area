@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/Container/action_bloc.dart';
 import 'package:mobile/Container/login_button.dart';
 import 'package:mobile/Container/logout.dart';
 import 'package:mobile/global.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override

@@ -49,7 +49,7 @@ class API {
 
 
 class User {
-  String id;
-  String name;
+  String id = "";
+  String name = "";
   String pass = "";
 }

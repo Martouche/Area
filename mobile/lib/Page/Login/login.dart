@@ -1,4 +1,3 @@
-import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:mobile/Container/login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/global.dart';
@@ -13,12 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
-      FlutterUserAgent.getPropertyAsync('userAgent')
-          .then((response) => setState((){
-          userAgent = response;
-        print("RESPONSE : $response");
-      }));
-      super.initState();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {

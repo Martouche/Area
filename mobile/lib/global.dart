@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-String userAgent;
+String userAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10136";
 
 int count = 1;
 List<Post> post = new List<Post>();

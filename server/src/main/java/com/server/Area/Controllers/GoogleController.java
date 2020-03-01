@@ -66,7 +66,6 @@ public class GoogleController {
 
         JSONObject datauser = getUserData(accessToken);
 
-        System.out.println(datauser);
         String emailUser = (String) datauser.get("email");
         if (Userid == 0) {
             User.addUserService(emailUser, accessToken, "google", c, stmt);

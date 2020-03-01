@@ -185,7 +185,31 @@ public class Controller {
 			System.exit(0);
 		}
 	}
-
+	
+	@RequestMapping(value = "/about.json", method = RequestMethod.GET)
+	public List<String> AboutJson() {
+		List<String> records = new ArrayList<String>();
+		System.out.println("Working Directory = " +
+		System.getProperty("user.dir"));
+		try
+		{
+		  BufferedReader reader = new BufferedReader(new FileReader("/usr/app/about.json"));
+		  String line;
+		  while ((line = reader.readLine()) != null)
+		  {
+			records.add(line);
+		  }
+		  reader.close();
+		  return records;
+		}
+		catch (Exception e)
+		{
+		  System.err.format("Exception occurred trying to read '%s'.", "about.json");
+		  e.printStackTrace();
+		  return null;
+		}
+	}
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public RedirectView logoutUser() {
 		System.out.println("Je suis logout dans le serveur");

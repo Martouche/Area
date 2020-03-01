@@ -172,10 +172,10 @@
         <div class="formfield-select--container">
           <select id="ListActions" name="Actions">
           </select>
-          <input id ="ActionValueInput" name="ActionValueInput" type="text">
+          <input id ="ActionValueInput" name="ActionValueInput" type="text" placeholder="pas besoin de mettre de valeur">
           <select id="ListReaction" name="Reaction">
           </select>
-          <input id ="ReactionValueInput" name="ReactionValueInput" type="text">
+          <input id ="ReactionValueInput" name="ReactionValueInput" type="text" placeholder="pas besoin de mettre de valeur">
           <button id="PostActionButton" type="submit" class="POSTbutton">Envoyer l'action</button>
       </div>
           <div id = "AllActionReactionOfUser"> MES ACTIONS REACTIONS</div>
@@ -276,6 +276,43 @@
             }
         });
     });
+    $( "#ListActions" ).change(function() {
+        var selectAction = document.getElementById("ListActions");
+        var value = selectAction.options[selectAction.selectedIndex].text;
+        if (value === "gmailNewMail" || value === "youtubeNewFriend" || value === "youtubeLikingVideo" || value === "youtubeDislikingVideo" || value === "githubNewRepo" || value === "spotifyListen" || value === "spotifyListenJul" || value === "spotifyNewPlaylist")
+            document.getElementById('ActionValueInput').placeholder =  "pas besoin de mettre une valeur";
+        if (value === "githubNewCommitsRepo")
+            document.getElementById('ActionValueInput').placeholder =  "user/repo ex: Martouche/BSQ";
+        if (value === "githubNewCommentsRepo")
+            document.getElementById('ActionValueInput').placeholder =  "user/repo ex: Martouche/BSQ";
+        if (value === "wetherTemperatureMax")
+            document.getElementById('ActionValueInput').placeholder =  "temp ex:10";
+        if (value === "wetherTemperatureMin")
+            document.getElementById('ActionValueInput').placeholder =  "temp ex:10";
+        if (value === "wetherHumidityMax")
+            document.getElementById('ActionValueInput').placeholder =  "humidity ex:30";
+        if (value === "wetherHumidityMin")
+            document.getElementById('ActionValueInput').placeholder =  "humidity ex:30";
+        if (value === "twitchStreamerIsOnline")
+            document.getElementById('ActionValueInput').placeholder =  "streamers name ex: wisethug";
+    });
+
+    $( "#ListReaction" ).change(function() {
+        var selectReaction = document.getElementById("ListReaction");
+        var value = selectReaction.options[selectReaction.selectedIndex].text;
+        if (value === "spotifyPause" || value === "spotifyNext" || value === "spotifyVolumeMax" || value === "githubCreateRepo")
+            document.getElementById('ReactionValueInput').placeholder =  "pas besoin de mettre une valeur";
+        if (value === "githubPostComment")
+            document.getElementById('ActionValueInput').placeholder =  "user/repo ex: Martouche/BSQ";
+        if (value === "githubReactionComments")
+            document.getElementById('ActionValueInput').placeholder =  "user/repo ex: Martouche/BSQ";
+        if (value === "youtubeReactionNewFriend")
+            document.getElementById('ActionValueInput').placeholder =  "username on youtube ex: xMrClyde";
+        if (value === "gmailSendMail")
+            document.getElementById('ActionValueInput').placeholder =  "email to send ex: maxence.svensson@epitech.eu";
+        if (value === "twitterNewPost")
+            document.getElementById('ActionValueInput').placeholder =  "message to tweet";
+    });
 
     $("#customSwitchspotify").on( "click", function() {
       if ($("#customSwitchspotify").is(':checked') && tmp.includes("spotify") == false) {
@@ -286,7 +323,6 @@
         document.location.href="http://localhost:8080/oauth2/logout/spotify?userid=" + id;
       }
     });
-
     $("#customSwitchgoogle").on( "click", function(tmp) {
       if ($("#customSwitchgoogle").is(':checked') && tmp.includes("google") == false) {
         document.location.href="http://localhost:8080/oauth2/autorize/google"

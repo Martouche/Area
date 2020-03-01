@@ -68,6 +68,7 @@ public class FacebookController {
         JSONObject datauser = getUserData(accessToken);
 
         System.out.println(datauser);
+        System.out.println("mon user id facook contorller  " + Userid);
         JSONObject dataemailuser = getgraphData((String) datauser.get("id"), accessToken);
         System.out.println(dataemailuser);
         String emailUser = (String) dataemailuser.get("email");

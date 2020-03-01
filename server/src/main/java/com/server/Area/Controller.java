@@ -318,6 +318,7 @@ public class Controller {
 		System.out.println("mon code Facebook = " + code);
 		FacebookController mine = new FacebookController(id, code, c, stmt);
 		RedirectView redirectView = new RedirectView();
+		System.out.println("mon id sorti Facebook = " + id);
 		redirectView.setUrl("http://localhost:9090/home?id=" + id + "");
 		return redirectView;
 	}
@@ -621,7 +622,7 @@ public class Controller {
 	@CrossOrigin
 	@RequestMapping(value = "/getActionForUser", method = RequestMethod.GET)
 	public String GetAction(@RequestParam(value = "userid") String userId) {
-		System.out.println("monuid user dans ma req " + userId);
+		System.out.println("monuid user dans ma req getaction " + userId);
 		String[] serviceName = getServiceByUser(userId);
 		List<String> serviceId = getServiceIdByName(serviceName);
 		List<String> actionName = getNameActionByServiceId(serviceId);
@@ -633,7 +634,7 @@ public class Controller {
 	@CrossOrigin
 	@RequestMapping(value = "/getReactionForUser", method = RequestMethod.GET)
 	public String GetReaction(@RequestParam(value = "userid") String userId) {
-		System.out.println("monuid user dans ma req " + userId);
+		System.out.println("monuid user dans ma req getreaction" + userId);
 		String[] serviceName = getServiceByUser(userId);
 		List<String> serviceId = getServiceIdByName(serviceName);
 		List<String> actionName = getNameReactionByServiceId(serviceId);
@@ -645,7 +646,7 @@ public class Controller {
     @CrossOrigin
 	@RequestMapping(value = "/getServiceForUser", method = RequestMethod.GET)
 	public String GetService(@RequestParam(value = "userid") String userId) {
-		System.out.println("monuid user dans ma req " + userId);
+		System.out.println("monuid user dans ma req getServiceForUser" + userId);
 		List<String> newservicename = new ArrayList<String>();
 		String[] serviceName = getServiceByUser(userId);
 		int size = serviceName.length;
@@ -662,7 +663,7 @@ public class Controller {
 	@CrossOrigin
 	@RequestMapping(value = "/getActionReactionByUser", method = RequestMethod.GET)
 	public String GetActionReaction(@RequestParam(value = "userid") String userId) {
-		System.out.println("monuid user dans ma req " + userId);
+		System.out.println("monuid user dans ma req getActionReactionByUser" + userId);
 		List<String> allactionreaction = new ArrayList<String>();
 		try {
 			stmt = c.prepareStatement("SELECT * FROM user_actions_reactions WHERE id_user = " + userId + "");
@@ -758,11 +759,9 @@ public class Controller {
 		int int_user_id = Integer.parseInt(userId);
 
 		try {
-			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user =" + userId + " AND " +
-					"id_service_action=" + id_service_action + " AND value_service_action=" + actionValue + " AND " +
-					"id_service_reaction=" + id_service_reaction + " AND value_service_reaction=" + reactionValue + ";");
+			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user = " + userId + " AND id_service_action = " + id_service_action + " AND value_service_action = '" + actionValue + "' AND id_service_reaction = " + id_service_reaction + " AND value_service_reaction = '" + reactionValue + "';");
 			stmt.execute();
-			return "work";
+			return "delete work";
 		} catch (Exception e) {
 			System.out.println(e);
 		}

@@ -91,10 +91,7 @@ class _HomePageState extends State<HomePage> {
           serviceName: 'Spotify',
           logo: 'assets/logo-spotify.png',
           textColor: Color(0xFF1DB954),),
-        SignIn(root: 'linkedin',
-          serviceName: 'Linkedin',
-          logo: 'assets/logo-linkedin.png',
-          textColor: Color(0xFF0072b1),),
+//        SignIn(root: 'linkedin', serviceName: 'Linkedin', logo: 'assets/logo-linkedin.png', textColor: Color(0xFF0072b1),),
         SignIn(root: 'twitter',
           serviceName: 'Twitter',
           logo: 'assets/logo-twitter.png',
@@ -107,10 +104,7 @@ class _HomePageState extends State<HomePage> {
           serviceName: 'Twitch',
           logo: 'assets/logo-twitch.png',
           textColor: Color(0xFF6441A4),),
-        SignIn(root: 'reddit',
-          serviceName: 'Reddit',
-          logo: 'assets/logo-reddit.png',
-          textColor: Color(0xFFFF5700),),
+//        SignIn(root: 'reddit', serviceName: 'Reddit', logo: 'assets/logo-reddit.png', textColor: Color(0xFFFF5700),),
         SignIn(root: 'discord',
           serviceName: 'Discord',
           logo: 'assets/logo-discord.png',
@@ -182,43 +176,5 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-  }
-}
-
-
-
-Future<dynamic> fetchAction() async {
-  final response = await http.get('http://localhost:8080/getActionForUser?userid=' + user.id);
-
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON.
-    return json.decode(response.body);
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
-
-Future<dynamic> fetchReaction() async {
-  final response = await http.get('http://localhost:8080/getReactionForUser?userid=' + user.id);
-
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON.
-    return json.decode(response.body);
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
-
-Future<dynamic> fetchService() async {
-  final response = await http.get('http://localhost:8080/getServiceForUser?userid=' + user.id);
-
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON.
-    return json.decode(response.body);
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
   }
 }

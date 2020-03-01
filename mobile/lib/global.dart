@@ -37,8 +37,8 @@ Map<String, bool> connectedService() => {
 class Post {
   String action;
   String reaction;
-  String actionValue;
-  String reactionValue;
+  String actionVal;
+  String reactionVal;
 }
 
 class API {

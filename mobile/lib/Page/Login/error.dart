@@ -1,16 +1,16 @@
 import 'package:flutter_user_agent/flutter_user_agent.dart';
+import 'package:mobile/Container/fetch.dart';
 import 'package:mobile/Container/login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/global.dart';
 
 
-class LoginPage extends StatefulWidget {
-
+class ErrorPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ErrorPageState createState() => _ErrorPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ErrorPageState extends State<ErrorPage> {
   @override
   void initState() {
       FlutterUserAgent.getPropertyAsync('userAgent')
@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
           userAgent = response;
         print("RESPONSE : $response");
       }));
+      logOut();
       super.initState();
   }
   @override
@@ -74,8 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   new Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: new Text(
-                      "AREA",
-                      style: TextStyle(color: this.foregroundColor),
+                      "ERROR WITH USERNAME OR PASSWORD",
+                      style: TextStyle(color: Colors.red),
                     ),
                   )
                 ],

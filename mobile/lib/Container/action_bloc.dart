@@ -8,8 +8,6 @@ class ActionBloc extends StatefulWidget {
   final int index;
   final List<String> actionList;
   final List<String> reactionList;
-  String actionVal = "";
-  String reactionVal = "";
   ActionBloc({this.index, this.actionList, this.reactionList});
   @override
   _ActionBlocState createState() => _ActionBlocState();
@@ -32,12 +30,15 @@ class _ActionBlocState extends State<ActionBloc> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text("Subscribe"),
-              IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () {setState(() {
-                  print(widget.reactionVal);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => WebView('http://localhost:8080/postActionReactionForUser?userid=${user.id}&actionName=${post[widget.index].action}&actionValue=${widget.reactionVal}&reactionName=${post[widget.index].reaction}&reactionValue=${widget.reactionVal}', 'Add service', '')));
+              Text( isSub ? "Unsubscribe" : "Subscribe"),
+              CupertinoSwitch(
+                value: isSub,
+                onChanged: (val) {setState(() {
+                  isSub = val;
+                  if(isSub == true)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WebView('http://localhost:8080/postActionReactionForUser?userid=${user.id}&actionName=${post[widget.index].action}&actionValue=${post[widget.index].actionVal}&reactionName=${post[widget.index].reaction}&reactionValue=${post[widget.index].reactionVal}', 'Add service', '')));
+                  else
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WebView('http://localhost:8080/deleteActionReactionForUser?userid=${user.id}&actionName=${post[widget.index].action}&actionValue=${post[widget.index].actionVal}&reactionName=${post[widget.index].reaction}&reactionValue=${post[widget.index].reactionVal}', 'Remove service', '')));
                 });},
               )
             ],
@@ -70,7 +71,7 @@ class _ActionBlocState extends State<ActionBloc> {
             textAlign: TextAlign.center,
             onChanged: (value) {
               setState(() {
-                widget.actionVal = value;
+                post[widget.index].actionVal = value;
               });
             },
           ),
@@ -103,8 +104,8 @@ class _ActionBlocState extends State<ActionBloc> {
             onChanged: (value) {
               setState(() {
                 print(value);
-                widget.reactionVal = value;
-                print(widget.reactionVal);
+                post[widget.index].reactionVal = value;
+                print(post[widget.index].reactionVal);
               });
               },
           ),

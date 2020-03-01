@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:mobile/Container/fetch.dart';
 import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/global.dart';
 
@@ -43,10 +44,11 @@ class WebViewState extends State<WebView> {
           if (split[2] == "localhost:9090") {
             uri = Uri.parse(state.url);
             uri.queryParameters.forEach((k, v) {
-              if (k == "id")
-                setState(() {
-                  user.id = v;
-                });
+              if (k == "id") {
+                  setState(() {
+                    user.id = v;
+                  });
+              }
             });
             fetchAction().then((onValue) {
               actionList = List<String>.from(onValue);
@@ -69,31 +71,49 @@ class WebViewState extends State<WebView> {
                 setState(() {
                   switch (f) {
                     case "google" :
-                      google = true;
+                      setState(() {
+                        google = true;
+                      });
                       break;
                     case "github" :
-                      github = true;
+                      setState(() {
+                        github = true;
+                      });
                       break;
                     case "spotify" :
-                      spotify = true;
+                      setState(() {
+                        spotify = true;
+                      });
                       break;
                     case "linkedin" :
-                      linkedin = true;
+                      setState(() {
+                        linkedin = true;
+                      });
                       break;
                     case "twitter" :
-                      twitter = true;
+                      setState(() {
+                        twitter = true;
+                      });
                       break;
                     case "facebook" :
-                      facebook = true;
+                      setState(() {
+                        facebook = true;
+                      });
                       break;
                     case "twitch" :
-                      twitch = true;
+                      setState(() {
+                        twitch = true;
+                      });
                       break;
                     case "reddit" :
-                      reddit = true;
+                      setState(() {
+                        reddit = true;
+                      });
                       break;
                     case "discord" :
-                      discord = true;
+                      setState(() {
+                        discord = true;
+                      });
                       break;
                     default :
                       break;
@@ -102,7 +122,7 @@ class WebViewState extends State<WebView> {
               });
             });
             flutterWebViewPlugin.close();
-            Navigator.pushNamed(context, widget.root);
+            (user.id == "0") ? Navigator.pushNamed(context, '/login/error') : Navigator.pushNamed(context, widget.root);
           }
     });
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
@@ -142,67 +162,3 @@ class WebViewState extends State<WebView> {
     );
   }
 }
-
-/* class InAppWebViewPage extends StatefulWidget {
-  String url;
-
-  InAppWebViewPage(this.url);
-  @override
-  _InAppWebViewPageState createState() => new _InAppWebViewPageState();
-}
-
-class _InAppWebViewPageState extends State<InAppWebViewPage> {
-  InAppWebViewController webView;
-  var height;
-  var iframeUrl = 'https://www.youtube.com/embed/vlkNcHDFnGA';
-
-  @override
-  Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        appBar: AppBar(
-            title: Text("InAppWebView")
-        ),
-        body: Container(
-            child: Column(children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: InAppWebView(
-                    initialData: InAppWebViewInitialData(
-                        data: """
-<DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Flutter InAppWebView</title>
-    </head>
-    <body>
-        <iframe src="$iframeUrl}" width="100%" height="$height" frameborder="0" allowfullscreen></iframe>
-    </body>
-</html>"""
-                    ),
-                    initialHeaders: {},
-                    initialOptions: InAppWebViewWidgetOptions(
-                      inAppWebViewOptions: InAppWebViewOptions(
-                        debuggingEnabled: true,
-                      ),
-                    ),
-                    onWebViewCreated: (InAppWebViewController controller) {
-                      webView = controller;
-                    },
-                    onLoadStart: (InAppWebViewController controller, String url) {
-
-                    },
-                    onLoadStop: (InAppWebViewController controller, String url) {
-
-                    },
-                  ),
-                ),
-              ),
-            ]))
-    );
-  }
-}
-*/

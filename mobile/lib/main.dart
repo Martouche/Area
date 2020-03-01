@@ -1,5 +1,6 @@
 import 'package:mobile/Page/Home/home.dart';
 import 'package:mobile/Page/Home/navigation_bar.dart';
+import 'package:mobile/Page/Login/error.dart';
 import 'package:mobile/Page/Login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/Page/Login/register.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginPage(),
+        '/login/error': (context) => ErrorPage(),
         '/register': (context) => RegisterPage(),
         '/login/server': (context) => WebView('http://localhost:8080/login?name=${user.name}&pwd=${user.pass}', 'Connection AREA', ''),
         '/register/server': (context) => WebView('http://localhost:8080/register?name=${user.name}&pwd=${user.pass}', 'Connection AREA', ''),

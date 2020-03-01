@@ -670,7 +670,7 @@ public class Controller {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String nameaction = getActionNamebyId(rs.getInt("id_service_action"));
-				String namereaction = getActionNamebyId(rs.getInt("id_service_reaction"));
+				String namereaction = getReactionNamebyId(rs.getInt("id_service_reaction"));
 				allactionreaction.add(nameaction + ":" + rs.getString("value_service_action") + "|" + namereaction + ":" + rs.getString("value_service_reaction"));
 			}
 			rs.close();

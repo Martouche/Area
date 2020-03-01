@@ -139,6 +139,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 onPressed: () {
                   setState(() {
+                    post.removeAt(index-1);
                     count -= 1;
                   });
                 },

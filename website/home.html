@@ -366,7 +366,7 @@
         document.location.href="http://localhost:8080/oauth2/logout/spotify?userid=" + id;
       }
     });
-    $("#customSwitchgoogle").on( "click", function(tmp) {
+    $("#customSwitchgoogle").on( "click", function() {
       if ($("#customSwitchgoogle").is(':checked') && tmp.includes("google") == false) {
         document.location.href="http://localhost:8080/oauth2/autorize/google"
       }

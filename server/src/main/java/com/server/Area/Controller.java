@@ -53,6 +53,7 @@ public class Controller {
 	PreparedStatement stmt = null;
 	boolean isLogged = false;
 	int id;
+	private static String EMPTY = "";
 
 	Twitter twitter = TwitterFactory.getSingleton();
 	AccessToken accessTokenTwitter = null;
@@ -772,12 +773,20 @@ public class Controller {
 									 @RequestParam(value = "reactionValue") String reactionValue) {
 		int id_service_action = getActionIdbyName(actionName);
 		int id_service_reaction = getReactionIdbyName(reactionName);
+		System.out.println("mon actionValue - " + actionValue + " et ma reactionValue - " + reactionValue);
+		if (actionValue.equals(null)) {
+			actionValue = "";
+			System.out.println("ma nouvelle action value - " + actionValue);
+		}
+		if (reactionValue.equals(null))
+			reactionValue = "";
 		int int_user_id = Integer.parseInt(userId);
 
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:9090/home?id=" + userId);
 		try {
 			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user = " + userId + " AND id_service_action = " + id_service_action + " AND value_service_action = '" + actionValue + "' AND id_service_reaction = " + id_service_reaction + " AND value_service_reaction = '" + reactionValue + "';");
+			System.out.println("ma requete  quand je delete : " + stmt);
 			stmt.execute();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -795,7 +804,10 @@ public class Controller {
 		int id_service_reaction = getReactionIdbyName(reactionName);
 		int int_user_id = Integer.parseInt(userId);
 
-
+		if (actionValue.equals(null) || EMPTY.equals(actionValue))
+			actionValue = "null";
+		if (reactionValue.equals(null) || EMPTY.equals(reactionValue))
+			reactionValue = "null";
 		System.out.println("JE SUIS DANS LE POST DES ACTION REACTION");
 		System.out.println(userId);
 		System.out.println(actionName);
@@ -820,14 +832,12 @@ public class Controller {
 		if (actionName.equals("githubNewCommentsRepo"))
 			actionValue = actionValue + ":" + Actions.githubGetCommentsRepo(int_user_id, actionValue, c, stmt);
 
-		System.out.println("MA VALEUR D ACTION APRES LES SETTER");
-		System.out.println(actionValue);
-
 		try {
 			stmt = c.prepareStatement("INSERT INTO user_actions_reactions " +
 					"(id_user, id_service_action, value_service_action, id_service_reaction, value_service_reaction) " +
 					"SELECT " + userId + ", " + id_service_action + ", '" + actionValue + "'," + id_service_reaction + ", '" + reactionValue + "';");
 			stmt.execute();
+			System.out.println("mon post marche");
 			return "work";
 		} catch (Exception e) {
 			System.out.println(e);

@@ -275,25 +275,33 @@
             alert("mauvaise réponse du serveur");
         }
     });
-    $.ajax({
-        type: "GET",
-        url: ("http://localhost:8080/getActionReactionByUser?userid=" + id),
-        dataType: "json",
-        async: false,
-        success: function(datas) {
-          for (var i = 0; i < datas.length; i++) {
-            var data = datas[i];
-            console.log("ma data au debut ->", data);
-            var res = data[0].split("|");
-            var resaction = res[0].split(":");
-            var resreaction = res[1].split(":");
-            $("#AllActionReactionOfUser").append("<div> action : " + resaction[0] + ", value -> " + resaction[1] + " --- reaction " + resreaction[0] + ", value -> " + resreaction[1] + "<a href=\"http://localhost:8080/deleteActionReactionForUser?userid=" + id + "&actionName=" + resaction[0] + "&actionValue=" + resaction[1] + "&reactionName=" + resreaction[0] + "&reactionValue=" + resreaction[1] + "\" class=\"button\">Remove</a></div>");
+    function reloadActionRection () {
+      $.ajax({
+          type: "GET",
+          url: ("http://localhost:8080/getActionReactionByUser?userid=" + id),
+          dataType: "json",
+          async: false,
+          success: function(datas) {
+            for (var i = 0; i < datas.length; i++) {
+              var data = String(datas[i]);
+              console.log("ma data au debut ->", data);
+              var res = data.split("|");
+              console.log("ma data au res ->", res);
+              var resaction = res[0].split(":");
+              console.log("ma data au resaction ->", resaction);
+              var resreaction = res[1].split(":");
+              console.log("ma data au resreaction ->", resreaction);
+              $("#AllActionReactionOfUser").append("<div> action : " + resaction[0] + ", value -> " + resaction[1] + " --- reaction " + resreaction[0] + ", value -> " + resreaction[1] + "            <a href=\"http://localhost:8080/deleteActionReactionForUser?userid=" + id + "&actionName=" + resaction[0] + "&actionValue=" + resaction[1] + "&reactionName=" + resreaction[0] + "&reactionValue=" + resreaction[1] + "\" class=\"button\">Remove</a></div>");
+            }
+          },
+          error: function(data) {
+              alert("mauvaise réponse du serveur");
           }
-        },
-        error: function(data) {
-            alert("mauvaise réponse du serveur");
-        }
-    });
+      });
+    }
+    setInterval(function(){
+      reloadActionRection() // this will run after every 5 seconds
+    }, 5000);
     $("#PostActionButton").click( function() {
         var selectAction = document.getElementById("ListActions");
         var selectReaction = document.getElementById('ListReaction');
@@ -308,9 +316,6 @@
             async: false,
             success: function(data) {
                 console.log("ma data POST--> ", data);
-            },
-            error: function(data) {
-                alert("mauvaise réponse du serveur");
             }
         });
     });

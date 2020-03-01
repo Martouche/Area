@@ -63,6 +63,7 @@ class WebViewState extends State<WebView> {
               facebook = false;
               twitch = false;
               reddit = false;
+              discord = false;
               serviceList = List<String>.from(onValue);
               serviceList.forEach((f) {
                 setState(() {
@@ -90,6 +91,9 @@ class WebViewState extends State<WebView> {
                       break;
                     case "reddit" :
                       reddit = true;
+                      break;
+                    case "discord" :
+                      discord = true;
                       break;
                     default :
                       break;

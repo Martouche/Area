@@ -29,7 +29,6 @@ dependencies:
   awesome_dialog: ^0.1.1
   morpheus: ^1.2.2+1
   flutter_user_agent: ^1.2.1
-  flutter_inappwebview: ^2.1.0+1
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +57,7 @@ flutter:
    - assets/logo-facebook.png
    - assets/logo-twitch.png
    - assets/logo-reddit.png
+   - assets/logo-discord.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

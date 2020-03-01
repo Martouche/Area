@@ -44,6 +44,8 @@ class MyApp extends StatelessWidget {
         '/logout/facebook': (context) => WebView('http://localhost:8080/oauth2/logout/facebook?userid=${user.id}', 'Deconnection FACEBOOK', 'facebook', isNotLog: false,),
         '/login/twitch': (context) => WebView('http://localhost:8080/oauth2/autorize/twitch', 'Connection TWITCH', 'twitch'),
         '/logout/twitch': (context) => WebView('http://localhost:8080/oauth2/logout/twitch?userid=${user.id}', 'Deconnection TWITCH', 'twitch', isNotLog: false,),
+        '/login/discord': (context) => WebView('http://localhost:8080/oauth2/autorize/discord', 'Connection DISCORD', 'discord'),
+        '/logout/discord': (context) => WebView('http://localhost:8080/oauth2/logout/discord?userid=${user.id}', 'Deconnection DISCORD', 'discord', isNotLog: false,),
         '/login/navbar': (context) => BottomBarPage(),
         '/login/home': (context) => HomePage(),
         '/login/home/notification' : (context) => NotificationPage(),

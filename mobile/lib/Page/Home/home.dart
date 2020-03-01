@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/Container/action_bloc.dart';
 import 'package:mobile/Container/login_button.dart';
@@ -14,7 +15,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double _height;
-  bool isOpen = false;
 
   @override
   void initState() {
@@ -111,6 +111,10 @@ class _HomePageState extends State<HomePage> {
           serviceName: 'Reddit',
           logo: 'assets/logo-reddit.png',
           textColor: Color(0xFFFF5700),),
+        SignIn(root: 'discord',
+          serviceName: 'Discord',
+          logo: 'assets/logo-discord.png',
+          textColor: Color(0xFF738adb),),
         SizedBox(height: 50,),
       ],
     );
@@ -129,7 +133,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 onPressed: () {
                   setState(() {
-                    count += 1;
+                    if (checkService() == true)
+                      count += 1;
+                    else
+                      _handleClickMe();
                   });
                 },
               ),
@@ -154,7 +161,31 @@ class _HomePageState extends State<HomePage> {
       }
     );
   }
+  Future<void> _handleClickMe() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: new Text("Can\'t not add a action / reaction"),
+          content: new Text("You first be logged to a service"),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              onPressed: () { setState(() { isOpen = true; }); Navigator.of(context).pop(); },
+              child: Text("Go"),
+            ),
+            CupertinoDialogAction(
+              onPressed: () { Navigator.of(context).pop(); },
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
 
 Future<dynamic> fetchAction() async {
   final response = await http.get('http://localhost:8080/getActionForUser?userid=' + user.id);

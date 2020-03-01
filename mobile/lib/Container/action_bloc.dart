@@ -113,3 +113,18 @@ class _ActionBlocState extends State<ActionBloc> {
     );
   }
 }
+
+bool checkService() {
+  if (google == false &&
+      github == false &&
+      spotify == false &&
+      linkedin == false &&
+      twitter == false &&
+      facebook == false &&
+      twitch == false &&
+      reddit == false &&
+      discord == false)
+    return false;
+  else
+    return true;
+}

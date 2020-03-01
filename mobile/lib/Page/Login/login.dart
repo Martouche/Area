@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: this.highlightColor,
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/login/server'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/login/home'),//server
                     child: Text(
                       "Log In",
                       style: TextStyle(color: this.foregroundColor),

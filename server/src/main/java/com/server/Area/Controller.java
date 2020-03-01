@@ -185,7 +185,7 @@ public class Controller {
 			System.exit(0);
 		}
 	}
-	
+
 	@RequestMapping(value = "/about.json", method = RequestMethod.GET)
 	public List<String> AboutJson() {
 		List<String> records = new ArrayList<String>();
@@ -209,7 +209,7 @@ public class Controller {
 		  return null;
 		}
 	}
-	
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public RedirectView logoutUser() {
 		System.out.println("Je suis logout dans le serveur");
@@ -942,6 +942,5 @@ public class Controller {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		System.out.println("je suis alallalalalla");
 	}
 }

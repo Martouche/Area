@@ -148,7 +148,7 @@ public class Reactions {
     public static void spotifyPause(int userId,  Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
         try {
-            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/pause&device_id=" + spotifyGetDevice(userId, c, stmt));
+            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/pause?device_id=" + spotifyGetDevice(userId, c, stmt));
             url.addHeader("Authorization", access_token);
             execute(url);
         }  catch (IOException e) {
@@ -160,7 +160,7 @@ public class Reactions {
     public static void spotifyNext(int userId,  Connection c, PreparedStatement stmt) {
         String access_token = "Bearer "+ getAccesTokenById(userId, "spotify", c, stmt);
         try {
-            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/next&device_id=" + spotifyGetDevice(userId, c, stmt));
+            HttpPut url = new HttpPut("https://api.spotify.com/v1/me/player/next?device_id=" + spotifyGetDevice(userId, c, stmt));
             url.addHeader("Authorization", access_token);
             execute(url);
         }  catch (IOException e) {

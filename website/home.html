@@ -172,10 +172,10 @@
         <div class="formfield-select--container">
           <select id="ListActions" name="Actions">
           </select>
-          <input name="ActionValueInput" type="text">
+          <input id ="ActionValueInput" name="ActionValueInput" type="text">
           <select id="ListReaction" name="Reaction">
           </select>
-          <input name="ReactionValueInput" type="text">
+          <input id ="ReactionValueInput" name="ReactionValueInput" type="text">
           <button id="PostActionButton" type="submit" class="POSTbutton">Envoyer l'action</button>
       </div>
           <div id = "AllActionReactionOfUser"> MES ACTIONS REACTIONS</div>
@@ -211,7 +211,7 @@
         async: false,
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
-                console.log("ma data ", data[i]);
+ //               console.log("ma data ", data[i]);
                 option = document.createElement('option');
                 option.value = option.text = data[i];
                 document.getElementById("ListActions").add(option);
@@ -228,7 +228,7 @@
         async: false,
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
-                console.log("ma data ", data[i]);
+//                console.log("ma data ", data[i]);
                 option = document.createElement( 'option' );
                 option.value = option.text = data[i];
                 document.getElementById("ListReaction").add( option );
@@ -245,7 +245,7 @@
         async: false,
         success: function(data) {
             for (var i = 0; i < data.length; i++) {
-                console.log("ma data ", data[i]);
+//                console.log("ma data ", data[i]);
                 // IL FAUT ZAJOUTER LE BUTON DELETE AVEC LE HREF ET FAIRE LA FONCITON LA ROUTE DES DELET ACTIONS REACTIONS
                 $("#AllActionReactionOfUser").append("<div> "+ data[i] +" </div>");
             }
@@ -254,30 +254,27 @@
             alert("mauvaise réponse du serveur");
         }
     });
-    $(document).ready(function post_action() {
+    $("#PostActionButton").click( function() {
         var selectAction = document.getElementById("ListActions");
-        var selectReaction = document.getElementById("ListReaction");
-/*        $("#POSTbutton").click( function() {
+        var selectReaction = document.getElementById('ListReaction');
+        var ActionInput = document.getElementById('ActionValueInput').value;
+        var ReactionInput = document.getElementById('ReactionValueInput').value;
+        console.log(selectAction.options[selectAction.selectedIndex].text);
+        console.log(selectReaction.options[selectReaction.selectedIndex].text);
+        $.ajax({
+            type: "GET",
+            url: ("http://localhost:8080/postActionReactionForUser?userid=" + id +"&actionName=" + selectAction.options[selectAction.selectedIndex].text +"&actionValue=" + ActionInput + "&reactionName=" + selectReaction.options[selectReaction.selectedIndex].text + "&reactionValue=" + ReactionInput),
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                console.log("ma data POST--> ", data);
+            },
+            error: function(data) {
+                alert("mauvaise réponse du serveur");
+            }
+        });
+    });
 
-        }
-      );
-*/  });
-/*  $.ajax({
-      type: "POST",
-      url: ("http://localhost:8080/postActionReactionForUser?userid=" + id +"&actionName=" + selectAction +"&actionValue=" + null +"&reactionName=" + selectReaction + "&reactionValue" + null),
-      dataType: "json",
-      async: false,
-      success: function(data) {
-          for (var i = 0; i < data.length; i++) {
-              console.log("ma data ", data[i]);
-              $("#AllActionReactionOfUser").append("<div> "+ data[i] +" </div>");
-          }
-      },
-      error: function(data) {
-          alert("mauvaise réponse du serveur");
-      }
-  });
-*/
     $("#customSwitchspotify").on( "click", function() {
       if ($("#customSwitchspotify").is(':checked') && tmp.includes("spotify") == false) {
           console.log("tmpp -->>>", tmp[0]);

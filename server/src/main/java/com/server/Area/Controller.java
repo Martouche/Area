@@ -85,7 +85,7 @@ public class Controller {
 		//Actions.youtubeReactionNewFriend(1,"xMrClyde", c, stmt );
 		//Reactions.gmailSendMail(1,"maxence.svensson@epitech.eu", c, stmt );
 		//Actions.youtubeNewFriend()
-		Actions.spotifyGetPlaylist(1, c, stmt);
+		//Actions.spotifyGetPlaylist(1, c, stmt);
 	}
 
 	public void CreateTableDataBase(Connection c, PreparedStatement stmt) {

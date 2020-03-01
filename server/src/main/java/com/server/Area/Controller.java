@@ -746,6 +746,29 @@ public class Controller {
 		return 0;
 	}
 
+
+	@RequestMapping(value = "/deleteActionReactionForUser", method = RequestMethod.GET)
+	public String deleteActionReaction(@RequestParam(value = "userid") String userId,
+									 @RequestParam(value = "actionName") String actionName,
+									 @RequestParam(value = "actionValue") String actionValue,
+									 @RequestParam(value = "reactionName") String reactionName,
+									 @RequestParam(value = "reactionValue") String reactionValue) {
+		int id_service_action = getActionIdbyName(actionName);
+		int id_service_reaction = getReactionIdbyName(reactionName);
+		int int_user_id = Integer.parseInt(userId);
+
+		try {
+			stmt = c.prepareStatement("DELETE FROM user_actions_reactions WHERE id_user =" + userId + " AND " +
+					"id_service_action=" + id_service_action + " AND value_service_action=" + actionValue + " AND " +
+					"id_service_reaction=" + id_service_reaction + " AND value_service_reaction=" + reactionValue + ";");
+			stmt.execute();
+			return "work";
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
 	@RequestMapping(value = "/postActionReactionForUser", method = RequestMethod.GET)
 	public String PostActionReaction(@RequestParam(value = "userid") String userId,
 									 @RequestParam(value = "actionName") String actionName,
